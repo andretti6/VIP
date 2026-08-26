@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💎 Jewelry Role‑Play · Interactive Class</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #eef2ff;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+        .hidden-screen {
+            display: none !important;
+        }
+
+        /* ── 3D Glass & Depth ── */
+        .glass-3d {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.6) inset, 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(.22, 1, .36, 1);
+        }
+        .glass-3d-dark {
+            background: rgba(15, 23, 42, 0.80);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        }
+
+        /* ── Buttons ── */
+        .btn-3d {
+            transition: all 0.2s cubic-bezier(.22, 1, .36, 1);
+            box-shadow: 0 6px 0 0 #3730a3, 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+            transform: translateY(0);
+        }
+        .btn-3d:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 0 #3730a3, 0 14px 24px -5px rgba(79, 70, 229, 0.5);
+        }
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 0 #3730a3, 0 4px 10px -2px rgba(79, 70, 229, 0.3);
+        }
+        .btn-3d-secondary {
+            transition: all 0.2s cubic-bezier(.22, 1, .36, 1);
+            box-shadow: 0 6px 0 0 #cbd5e1, 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+            transform: translateY(0);
+        }
+        .btn-3d-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 0 #cbd5e1, 0 14px 24px -5px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ── Tabs ── */
+        .tab-btn {
+            padding: 10px 18px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 13px;
+            border: 2px solid transparent;
+            background: rgba(255, 255, 255, 0.4);
+            color: #64748b;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+            color: #1e293b;
+        }
+        .tab-btn.active {
+            background: #4f46e5;
+            color: #fff;
+            border-color: #818cf8;
+            box-shadow: 0 8px 16px -6px rgba(79, 70, 229, 0.3);
+        }
+
+        /* ── Post-it ── */
+        .postit {
+            background: #fef9c3;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            border: 1px solid #fde68a;
+            display: inline-block;
+            margin: 4px;
+        }
+        .postit .del {
+            cursor: pointer;
+            margin-left: 6px;
+            font-size: 12px;
+            color: #b91c1c;
+            opacity: 0.4;
+            transition: 0.2s;
+        }
+        .postit .del:hover {
+            opacity: 1;
+        }
+
+        /* ── Scenario Card ── */
+        .scenario-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #e2e8f0;
+            padding: 16px 20px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.02);
+        }
+        .scenario-card:hover {
+            border-color: #818cf8;
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -10px rgba(79, 70, 229, 0.12);
+        }
+        .scenario-card .badge {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .fade-up {
+            animation: fadeUp 0.4s cubic-bezier(.22, 1, .36, 1) forwards;
+        }
+
+        /* ── Scroll ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .field-area textarea,
+        .field-area input {
+            width: 100%;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            transition: all 0.2s;
+            outline: none;
+            font-family: inherit;
+        }
+        .field-area textarea:focus,
+        .field-area input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .collection-piece {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px dashed #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <!--  SCREEN 1: SETUP                        -->
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div id="screen-setup" class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md glass-3d rounded-[32px] p-8 md:p-10 fade-up">
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 mx-auto bg-gradient-to-tr from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center text-4xl shadow-xl shadow-amber-500/30 mb-4 float-3d">
+                    💎
+                </div>
+                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Jewelry Role‑Play</h1>
+                <p class="text-sm text-slate-500 mt-1">Build your vocabulary and practice real‑life scenarios</p>
+            </div>
+            <form id="form-setup" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Your name</label>
+                    <input type="text" id="input-name" required placeholder="Type your name" class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-amber-600 focus:bg-white focus:ring-4 focus:ring-amber-500/10 transition font-medium">
+                </div>
+                <button type="submit" class="w-full py-4 bg-amber-600 text-white rounded-2xl font-bold btn-3d flex items-center justify-center gap-2 text-base" style="box-shadow:0 6px 0 0 #b45309,0 10px 20px -5px rgba(245,158,11,0.4);">
+                    <span>💎</span> Start Class
+                </button>
+            </form>
+            <p class="text-center text-xs text-slate-400 mt-6 font-medium">Você vai praticar inglês com atividades interativas</p>
+        </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <!--  SCREEN 2: ACTIVITY                     -->
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div id="screen-activity" class="min-h-screen p-4 md:p-6 hidden-screen">
+        <div class="max-w-6xl mx-auto">
+
+            <!-- ─── 3D Banner ─── -->
+            <div class="relative rounded-[32px] overflow-hidden bg-gradient-to-br from-amber-900 via-orange-800 to-yellow-900 p-6 md:p-8 shadow-2xl mb-6 border border-white/10">
+                <div class="absolute top-0 right-0 w-72 h-72 bg-amber-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                <div class="absolute bottom-0 left-0 w-60 h-60 bg-orange-500/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+                <div class="relative z-10 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/10 shadow-lg">
+                        <span class="text-amber-200 font-bold">👤</span>
+                        <span id="activity-name-display" class="text-white font-bold text-sm">—</span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/10 shadow-lg">
+                        <span class="text-xl">💎</span>
+                        <span class="text-white font-bold text-xs uppercase tracking-wider">Jewelry Workshop</span>
+                    </div>
+                </div>
+                <div class="mt-6 flex items-start gap-4 bg-white/10 backdrop-blur-xl rounded-2xl p-5 md:p-6 border border-white/15 shadow-xl">
+                    <span class="text-4xl float-3d">🎯</span>
+                    <div>
+                        <span class="text-[11px] font-extrabold uppercase tracking-widest text-amber-200 block mb-1">Mission</span>
+                        <p class="text-white text-sm md:text-base font-medium leading-relaxed">
+                            <strong>You are a jewelry designer at a Miami booth.</strong> Today you'll practice describing products, handling customer situations, designing a new collection, and resolving complaints. Use new vocabulary!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── Áudio ─── -->
+            <div class="glass-3d rounded-2xl p-5 mb-6 shadow-xl">
+                <div class="flex items-center gap-2.5 mb-3">
+                    <span class="text-2xl">🎧</span>
+                    <span class="text-sm font-bold text-slate-800">Listen to the conversation – then practice!</span>
+                </div>
+                <iframe src="https://whyp.it/embeds/track/QXi9ekzJUdjQ?token=HgZqETyWoYLs" width="100%" height="200" scrolling="no" frameborder="0" loading="lazy" class="rounded-2xl shadow-inner"></iframe>
+            </div>
+
+            <!-- ─── Tabs ─── -->
+            <div class="flex flex-wrap gap-2 mb-6">
+                <button class="tab-btn active" data-tab="tab1">📝 Product Descriptions</button>
+                <button class="tab-btn" data-tab="tab2">🎭 Customer Scenarios</button>
+                <button class="tab-btn" data-tab="tab3">🎨 Design a Collection</button>
+                <button class="tab-btn" data-tab="tab4">💬 Customer Complaint</button>
+            </div>
+
+            <!-- ─── Conteúdo das Abas ─── -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <!-- Coluna das atividades (2/3) -->
+                <div class="lg:col-span-2 space-y-6">
+
+                    <!-- Tab 1: Product Descriptions -->
+                    <div id="tab1" class="tab-content glass-3d rounded-3xl p-6 shadow-2xl">
+                        <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-3 mb-4">
+                            <span>📝</span> Product Descriptions
+                        </h3>
+                        <p class="text-sm text-slate-600 font-medium mb-4">Describe <strong>3 jewelry pieces</strong> you sell. Include materials, colors, price, and a quality adjective.</p>
+                        <div class="space-y-4">
+                            <div class="field-area">
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Piece 1</label>
+                                <textarea rows="2" id="desc-1" placeholder="Ex: A silver necklace with turquoise stones. Light, elegant, costs $45." class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 outline-none transition font-medium"></textarea>
+                            </div>
+                            <div class="field-area">
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Piece 2</label>
+                                <textarea rows="2" id="desc-2" placeholder="Ex: Gold-plated earrings with pearl drops. Perfect for evening wear, $85." class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 outline-none transition font-medium"></textarea>
+                            </div>
+                            <div class="field-area">
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Piece 3</label>
+                                <textarea rows="2" id="desc-3" placeholder="Ex: Leather bracelet with a silver charm. Casual, trendy, $32." class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 outline-none transition font-medium"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Customer Scenarios -->
+                    <div id="tab2" class="tab-content glass-3d rounded-3xl p-6 shadow-2xl hidden">
+                        <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-3 mb-4">
+                            <span>🎭</span> Customer Scenarios
+                        </h3>
+                        <p class="text-sm text-slate-600 font-medium mb-4">Click on each card, read the situation, and practice your response <strong>out loud</strong>. The teacher will give feedback.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="scenarios-container">
+                            <!-- 10 cards serão inseridos via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Design a Collection -->
+                    <div id="tab3" class="tab-content glass-3d rounded-3xl p-6 shadow-2xl hidden">
+                        <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-3 mb-4">
+                            <span>🎨</span> Design Your Own Jewelry Line
+                        </h3>
+                        <p class="text-sm text-slate-600 font-medium mb-4">Create a <strong>summer collection</strong> with 5 pieces. Describe materials, colors, prices, and the target audience.</p>
+                        <div class="space-y-4">
+                            <div class="field-area">
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Collection Name</label>
+                                <input type="text" id="collection-name" placeholder="Ex: Summer Breeze Collection" class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 outline-none transition font-medium">
+                            </div>
+                            <div id="collection-pieces">
+                                {[1,2,3,4,5].map(i => `
+                                    <div class="collection-piece mb-3">
+                                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Piece ${i}</label>
+                                        <textarea rows="2" id="piece-${i}" placeholder="Describe materials, colors, price, target style..." class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 outline-none transition font-medium"></textarea>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: Customer Complaint -->
+                    <div id="tab4" class="tab-content glass-3d rounded-3xl p-6 shadow-2xl hidden">
+                        <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-3 mb-4">
+                            <span>💬</span> Customer Complaint
+                        </h3>
+                        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-4">
+                            <span class="text-sm font-bold text-amber-800">📢 Scenario:</span>
+                            <p class="text-sm text-slate-700 mt-1">A customer bought a bracelet from you last week. Today she comes back angry because the clasp broke. She wants a full refund. How do you handle this?</p>
+                        </div>
+                        <div class="field-area">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">Your response (write or practice speaking)</label>
+                            <textarea rows="4" id="complaint-response" placeholder="Write what you would say to the customer..." class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 outline-none transition font-medium"></textarea>
+                        </div>
+                        <div class="mt-4 p-4 bg-indigo-50/60 border border-indigo-200/60 rounded-2xl">
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-700 block mb-1">💡 Useful language</span>
+                            <ul class="text-sm text-slate-600 space-y-1 list-disc list-inside font-medium">
+                                <li><em>I understand your frustration.</em></li>
+                                <li><em>Let me see what I can do for you.</em></li>
+                                <li><em>I can offer you a replacement or a full refund.</em></li>
+                                <li><em>I apologize for the inconvenience.</em></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna dos Post-its (1/3) -->
+                <div class="lg:col-span-1">
+                    <div class="glass-3d rounded-3xl p-6 shadow-2xl sticky top-6">
+                        <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-3 mb-3">
+                            <span>📌</span> New Words
+                        </h3>
+                        <div class="flex gap-2 mb-3">
+                            <input type="text" id="postit-input" placeholder="Add a word..." class="flex-1 bg-white border-2 border-slate-200 rounded-xl px-3 py-2 text-sm focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 outline-none transition font-medium">
+                            <button id="btn-add-postit" class="bg-amber-500 text-white px-4 py-2 rounded-xl font-bold hover:bg-amber-600 transition btn-3d-secondary text-sm">Add</button>
+                        </div>
+                        <div id="postit-container" class="flex flex-wrap gap-1.5 min-h-[120px] p-2 bg-slate-50/70 rounded-2xl border border-slate-200/60">
+                            <span class="text-xs text-slate-400 italic" id="postit-empty">No words yet — add some!</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-3 font-medium">💡 These words will appear in your wrap-up summary.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botão Wrap-up -->
+            <div class="mt-8 flex justify-end">
+                <button id="btn-to-wrapup" class="px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold btn-3d flex items-center gap-2 shadow-xl">
+                    <span>📝</span> Review &amp; Wrap Up
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <!--  SCREEN 3: WRAP‑UP                      -->
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div id="screen-wrapup" class="min-h-screen p-4 md:p-6 hidden-screen flex items-center justify-center">
+        <div class="max-w-3xl w-full glass-3d rounded-[32px] p-6 md:p-10 shadow-2xl fade-up">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2.5">
+                    <span>🏁</span> Mission Wrap‑up
+                </h2>
+                <button id="btn-back-to-activity" class="px-4 py-2 bg-white border border-slate-300 text-slate-600 hover:bg-slate-50 rounded-xl text-xs font-bold transition shadow-sm">← Back</button>
+            </div>
+
+            <div class="mt-6 space-y-6">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-800 mb-2.5">📌 New Vocabulary</h3>
+                    <div id="wrapup-vocab" class="p-5 bg-slate-50/90 border border-slate-200 rounded-2xl text-sm space-y-2 text-slate-700 font-medium shadow-inner">
+                        <p class="text-slate-400">No words added yet.</p>
+                    </div>
+                </div>
+
+                <div class="p-5 bg-indigo-50/75 border border-indigo-200/80 rounded-2xl shadow-sm">
+                    <h3 class="text-sm font-extrabold text-indigo-900 mb-2">🗣️ Oral Reflection</h3>
+                    <ul class="list-disc list-inside text-sm text-slate-700 space-y-2 font-medium">
+                        <li>Which activity was the most challenging for you?</li>
+                        <li>What new words did you learn today?</li>
+                        <li>How would you handle a difficult customer in real life?</li>
+                    </ul>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3 pt-2">
+                    <input type="text" id="signature-input" placeholder="Sign your full name" class="flex-1 min-w-[180px] px-5 py-3.5 bg-white border-2 border-slate-200 rounded-2xl text-sm font-semibold focus:outline-none focus:border-amber-600 shadow-sm">
+                    <button id="btn-sign" class="px-6 py-3.5 bg-amber-600 text-white rounded-2xl font-bold hover:bg-amber-700 transition text-sm btn-3d" style="box-shadow:0 6px 0 0 #b45309;">Sign & Finish</button>
+                </div>
+
+                <button onclick="window.print()" class="w-full py-4 bg-white border-2 border-slate-200 rounded-2xl font-bold hover:bg-slate-50 transition flex items-center justify-center gap-2 text-sm text-slate-700 btn-3d-secondary shadow-sm">
+                    🖨️ Print summary
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <!--  JAVASCRIPT                            -->
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <script>
+        // ── Post-its (localStorage) ──
+        let postits = JSON.parse(localStorage.getItem('jewelry_postits') || '[]');
+
+        function renderPostits() {
+            const container = document.getElementById('postit-container');
+            const empty = document.getElementById('postit-empty');
+            container.innerHTML = '';
+            if (postits.length === 0) {
+                container.appendChild(empty);
+                return;
+            }
+            postits.forEach((word, index) => {
+                const span = document.createElement('span');
+                span.className = 'postit';
+                span.innerHTML = `${word} <span class="del" data-idx="${index}">✕</span>`;
+                span.querySelector('.del').addEventListener('click', function() {
+                    const idx = Number(this.dataset.idx);
+                    postits.splice(idx, 1);
+                    localStorage.setItem('jewelry_postits', JSON.stringify(postits));
+                    renderPostits();
+                    updateWrapupVocab();
+                });
+                container.appendChild(span);
+            });
+        }
+
+        document.getElementById('btn-add-postit').addEventListener('click', function() {
+            const input = document.getElementById('postit-input');
+            const word = input.value.trim();
+            if (!word) return;
+            postits.push(word);
+            localStorage.setItem('jewelry_postits', JSON.stringify(postits));
+            renderPostits();
+            updateWrapupVocab();
+            input.value = '';
+            input.focus();
+        });
+
+        document.getElementById('postit-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('btn-add-postit').click();
+        });
+
+        function updateWrapupVocab() {
+            const container = document.getElementById('wrapup-vocab');
+            if (postits.length === 0) {
+                container.innerHTML = '<p class="text-slate-400">No words added yet.</p>';
+                return;
+            }
+            container.innerHTML = postits.map(w => `<span class="postit" style="background:#fef9c3;padding:4px 12px;border-radius:12px;display:inline-block;margin:3px;">${w}</span>`).join(' ');
+        }
+
+        // ── Tabs ──
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const target = this.dataset.tab;
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+                document.getElementById(target).classList.remove('hidden');
+            });
+        });
+
+        // ── Scenarios (10 cards) ──
+        const scenarios = [
+            { icon: '💍', text: 'A customer wants to return a ring because it\'s too small.' },
+            { icon: '🌍', text: 'A customer asks if the jewels are ethically sourced.' },
+            { icon: '💵', text: 'A customer offers to pay in cash, but you don\'t have change.' },
+            { icon: '👶', text: 'A child touches a delicate bracelet and almost breaks it.' },
+            { icon: '📅', text: 'A customer wants a custom piece in 2 days, but it takes 5 days normally.' },
+            { icon: '💔', text: 'A customer says the necklace she bought last week lost its color.' },
+            { icon: '📞', text: 'A customer calls to ask about your return policy.' },
+            { icon: '🎁', text: 'A customer wants to buy a gift but doesn\'t know the recipient\'s style.' },
+            { icon: '💸', text: 'A customer asks for a discount because they are buying multiple pieces.' },
+            { icon: '🔍', text: 'A customer asks about the difference between silver and white gold.' },
+        ];
+
+        const container = document.getElementById('scenarios-container');
+        scenarios.forEach((s, i) => {
+            const div = document.createElement('div');
+            div.className = 'scenario-card';
+            div.innerHTML = `
+                <div class="flex items-start gap-2.5">
+                    <span class="text-2xl">${s.icon}</span>
+                    <div>
+                        <span class="badge">Scenario ${i+1}</span>
+                        <p class="text-sm text-slate-700 font-medium mt-1">${s.text}</p>
+                        <p class="text-xs text-slate-400 mt-2 italic">💬 Practice your response out loud.</p>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+
+        // ── Setup ──
+        document.getElementById('form-setup').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('input-name').value.trim();
+            if (!name) return;
+            document.getElementById('activity-name-display').textContent = name;
+            document.getElementById('screen-setup').classList.add('hidden-screen');
+            document.getElementById('screen-activity').classList.remove('hidden-screen');
+            renderPostits();
+            updateWrapupVocab();
+        });
+
+        // ── Wrap-up ──
+        document.getElementById('btn-to-wrapup').addEventListener('click', function() {
+            updateWrapupVocab();
+            document.getElementById('screen-activity').classList.add('hidden-screen');
+            document.getElementById('screen-wrapup').classList.remove('hidden-screen');
+        });
+
+        document.getElementById('btn-back-to-activity').addEventListener('click', function() {
+            document.getElementById('screen-wrapup').classList.add('hidden-screen');
+            document.getElementById('screen-activity').classList.remove('hidden-screen');
+        });
+
+        document.getElementById('btn-sign').addEventListener('click', function() {
+            const name = document.getElementById('signature-input').value.trim();
+            if (!name) { alert('Please type your name to sign.'); return; }
+            alert(`✅ Signed successfully by ${name}! Great job today!`);
+        });
+
+        // ── Teacher role (opcional) ──
+        if (new URLSearchParams(window.location.search).get('role') === 'teacher') {
+            document.body.innerHTML = `
+                <div class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
+                    <div class="max-w-md glass-3d rounded-[32px] p-8 text-center shadow-2xl">
+                        <span class="text-5xl block mb-4">👩‍🏫</span>
+                        <h2 class="text-2xl font-bold text-slate-900">Teacher Panel</h2>
+                        <p class="text-sm text-slate-500 mt-2">This is the student view. Use this interface to guide the student through the activities.</p>
+                        <button onclick="window.location.href='.'" class="mt-6 px-6 py-3 bg-amber-600 text-white rounded-2xl font-bold btn-3d">← Back to Student View</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Inicializa
+        if (!document.querySelector('.tab-content.hidden')) {
+            document.querySelectorAll('.tab-content').forEach((el, i) => {
+                if (i !== 0) el.classList.add('hidden');
+            });
+        }
+    </script>
+</body>
+</html>
