@@ -3,19 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SpeakUp · B1+ Presentation Practice</title>
+    <title>B1+ Presentation Practice · 10‑minute talk</title>
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
-    <!-- Firebase v9 compat (CDN) -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js">
-    </script>
 
     <style>
         * {
@@ -28,10 +22,11 @@
             background: #f4f8fe;
             color: #0e1e2f;
             min-height: 100vh;
-            padding: 16px;
+            padding: 20px;
         }
+
         .app-wrapper {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             background: #ffffff;
             border-radius: 32px;
@@ -81,7 +76,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            flex-wrap: wrap;
         }
         .header-actions .badge {
             background: #e8f0f8;
@@ -94,7 +88,7 @@
         .header-actions .badge i {
             margin-right: 6px;
         }
-        .mode-toggle {
+        .teacher-toggle {
             background: #2a6b8f;
             color: #fff;
             border: none;
@@ -108,27 +102,49 @@
             align-items: center;
             gap: 6px;
         }
-        .mode-toggle:hover {
+        .teacher-toggle:hover {
             background: #1d4f6e;
         }
-        .mode-toggle.active {
+        .teacher-toggle.active {
             background: #e67e22;
         }
-        .mode-toggle.student-mode {
-            background: #27ae60;
+
+        /* ---------- TABS ---------- */
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
-        .mode-toggle.student-mode:hover {
-            background: #1e8e4f;
+        .tabs button {
+            background: #e8f0f8;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #1a3450;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+        .tabs button:hover {
+            background: #c5d8eb;
+        }
+        .tabs button.active {
+            background: #2a6b8f;
+            color: #fff;
         }
 
-        /* ---------- VIEWS ---------- */
-        .view {
+        /* ---------- TOPIC CONTENT ---------- */
+        .topic-content {
             display: none;
             animation: fadeUp 0.3s ease-out;
         }
-        .view.active {
+        .topic-content.active {
             display: block;
         }
+
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -140,401 +156,217 @@
             }
         }
 
-        /* ---------- STUDENT VIEW ---------- */
-        .student-view .topic-card {
-            background: #f8fbfe;
-            border-radius: 16px;
-            padding: 22px 26px;
-            border: 1px solid #e3edf5;
-            margin-bottom: 18px;
-        }
-        .student-view .topic-card h2 {
+        .topic-header {
             font-size: 24px;
             font-weight: 700;
             color: #0a1f33;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
-        .student-view .topic-card .reading-text {
+
+        .reading-box {
+            background: #f8fbfe;
+            border-radius: 16px;
+            padding: 18px 22px;
+            border: 1px solid #e3edf5;
+            margin-bottom: 18px;
+        }
+        .reading-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2a6b8f;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .reading-box p {
             font-size: 16px;
-            line-height: 1.7;
+            line-height: 1.6;
             color: #1a3450;
-            margin-bottom: 14px;
         }
-        .student-view .topic-card .audio-player {
-            background: #eef4fa;
-            padding: 12px 16px;
-            border-radius: 12px;
-            margin: 12px 0 16px;
+
+        /* Audio section – simplified */
+        .audio-section {
+            background: #f0f5fb;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+            border-left: 4px solid #2a6b8f;
+        }
+        .audio-section .audio-controls {
             display: flex;
             align-items: center;
             gap: 16px;
             flex-wrap: wrap;
         }
-        .student-view .topic-card .audio-player audio {
-            flex: 1;
-            min-width: 200px;
-            max-width: 400px;
-            height: 40px;
-        }
-        .student-view .topic-card .audio-player .audio-label {
-            font-size: 14px;
+        .audio-section .audio-controls button {
+            background: #2a6b8f;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
             font-weight: 600;
-            color: #2a6b8f;
-        }
-        .student-view .topic-card .question-box {
-            background: #fef6e6;
-            border-radius: 12px;
-            padding: 14px 18px;
-            border-left: 4px solid #e6a83b;
-            margin-top: 10px;
-        }
-        .student-view .topic-card .question-box h4 {
             font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.15s;
+        }
+        .audio-section .audio-controls button:hover {
+            background: #1d4f6e;
+        }
+        .audio-section .audio-controls .audio-info {
+            font-size: 15px;
+            color: #1a3450;
+        }
+
+        /* Question box */
+        .question-box {
+            background: #fef6e6;
+            border-radius: 16px;
+            padding: 16px 20px;
+            border-left: 4px solid #e6a83b;
+            margin-bottom: 18px;
+        }
+        .question-box h4 {
+            font-size: 15px;
             font-weight: 700;
             color: #8a6d1a;
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
-        .student-view .topic-card .question-box p {
+        .question-box p {
             font-size: 17px;
             line-height: 1.5;
             color: #1a3450;
             font-weight: 500;
         }
 
-        /* Timer in student view */
-        .student-timer {
-            background: #ffffff;
+        /* Speaking timer */
+        .speaking-timer {
+            background: #f8fbfe;
             border-radius: 16px;
             padding: 18px 22px;
-            border: 2px solid #2a6b8f;
-            margin: 18px 0;
-            text-align: center;
+            border: 1px solid #e3edf5;
+            margin-bottom: 18px;
         }
-        .student-timer .timer-display {
-            font-size: 48px;
+        .speaking-timer .timer-display {
+            font-size: 42px;
             font-weight: 800;
             font-variant-numeric: tabular-nums;
             color: #0a1f33;
             letter-spacing: 1px;
-            padding: 4px 0;
+            text-align: center;
+            padding: 8px 0;
         }
-        .student-timer .timer-status {
-            font-size: 15px;
-            color: #4d6a86;
-            font-weight: 500;
-        }
-        .student-timer .timer-status.running {
-            color: #27ae60;
-        }
-        .student-timer .timer-status.paused {
-            color: #e67e22;
-        }
-        .student-timer .timer-status.ended {
-            color: #c0392b;
-        }
-
-        /* Student feedback */
-        .student-feedback {
-            background: #fff9e6;
-            border-radius: 16px;
-            padding: 16px 20px;
-            border: 1px solid #f5e3b5;
-            margin-top: 14px;
-            min-height: 60px;
-        }
-        .student-feedback h4 {
-            font-size: 15px;
-            font-weight: 700;
-            color: #8a6d1a;
+        .speaking-timer .timer-controls {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .student-feedback .feedback-content {
-            white-space: pre-wrap;
-            font-size: 15px;
-            line-height: 1.6;
-            color: #1a3450;
-        }
-        .student-feedback .feedback-content:empty::before {
-            content: "Waiting for teacher's feedback…";
-            color: #8a7a5a;
-            font-style: italic;
-        }
-
-        /* ---------- TEACHER VIEW ---------- */
-        .teacher-view .panel-grid {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 24px;
-            margin-bottom: 20px;
-        }
-        @media (max-width: 820px) {
-            .teacher-view .panel-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Topic list */
-        .topic-list-panel {
-            background: #f8fbfe;
-            border-radius: 16px;
-            padding: 16px 18px;
-            border: 1px solid #e3edf5;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        .topic-list-panel h3 {
-            font-size: 15px;
-            font-weight: 700;
-            color: #2a6b8f;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .topic-list-panel h3 button {
-            background: #2a6b8f;
-            color: #fff;
-            border: none;
-            padding: 4px 14px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .topic-list-panel h3 button:hover {
-            background: #1d4f6e;
-        }
-        .topic-list-item {
-            padding: 10px 14px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.15s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 4px;
-            font-weight: 500;
-            font-size: 14px;
-            color: #1a3450;
-            border: 1px solid transparent;
-        }
-        .topic-list-item:hover {
-            background: #e8f0f8;
-        }
-        .topic-list-item.active {
-            background: #d4e4f0;
-            border-color: #2a6b8f;
-            font-weight: 600;
-        }
-        .topic-list-item .delete-topic {
-            background: none;
-            border: none;
-            color: #a13d3d;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 0 4px;
-            opacity: 0.5;
-            transition: 0.15s;
-        }
-        .topic-list-item .delete-topic:hover {
-            opacity: 1;
-        }
-
-        /* Topic editor */
-        .topic-editor {
-            background: #f8fbfe;
-            border-radius: 16px;
-            padding: 18px 22px;
-            border: 1px solid #e3edf5;
-        }
-        .topic-editor .form-group {
-            margin-bottom: 14px;
-        }
-        .topic-editor .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #2a6b8f;
-            margin-bottom: 4px;
-        }
-        .topic-editor .form-group input,
-        .topic-editor .form-group textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid #dce6ef;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            transition: 0.15s;
-            background: #ffffff;
-        }
-        .topic-editor .form-group input:focus,
-        .topic-editor .form-group textarea:focus {
-            outline: none;
-            border-color: #2a6b8f;
-            box-shadow: 0 0 0 3px rgba(42, 107, 143, 0.12);
-        }
-        .topic-editor .form-group textarea {
-            resize: vertical;
-            min-height: 70px;
-        }
-        .topic-editor .form-group .row {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .topic-editor .form-group .row label {
-            margin-bottom: 0;
-            white-space: nowrap;
-        }
-        .topic-editor .form-group .row input[type="number"] {
-            width: 80px;
-        }
-        .topic-editor .editor-actions {
-            display: flex;
+            justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
-            margin-top: 6px;
+            margin-top: 8px;
         }
-        .topic-editor .editor-actions button {
-            padding: 10px 24px;
-            border-radius: 40px;
-            border: none;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.15s;
-            font-family: 'Inter', sans-serif;
-        }
-        .topic-editor .editor-actions .btn-save {
-            background: #2a6b8f;
-            color: #fff;
-        }
-        .topic-editor .editor-actions .btn-save:hover {
-            background: #1d4f6e;
-        }
-        .topic-editor .editor-actions .btn-delete {
-            background: #fde7e7;
-            color: #a13d3d;
-        }
-        .topic-editor .editor-actions .btn-delete:hover {
-            background: #fcd0d0;
-        }
-        .topic-editor .editor-actions .btn-cancel {
+        .speaking-timer .timer-controls button {
             background: #e8f0f8;
-            color: #1a3450;
-        }
-        .topic-editor .editor-actions .btn-cancel:hover {
-            background: #c5d8eb;
-        }
-
-        /* Teacher timer controls */
-        .teacher-timer-section {
-            background: #f0f5fb;
-            border-radius: 16px;
-            padding: 16px 22px;
-            border: 1px solid #e3edf5;
-            margin: 18px 0 14px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 16px 24px;
-        }
-        .teacher-timer-section .timer-display-large {
-            font-size: 40px;
-            font-weight: 800;
-            font-variant-numeric: tabular-nums;
-            color: #0a1f33;
-            letter-spacing: 1px;
-            min-width: 120px;
-        }
-        .teacher-timer-section .timer-controls {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .teacher-timer-section .timer-controls button {
-            padding: 8px 20px;
-            border-radius: 40px;
             border: none;
+            padding: 8px 24px;
+            border-radius: 40px;
             font-weight: 600;
             font-size: 14px;
+            color: #1a3450;
             cursor: pointer;
-            transition: 0.15s;
-            font-family: 'Inter', sans-serif;
             display: flex;
             align-items: center;
             gap: 6px;
+            transition: 0.15s;
+            font-family: 'Inter', sans-serif;
         }
-        .teacher-timer-section .timer-controls .btn-start {
-            background: #27ae60;
-            color: #fff;
-        }
-        .teacher-timer-section .timer-controls .btn-start:hover {
-            background: #1e8e4f;
-        }
-        .teacher-timer-section .timer-controls .btn-pause {
-            background: #e67e22;
-            color: #fff;
-        }
-        .teacher-timer-section .timer-controls .btn-pause:hover {
-            background: #c96f1e;
-        }
-        .teacher-timer-section .timer-controls .btn-reset {
-            background: #e8f0f8;
-            color: #1a3450;
-        }
-        .teacher-timer-section .timer-controls .btn-reset:hover {
+        .speaking-timer .timer-controls button:hover {
             background: #c5d8eb;
         }
-        .teacher-timer-section .timer-status-label {
+        .speaking-timer .timer-controls button.primary {
+            background: #2a6b8f;
+            color: #fff;
+        }
+        .speaking-timer .timer-controls button.primary:hover {
+            background: #1d4f6e;
+        }
+        .speaking-timer .timer-controls button.danger {
+            background: #fde7e7;
+            color: #a13d3d;
+        }
+        .speaking-timer .timer-controls button.danger:hover {
+            background: #fcd0d0;
+        }
+        .speaking-timer .timer-status {
+            text-align: center;
             font-size: 14px;
             color: #4d6a86;
-            font-weight: 500;
+            margin-top: 6px;
         }
-        .teacher-timer-section .timer-status-label.running {
-            color: #27ae60;
+        /* Hide timer controls by default (teacher mode only) */
+        .timer-controls-wrapper {
+            display: none;
         }
-        .teacher-timer-section .timer-status-label.paused {
-            color: #e67e22;
-        }
-        .teacher-timer-section .timer-status-label.ended {
-            color: #c0392b;
+        .timer-controls-wrapper.show {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
         }
 
-        /* Teacher feedback */
-        .teacher-feedback-section {
+        /* Teacher feedback (sticky note) */
+        .teacher-feedback {
+            margin-top: 10px;
+            padding: 16px 18px;
             background: #fff9e6;
             border-radius: 16px;
-            padding: 16px 20px;
             border: 1px solid #f5e3b5;
-            margin: 14px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            display: none;
         }
-        .teacher-feedback-section h4 {
+        .teacher-feedback.show {
+            display: block;
+        }
+        .teacher-feedback h4 {
             font-size: 15px;
             font-weight: 700;
             color: #8a6d1a;
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
-        .teacher-feedback-section .feedback-input-row {
+        .teacher-feedback .sticky-note {
+            background: #fff6d6;
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid #e6b34b;
+            margin-bottom: 12px;
+            min-height: 60px;
+            white-space: pre-wrap;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #1a3450;
+        }
+        .teacher-feedback .sticky-note:empty::before {
+            content: "No feedback yet. Type below and click 'Add note'.";
+            color: #8a7a5a;
+            font-style: italic;
+        }
+        .teacher-feedback .input-group {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
-        .teacher-feedback-section .feedback-input-row textarea {
+        .teacher-feedback .input-group textarea {
             flex: 1;
-            min-width: 180px;
+            min-width: 200px;
             border-radius: 12px;
             border: 1px solid #e3edf5;
             padding: 10px 14px;
@@ -544,54 +376,32 @@
             min-height: 60px;
             background: #ffffff;
         }
-        .teacher-feedback-section .feedback-input-row textarea:focus {
+        .teacher-feedback .input-group textarea:focus {
             outline: none;
             border-color: #2a6b8f;
         }
-        .teacher-feedback-section .feedback-input-row button {
+        .teacher-feedback .input-group button {
+            background: #2a6b8f;
+            color: #fff;
+            border: none;
             padding: 10px 20px;
             border-radius: 40px;
-            border: none;
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
             transition: 0.15s;
-            font-family: 'Inter', sans-serif;
             height: fit-content;
             align-self: flex-end;
         }
-        .teacher-feedback-section .feedback-input-row .btn-add {
-            background: #2a6b8f;
-            color: #fff;
-        }
-        .teacher-feedback-section .feedback-input-row .btn-add:hover {
+        .teacher-feedback .input-group button:hover {
             background: #1d4f6e;
         }
-        .teacher-feedback-section .feedback-input-row .btn-clear-fb {
+        .teacher-feedback .input-group button.secondary {
             background: #e8f0f8;
             color: #1a3450;
         }
-        .teacher-feedback-section .feedback-input-row .btn-clear-fb:hover {
+        .teacher-feedback .input-group button.secondary:hover {
             background: #c5d8eb;
-        }
-
-        /* Sticky note preview in teacher view */
-        .teacher-feedback-section .sticky-preview {
-            background: #fff6d6;
-            padding: 14px 18px;
-            border-radius: 12px;
-            border-left: 4px solid #e6b34b;
-            margin-top: 12px;
-            min-height: 40px;
-            white-space: pre-wrap;
-            font-size: 15px;
-            line-height: 1.6;
-            color: #1a3450;
-        }
-        .teacher-feedback-section .sticky-preview:empty::before {
-            content: "No feedback yet. Add a note above.";
-            color: #8a7a5a;
-            font-style: italic;
         }
 
         /* Print button */
@@ -609,6 +419,7 @@
             gap: 8px;
             transition: 0.15s;
             font-family: 'Inter', sans-serif;
+            margin-top: 10px;
         }
         .print-btn:hover {
             background: #c5d8eb;
@@ -624,28 +435,6 @@
             gap: 12px;
         }
 
-        /* ---------- CONNECTION STATUS ---------- */
-        .conn-status {
-            font-size: 13px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #4d6a86;
-        }
-        .conn-status .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .conn-status .dot.online {
-            background: #27ae60;
-        }
-        .conn-status .dot.offline {
-            background: #c0392b;
-        }
-
         /* ---------- PRINT STYLES ---------- */
         @media print {
             body {
@@ -657,26 +446,26 @@
                 padding: 20px;
                 border-radius: 0;
             }
-            .header-actions,
-            .mode-toggle,
-            .print-btn,
-            .teacher-view .topic-list-panel,
-            .teacher-view .topic-editor .editor-actions,
-            .teacher-view .teacher-timer-section .timer-controls,
-            .teacher-view .teacher-feedback-section .feedback-input-row,
-            .teacher-view .topic-editor .form-group input,
-            .teacher-view .topic-editor .form-group textarea,
-            .teacher-timer-section .timer-controls {
+            .tabs, .header-actions, .teacher-toggle, .print-btn, .timer-controls-wrapper,
+            .audio-section .audio-controls button, .teacher-feedback .input-group {
                 display: none !important;
             }
-            .student-view {
+            .teacher-feedback {
                 display: block !important;
+                border: 1px solid #ccc;
+                box-shadow: none;
+                background: #fff9e6;
             }
-            .teacher-view {
-                display: none !important;
+            .teacher-feedback .sticky-note {
+                background: #fff6d6;
+                border: 1px solid #e6b34b;
             }
-            .student-feedback .feedback-content {
-                white-space: pre-wrap;
+            .topic-content {
+                display: block !important;
+                page-break-before: always;
+            }
+            .topic-content:first-of-type {
+                page-break-before: avoid;
             }
             .app-footer {
                 display: none;
@@ -684,11 +473,8 @@
             .brand .sub {
                 display: none;
             }
-            .topic-card {
-                page-break-inside: avoid;
-            }
-            .student-timer {
-                border-color: #2a6b8f;
+            .timer-controls-wrapper {
+                display: none !important;
             }
         }
 
@@ -696,1031 +482,399 @@
             .app-wrapper {
                 padding: 16px;
             }
-            .student-timer .timer-display {
-                font-size: 36px;
+            .speaking-timer .timer-display {
+                font-size: 32px;
             }
-            .teacher-timer-section .timer-display-large {
-                font-size: 30px;
+            .tabs button {
+                padding: 8px 16px;
+                font-size: 13px;
             }
-            .teacher-view .panel-grid {
-                gap: 16px;
-            }
-            .topic-editor .form-group .row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .topic-editor .form-group .row input[type="number"] {
-                width: 100%;
+            .topic-header {
+                font-size: 20px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="app-wrapper" id="app">
+<div class="app-wrapper">
 
-        <!-- ====== HEADER ====== -->
-        <header class="app-header">
-            <div class="brand">
-                <i class="fas fa-comment-dots"></i>
-                <div>
-                    <h1>Speak<span>Up</span></h1>
-                    <span class="sub"><i class="fas fa-level-up-alt"></i> B1+ · Real‑time talks</span>
-                </div>
+    <!-- ====== HEADER ====== -->
+    <header class="app-header">
+        <div class="brand">
+            <i class="fas fa-comment-dots"></i>
+            <div>
+                <h1>Speak<span>Up</span></h1>
+                <span class="sub"><i class="fas fa-level-up-alt"></i> B1+ · 10‑minute talks</span>
             </div>
-            <div class="header-actions">
-                <span class="badge"><i class="fas fa-sync-alt"></i> <span id="syncLabel">Live</span></span>
-                <span class="conn-status">
-                    <span class="dot online" id="connDot"></span>
-                    <span id="connText">Connected</span>
-                </span>
-                <button id="modeToggleBtn" class="mode-toggle"><i class="fas fa-user-graduate"></i> Student mode</button>
-            </div>
-        </header>
-
-        <!-- ====== STUDENT VIEW ====== -->
-        <div class="view student-view active" id="studentView">
-            <div class="topic-card" id="studentTopicCard">
-                <h2 id="studentTitle">Loading topic…</h2>
-                <div class="reading-text" id="studentText">Please wait for the teacher to select a topic.</div>
-                <div class="audio-player" id="studentAudioContainer">
-                    <span class="audio-label"><i class="fas fa-headphones"></i> Audio</span>
-                    <audio controls id="studentAudio" style="flex:1;min-width:180px;max-width:400px;height:40px;">
-                        <source src="" type="audio/mpeg" />
-                        Your browser does not support the audio element.
-                    </audio>
-                </div>
-                <div class="question-box">
-                    <h4><i class="fas fa-comment-dots"></i> Your speaking question</h4>
-                    <p id="studentQuestion">—</p>
-                </div>
-            </div>
-
-            <div class="student-timer">
-                <div class="timer-display" id="studentTimerDisplay">10:00</div>
-                <div class="timer-status" id="studentTimerStatus">⏳ Waiting for teacher to start</div>
-            </div>
-
-            <div class="student-feedback">
-                <h4><i class="fas fa-sticky-note"></i> Teacher's feedback & new words</h4>
-                <div class="feedback-content" id="studentFeedbackContent"></div>
-            </div>
-
-            <button class="print-btn" id="studentPrintBtn"><i class="fas fa-print"></i> Print this page</button>
         </div>
-
-        <!-- ====== TEACHER VIEW ====== -->
-        <div class="view teacher-view" id="teacherView">
-
-            <!-- Panel grid: topic list + editor -->
-            <div class="panel-grid">
-                <!-- Topic list -->
-                <div class="topic-list-panel">
-                    <h3>
-                        <span><i class="fas fa-list-ul"></i> Topics</span>
-                        <button id="addTopicBtn"><i class="fas fa-plus"></i> Add</button>
-                    </h3>
-                    <div id="topicListContainer">
-                        <!-- Injected by JS -->
-                        <div style="color:#8a9aaa;font-size:14px;padding:12px 0;">No topics yet. Click "Add" to create one.</div>
-                    </div>
-                </div>
-
-                <!-- Topic editor -->
-                <div class="topic-editor" id="topicEditor">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:6px;">
-                        <h3 style="font-size:16px;font-weight:700;color:#0a1f33;" id="editorTitle">Edit topic</h3>
-                        <span style="font-size:13px;color:#4d6a86;" id="editorTopicId"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" id="editTitle" placeholder="Topic title…" />
-                    </div>
-                    <div class="form-group">
-                        <label>Reading text</label>
-                        <textarea id="editText" rows="3" placeholder="Paste the reading text here…"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Audio link (URL)</label>
-                        <input type="text" id="editAudioLink" placeholder="https://example.com/audio.mp3" />
-                    </div>
-                    <div class="form-group">
-                        <label>Your speaking question</label>
-                        <textarea id="editQuestion" rows="2" placeholder="Paste the speaking question here…"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <label>Timer minutes</label>
-                            <input type="number" id="editTimerMinutes" value="10" min="1" max="60" />
-                            <span style="font-size:14px;color:#4d6a86;">(1–60 min)</span>
-                        </div>
-                    </div>
-                    <div class="editor-actions">
-                        <button class="btn-save" id="saveTopicBtn"><i class="fas fa-save"></i> Save topic</button>
-                        <button class="btn-delete" id="deleteTopicBtn"><i class="fas fa-trash"></i> Delete</button>
-                        <button class="btn-cancel" id="cancelEditBtn"><i class="fas fa-times"></i> Cancel</button>
-                    </div>
-                    <div style="margin-top:10px;font-size:13px;color:#4d6a86;" id="editorStatus"></div>
-                </div>
-            </div>
-
-            <!-- Timer controls (teacher) -->
-            <div class="teacher-timer-section">
-                <div class="timer-display-large" id="teacherTimerDisplay">10:00</div>
-                <div class="timer-controls">
-                    <button class="btn-start" id="timerStartBtn"><i class="fas fa-play"></i> Start</button>
-                    <button class="btn-pause" id="timerPauseBtn"><i class="fas fa-pause"></i> Pause</button>
-                    <button class="btn-reset" id="timerResetBtn"><i class="fas fa-undo-alt"></i> Reset</button>
-                </div>
-                <span class="timer-status-label" id="teacherTimerStatus">⏳ Ready</span>
-            </div>
-
-            <!-- Teacher feedback -->
-            <div class="teacher-feedback-section">
-                <h4><i class="fas fa-sticky-note"></i> Teacher's feedback & new words</h4>
-                <div class="feedback-input-row">
-                    <textarea id="teacherFeedbackInput" placeholder="Type feedback or new vocabulary here…" rows="2"></textarea>
-                    <button class="btn-add" id="teacherFeedbackAddBtn"><i class="fas fa-plus-circle"></i> Add note</button>
-                    <button class="btn-clear-fb" id="teacherFeedbackClearBtn"><i class="fas fa-trash-alt"></i> Clear</button>
-                </div>
-                <div class="sticky-preview" id="teacherFeedbackPreview"></div>
-            </div>
-
-            <button class="print-btn" id="teacherPrintBtn"><i class="fas fa-print"></i> Print sticky notes</button>
+        <div class="header-actions">
+            <span class="badge"><i class="fas fa-headphones"></i> Audio + Text</span>
+            <button id="teacherToggle" class="teacher-toggle"><i class="fas fa-chalkboard-teacher"></i> Teacher mode</button>
         </div>
+    </header>
 
-        <!-- ====== FOOTER ====== -->
-        <div class="app-footer">
-            <span style="font-size:14px;color:#4d6a86;"><i class="fas fa-info-circle"></i> Teacher mode: full control · Student mode: view only</span>
-            <span style="font-size:13px;color:#8a9aaa;">v2.0 · Firebase sync</span>
-        </div>
-
+    <!-- ====== TABS ====== -->
+    <div class="tabs" id="topicTabs">
+        <button class="active" data-topic="0">Topic 1</button>
+        <button data-topic="1">Topic 2</button>
+        <button data-topic="2">Topic 3</button>
     </div>
 
-    <script>
-        (function() {
-            'use strict';
+    <!-- ====== TOPIC CONTENT ====== -->
+    <div id="topicContainer">
+        <!-- Injected by JS -->
+    </div>
 
-            // ---------- FIREBASE ----------
-            const FIREBASE_CONFIG = {
-                databaseURL: 'https://english-meetings-f08e4-default-rtdb.firebaseio.com/'
-            };
+    <!-- ====== FOOTER ====== -->
+    <div class="app-footer">
+        <button class="print-btn" id="printNotesBtn"><i class="fas fa-print"></i> Print sticky notes</button>
+        <span style="font-size:14px; color:#4d6a86;"><i class="fas fa-info-circle"></i> Teacher mode gives you timer controls and feedback</span>
+    </div>
 
-            let firebaseApp, db;
+</div>
 
-            try {
-                firebaseApp = firebase.initializeApp(FIREBASE_CONFIG);
-                db = firebase.database();
-                console.log('🔥 Firebase initialized');
-            } catch (e) {
-                console.warn('Firebase init error:', e);
-                // Fallback: use a local store (no sync)
-                db = null;
-            }
+<script>
+    (function() {
+        'use strict';
 
-            // ---------- STATE ----------
-            const state = {
-                topics: {}, // { topicId: { title, text, audioLink, question, timerMinutes } }
-                currentTopicId: null,
-                timerSeconds: 600,
-                timerInitialSeconds: 600,
-                timerRunning: false,
-                timerPaused: false,
-                feedback: '',
-                isTeacher: false, // true = teacher mode, false = student mode
-                localTimerInterval: null,
-                // For editing
-                editingId: null,
-                isNewTopic: false,
-            };
+        // ---------- DATA ----------
+        const topics = [{
+            title: "The Benefits of Remote Work",
+            text: "Remote work has become increasingly popular. It offers flexibility, saves commuting time, and can improve work-life balance. However, it also requires self-discipline and good communication skills. Many companies have adopted hybrid models, where employees work both from home and the office. This shift has changed how we collaborate and manage teams.",
+            question: "Do you think remote work is better for companies and employees? Why or why not? Use examples from the text and the audio to support your opinion."
+        }, {
+            title: "The Importance of Healthy Eating",
+            text: "Eating a balanced diet is essential for good health. It provides energy, supports the immune system, and reduces the risk of chronic diseases. It's important to include fruits, vegetables, whole grains, and lean proteins in our meals. However, busy lifestyles often lead to poor food choices. Making small changes, like cooking at home more often, can have a big impact.",
+            question: "How can we encourage people to eat healthier in today's fast-paced world? Use ideas from the text and the audio in your answer."
+        }, {
+            title: "The Role of Technology in Education",
+            text: "Technology has transformed education. Online learning platforms, interactive tools, and digital resources make learning more accessible and engaging. However, it also presents challenges such as the digital divide and excessive screen time. Teachers are now using apps and videos to explain complex topics. The future of education will likely blend traditional and digital methods.",
+            question: "Is technology a help or a distraction in education? Give your opinion and use examples from the text and the audio to justify your view."
+        }];
 
-            // ---------- DOM REFS ----------
-            const $ = (id) => document.getElementById(id);
-            const studentView = $('studentView');
-            const teacherView = $('teacherView');
-            const modeToggleBtn = $('modeToggleBtn');
-            const connDot = $('connDot');
-            const connText = $('connText');
-            const syncLabel = $('syncLabel');
+        // State per topic
+        const topicState = topics.map(() => ({
+            speechTimer: null,
+            speechSeconds: 600, // 10 minutes
+            isSpeechRunning: false,
+            isSpeechPaused: false,
+            feedback: '',
+            audioPlayed: false,
+        }));
 
-            // Student view
-            const studentTitle = $('studentTitle');
-            const studentText = $('studentText');
-            const studentAudio = $('studentAudio');
-            const studentQuestion = $('studentQuestion');
-            const studentTimerDisplay = $('studentTimerDisplay');
-            const studentTimerStatus = $('studentTimerStatus');
-            const studentFeedbackContent = $('studentFeedbackContent');
-            const studentPrintBtn = $('studentPrintBtn');
+        // ---------- DOM REFS ----------
+        const topicContainer = document.getElementById('topicContainer');
+        const topicTabs = document.getElementById('topicTabs');
+        const teacherToggle = document.getElementById('teacherToggle');
+        const printBtn = document.getElementById('printNotesBtn');
 
-            // Teacher view
-            const topicListContainer = $('topicListContainer');
-            const editTitle = $('editTitle');
-            const editText = $('editText');
-            const editAudioLink = $('editAudioLink');
-            const editQuestion = $('editQuestion');
-            const editTimerMinutes = $('editTimerMinutes');
-            const editorTitle = $('editorTitle');
-            const editorTopicId = $('editorTopicId');
-            const editorStatus = $('editorStatus');
-            const saveTopicBtn = $('saveTopicBtn');
-            const deleteTopicBtn = $('deleteTopicBtn');
-            const cancelEditBtn = $('cancelEditBtn');
-            const addTopicBtn = $('addTopicBtn');
+        let teacherMode = false;
+        const TEACHER_CODE = "teacher 123@";
 
-            const teacherTimerDisplay = $('teacherTimerDisplay');
-            const teacherTimerStatus = $('teacherTimerStatus');
-            const timerStartBtn = $('timerStartBtn');
-            const timerPauseBtn = $('timerPauseBtn');
-            const timerResetBtn = $('timerResetBtn');
+        // ---------- RENDER TOPICS ----------
+        function renderTopics() {
+            topicContainer.innerHTML = '';
+            topics.forEach((topic, idx) => {
+                const div = document.createElement('div');
+                div.className = `topic-content ${idx === 0 ? 'active' : ''}`;
+                div.dataset.topic = idx;
 
-            const teacherFeedbackInput = $('teacherFeedbackInput');
-            const teacherFeedbackAddBtn = $('teacherFeedbackAddBtn');
-            const teacherFeedbackClearBtn = $('teacherFeedbackClearBtn');
-            const teacherFeedbackPreview = $('teacherFeedbackPreview');
-            const teacherPrintBtn = $('teacherPrintBtn');
+                div.innerHTML = `
+                    <div class="topic-header">${topic.title}</div>
 
-            // ---------- HELPERS ----------
-            function formatTime(secs) {
-                const m = String(Math.floor(secs / 60)).padStart(2, '0');
-                const s = String(secs % 60).padStart(2, '0');
-                return `${m}:${s}`;
-            }
+                    <!-- Reading text -->
+                    <div class="reading-box">
+                        <h3><i class="fas fa-book-open"></i> Reading text</h3>
+                        <p>${topic.text}</p>
+                    </div>
 
-            function updateStudentTimer() {
-                studentTimerDisplay.textContent = formatTime(state.timerSeconds);
-                const statusEl = studentTimerStatus;
-                if (state.timerSeconds <= 0) {
-                    statusEl.textContent = '⏰ Time is up!';
-                    statusEl.className = 'timer-status ended';
-                } else if (state.timerRunning && !state.timerPaused) {
-                    statusEl.textContent = '🔴 Speaking…';
-                    statusEl.className = 'timer-status running';
-                } else if (state.timerPaused) {
-                    statusEl.textContent = '⏸️ Paused';
-                    statusEl.className = 'timer-status paused';
-                } else {
-                    statusEl.textContent = '⏳ Waiting for teacher to start';
-                    statusEl.className = 'timer-status';
-                }
-            }
-
-            function updateTeacherTimer() {
-                teacherTimerDisplay.textContent = formatTime(state.timerSeconds);
-                const statusEl = teacherTimerStatus;
-                if (state.timerSeconds <= 0) {
-                    statusEl.textContent = '⏰ Time is up!';
-                    statusEl.className = 'timer-status-label ended';
-                } else if (state.timerRunning && !state.timerPaused) {
-                    statusEl.textContent = '🔴 Running';
-                    statusEl.className = 'timer-status-label running';
-                } else if (state.timerPaused) {
-                    statusEl.textContent = '⏸️ Paused';
-                    statusEl.className = 'timer-status-label paused';
-                } else {
-                    statusEl.textContent = '⏳ Ready';
-                    statusEl.className = 'timer-status-label';
-                }
-            }
-
-            function updateAllTimers() {
-                updateStudentTimer();
-                updateTeacherTimer();
-            }
-
-            function updateStudentContent() {
-                const topicId = state.currentTopicId;
-                if (!topicId || !state.topics[topicId]) {
-                    studentTitle.textContent = 'No topic selected';
-                    studentText.textContent = 'Please wait for the teacher to select a topic.';
-                    studentQuestion.textContent = '—';
-                    studentAudio.querySelector('source').src = '';
-                    studentAudio.load();
-                    return;
-                }
-                const t = state.topics[topicId];
-                studentTitle.textContent = t.title || 'Untitled';
-                studentText.textContent = t.text || '';
-                studentQuestion.textContent = t.question || '';
-                const src = t.audioLink || '';
-                const source = studentAudio.querySelector('source');
-                if (source.src !== src) {
-                    source.src = src;
-                    studentAudio.load();
-                }
-                // Show/hide audio player
-                const container = studentAudio.closest('.audio-player');
-                if (src && src.trim() !== '') {
-                    container.style.display = 'flex';
-                } else {
-                    container.style.display = 'none';
-                }
-            }
-
-            function updateStudentFeedback() {
-                studentFeedbackContent.textContent = state.feedback || '';
-            }
-
-            function updateTeacherFeedbackPreview() {
-                teacherFeedbackPreview.textContent = state.feedback || '';
-            }
-
-            function renderTopicList() {
-                const ids = Object.keys(state.topics);
-                if (ids.length === 0) {
-                    topicListContainer.innerHTML =
-                        `<div style="color:#8a9aaa;font-size:14px;padding:12px 0;">No topics yet. Click "Add" to create one.</div>`;
-                    return;
-                }
-                let html = '';
-                ids.forEach(id => {
-                    const t = state.topics[id];
-                    const active = id === state.currentTopicId ? 'active' : '';
-                    const label = t.title || id.slice(0, 20) || 'Untitled';
-                    html += `
-                        <div class="topic-list-item ${active}" data-topic-id="${id}">
-                            <span>${label}</span>
-                            <button class="delete-topic" data-topic-id="${id}" title="Delete topic"><i class="fas fa-times"></i></button>
+                    <!-- Audio section (simplified) -->
+                    <div class="audio-section">
+                        <div class="audio-controls">
+                            <button class="audio-play-btn" data-topic="${idx}"><i class="fas fa-play"></i> Listen to the audio</button>
+                            <span class="audio-info"><i class="fas fa-info-circle"></i> Teacher will play the audio</span>
                         </div>
-                    `;
-                });
-                topicListContainer.innerHTML = html;
+                    </div>
 
-                // Click to select
-                topicListContainer.querySelectorAll('.topic-list-item').forEach(el => {
-                    el.addEventListener('click', function(e) {
-                        if (e.target.closest('.delete-topic')) return;
-                        const id = this.dataset.topicId;
-                        selectTopic(id);
-                    });
-                });
+                    <!-- Discussion question -->
+                    <div class="question-box">
+                        <h4><i class="fas fa-comment-dots"></i> Your speaking question</h4>
+                        <p>${topic.question}</p>
+                    </div>
 
-                // Delete buttons
-                topicListContainer.querySelectorAll('.delete-topic').forEach(el => {
-                    el.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const id = this.dataset.topicId;
-                        if (confirm(`Delete topic "${state.topics[id]?.title || id}"?`)) {
-                            deleteTopic(id);
-                        }
-                    });
-                });
-            }
+                    <!-- Speaking timer -->
+                    <div class="speaking-timer">
+                        <div class="timer-display" id="speechDisplay_${idx}">10:00</div>
+                        <div class="timer-status" id="speechStatus_${idx}">Ready to speak</div>
+                        <!-- Timer controls wrapped for teacher only -->
+                        <div class="timer-controls-wrapper" id="timerControls_${idx}">
+                            <button class="primary speech-start" data-topic="${idx}"><i class="fas fa-play"></i> Start</button>
+                            <button class="speech-pause" data-topic="${idx}"><i class="fas fa-pause"></i> Pause</button>
+                            <button class="danger speech-reset" data-topic="${idx}"><i class="fas fa-undo-alt"></i> Reset</button>
+                        </div>
+                    </div>
 
-            function selectTopic(id) {
-                if (!state.topics[id]) return;
-                state.currentTopicId = id;
-                // Save to Firebase
-                if (db) {
-                    db.ref('currentTopicId').set(id);
-                }
-                // Reset timer to this topic's minutes
-                const mins = state.topics[id].timerMinutes || 10;
-                const initialSecs = mins * 60;
-                // Only reset if timer is not running
-                if (!state.timerRunning) {
-                    state.timerSeconds = initialSecs;
-                    state.timerInitialSeconds = initialSecs;
-                    state.timerPaused = false;
-                    if (db) {
-                        db.ref('timer/seconds').set(initialSecs);
-                        db.ref('timer/initialSeconds').set(initialSecs);
-                        db.ref('timer/isRunning').set(false);
-                        db.ref('timer/isPaused').set(false);
-                    }
-                }
-                // Update UI
-                updateStudentContent();
-                updateAllTimers();
-                renderTopicList();
-                loadTopicIntoEditor(id);
-                // Update student view
-            }
-
-            // ---------- TOPIC CRUD ----------
-            function createNewTopic() {
-                const id = 'topic_' + Date.now();
-                const newTopic = {
-                    title: 'New topic',
-                    text: 'Enter your reading text here…',
-                    audioLink: '',
-                    question: 'Enter your speaking question here…',
-                    timerMinutes: 10,
-                };
-                state.topics[id] = newTopic;
-                if (db) {
-                    db.ref('topics/' + id).set(newTopic);
-                }
-                state.currentTopicId = id;
-                if (db) {
-                    db.ref('currentTopicId').set(id);
-                }
-                // Reset timer
-                const initialSecs = 10 * 60;
-                state.timerSeconds = initialSecs;
-                state.timerInitialSeconds = initialSecs;
-                state.timerRunning = false;
-                state.timerPaused = false;
-                if (db) {
-                    db.ref('timer/seconds').set(initialSecs);
-                    db.ref('timer/initialSeconds').set(initialSecs);
-                    db.ref('timer/isRunning').set(false);
-                    db.ref('timer/isPaused').set(false);
-                }
-                renderTopicList();
-                updateStudentContent();
-                updateAllTimers();
-                loadTopicIntoEditor(id);
-                editorStatus.textContent = '✨ New topic created. Edit and save.';
-            }
-
-            function deleteTopic(id) {
-                if (!state.topics[id]) return;
-                delete state.topics[id];
-                if (db) {
-                    db.ref('topics/' + id).remove();
-                }
-                const ids = Object.keys(state.topics);
-                if (state.currentTopicId === id) {
-                    state.currentTopicId = ids.length > 0 ? ids[0] : null;
-                    if (db) {
-                        db.ref('currentTopicId').set(state.currentTopicId);
-                    }
-                }
-                if (state.editingId === id) {
-                    clearEditor();
-                }
-                renderTopicList();
-                updateStudentContent();
-                if (state.currentTopicId) {
-                    loadTopicIntoEditor(state.currentTopicId);
-                } else {
-                    clearEditor();
-                }
-                editorStatus.textContent = '🗑️ Topic deleted.';
-            }
-
-            function saveTopic() {
-                const id = state.editingId;
-                if (!id) {
-                    editorStatus.textContent = '⚠️ No topic selected to save.';
-                    return;
-                }
-                const title = editTitle.value.trim() || 'Untitled';
-                const text = editText.value.trim();
-                const audioLink = editAudioLink.value.trim();
-                const question = editQuestion.value.trim();
-                const timerMinutes = parseInt(editTimerMinutes.value) || 10;
-
-                const updated = { title, text, audioLink, question, timerMinutes };
-                state.topics[id] = updated;
-                if (db) {
-                    db.ref('topics/' + id).set(updated);
-                }
-
-                // If this is the current topic, update timer initial seconds if not running
-                if (state.currentTopicId === id && !state.timerRunning) {
-                    const initialSecs = timerMinutes * 60;
-                    state.timerSeconds = initialSecs;
-                    state.timerInitialSeconds = initialSecs;
-                    if (db) {
-                        db.ref('timer/seconds').set(initialSecs);
-                        db.ref('timer/initialSeconds').set(initialSecs);
-                    }
-                    updateAllTimers();
-                }
-
-                renderTopicList();
-                updateStudentContent();
-                editorStatus.textContent = '✅ Topic saved!';
-                loadTopicIntoEditor(id);
-            }
-
-            function loadTopicIntoEditor(id) {
-                const t = state.topics[id];
-                if (!t) {
-                    clearEditor();
-                    return;
-                }
-                state.editingId = id;
-                state.isNewTopic = false;
-                editTitle.value = t.title || '';
-                editText.value = t.text || '';
-                editAudioLink.value = t.audioLink || '';
-                editQuestion.value = t.question || '';
-                editTimerMinutes.value = t.timerMinutes || 10;
-                editorTitle.textContent = '✏️ Edit topic';
-                editorTopicId.textContent = 'ID: ' + id;
-                deleteTopicBtn.style.display = 'inline-flex';
-                editorStatus.textContent = '';
-            }
-
-            function clearEditor() {
-                state.editingId = null;
-                state.isNewTopic = false;
-                editTitle.value = '';
-                editText.value = '';
-                editAudioLink.value = '';
-                editQuestion.value = '';
-                editTimerMinutes.value = '10';
-                editorTitle.textContent = '📝 Select or add a topic';
-                editorTopicId.textContent = '';
-                deleteTopicBtn.style.display = 'none';
-                editorStatus.textContent = '';
-            }
-
-            // ---------- TIMER CONTROLS ----------
-            function startTimer() {
-                if (state.timerSeconds <= 0) {
-                    // Reset to initial
-                    state.timerSeconds = state.timerInitialSeconds;
-                    if (db) {
-                        db.ref('timer/seconds').set(state.timerSeconds);
-                    }
-                }
-                if (state.timerRunning) {
-                    if (state.timerPaused) {
-                        // Resume
-                        state.timerPaused = false;
-                        if (db) {
-                            db.ref('timer/isPaused').set(false);
-                        }
-                        startLocalTimer();
-                        updateAllTimers();
-                        return;
-                    }
-                    return;
-                }
-                state.timerRunning = true;
-                state.timerPaused = false;
-                if (db) {
-                    db.ref('timer/isRunning').set(true);
-                    db.ref('timer/isPaused').set(false);
-                }
-                startLocalTimer();
-                updateAllTimers();
-                editorStatus.textContent = '⏱️ Timer started.';
-            }
-
-            function pauseTimer() {
-                if (!state.timerRunning || state.timerPaused) return;
-                state.timerPaused = true;
-                if (db) {
-                    db.ref('timer/isPaused').set(true);
-                }
-                stopLocalTimer();
-                updateAllTimers();
-                editorStatus.textContent = '⏸️ Timer paused.';
-            }
-
-            function resetTimer() {
-                stopLocalTimer();
-                const initial = state.timerInitialSeconds;
-                state.timerSeconds = initial;
-                state.timerRunning = false;
-                state.timerPaused = false;
-                if (db) {
-                    db.ref('timer/seconds').set(initial);
-                    db.ref('timer/isRunning').set(false);
-                    db.ref('timer/isPaused').set(false);
-                }
-                updateAllTimers();
-                editorStatus.textContent = '🔄 Timer reset.';
-            }
-
-            function startLocalTimer() {
-                stopLocalTimer();
-                if (state.localTimerInterval) return;
-                state.localTimerInterval = setInterval(() => {
-                    if (!state.timerRunning || state.timerPaused) return;
-                    if (state.timerSeconds <= 0) {
-                        stopLocalTimer();
-                        state.timerRunning = false;
-                        if (db) {
-                            db.ref('timer/isRunning').set(false);
-                        }
-                        updateAllTimers();
-                        editorStatus.textContent = '⏰ Time is up!';
-                        return;
-                    }
-                    state.timerSeconds--;
-                    if (db) {
-                        db.ref('timer/seconds').set(state.timerSeconds);
-                    }
-                    updateAllTimers();
-                }, 1000);
-            }
-
-            function stopLocalTimer() {
-                if (state.localTimerInterval) {
-                    clearInterval(state.localTimerInterval);
-                    state.localTimerInterval = null;
-                }
-            }
-
-            // ---------- FEEDBACK ----------
-            function addFeedback() {
-                const text = teacherFeedbackInput.value.trim();
-                if (!text) {
-                    editorStatus.textContent = '⚠️ Please type some feedback first.';
-                    return;
-                }
-                if (state.feedback) {
-                    state.feedback += '\n\n' + text;
-                } else {
-                    state.feedback = text;
-                }
-                if (db) {
-                    db.ref('feedback').set(state.feedback);
-                }
-                teacherFeedbackInput.value = '';
-                updateStudentFeedback();
-                updateTeacherFeedbackPreview();
-                editorStatus.textContent = '📝 Feedback added.';
-            }
-
-            function clearFeedback() {
-                state.feedback = '';
-                if (db) {
-                    db.ref('feedback').set('');
-                }
-                updateStudentFeedback();
-                updateTeacherFeedbackPreview();
-                editorStatus.textContent = '🧹 Feedback cleared.';
-            }
-
-            // ---------- MODE SWITCHING ----------
-            function setMode(isTeacher) {
-                state.isTeacher = isTeacher;
-                if (isTeacher) {
-                    studentView.classList.remove('active');
-                    teacherView.classList.add('active');
-                    modeToggleBtn.innerHTML = '<i class="fas fa-chalkboard-teacher"></i> Teacher mode';
-                    modeToggleBtn.className = 'mode-toggle active';
-                    // Show teacher controls
-                } else {
-                    studentView.classList.add('active');
-                    teacherView.classList.remove('active');
-                    modeToggleBtn.innerHTML = '<i class="fas fa-user-graduate"></i> Student mode';
-                    modeToggleBtn.className = 'mode-toggle student-mode';
-                }
-                // Re-sync UI
-                renderTopicList();
-                updateStudentContent();
-                updateAllTimers();
-                updateStudentFeedback();
-                updateTeacherFeedbackPreview();
-                if (state.currentTopicId) {
-                    loadTopicIntoEditor(state.currentTopicId);
-                } else {
-                    clearEditor();
-                }
-            }
-
-            // ---------- FIREBASE SYNC ----------
-            function setupFirebaseSync() {
-                if (!db) {
-                    // Fallback: use local state only
-                    console.warn('⚠️ Firebase not available — running in local-only mode');
-                    syncLabel.textContent = 'Local';
-                    connDot.className = 'dot offline';
-                    connText.textContent = 'Offline';
-                    // Initialize with default topics
-                    if (Object.keys(state.topics).length === 0) {
-                        const defaultTopics = {
-                            topic_1: {
-                                title: 'The Benefits of Remote Work',
-                                text: 'Remote work has become increasingly popular. It offers flexibility, saves commuting time, and can improve work-life balance. However, it also requires self-discipline and good communication skills. Many companies have adopted hybrid models, where employees work both from home and the office. This shift has changed how we collaborate and manage teams.',
-                                audioLink: '',
-                                question: 'Do you think remote work is better for companies and employees? Why or why not? Use examples from the text to support your opinion.',
-                                timerMinutes: 10,
-                            },
-                            topic_2: {
-                                title: 'The Importance of Healthy Eating',
-                                text: 'Eating a balanced diet is essential for good health. It provides energy, supports the immune system, and reduces the risk of chronic diseases. It\'s important to include fruits, vegetables, whole grains, and lean proteins in our meals. However, busy lifestyles often lead to poor food choices. Making small changes, like cooking at home more often, can have a big impact.',
-                                audioLink: '',
-                                question: 'How can we encourage people to eat healthier in today\'s fast-paced world? Use ideas from the text in your answer.',
-                                timerMinutes: 10,
-                            },
-                            topic_3: {
-                                title: 'The Role of Technology in Education',
-                                text: 'Technology has transformed education. Online learning platforms, interactive tools, and digital resources make learning more accessible and engaging. However, it also presents challenges such as the digital divide and excessive screen time. Teachers are now using apps and videos to explain complex topics. The future of education will likely blend traditional and digital methods.',
-                                audioLink: '',
-                                question: 'Is technology a help or a distraction in education? Give your opinion and use examples from the text to justify your view.',
-                                timerMinutes: 10,
-                            },
-                        };
-                        state.topics = defaultTopics;
-                        state.currentTopicId = 'topic_1';
-                        const initial = 10 * 60;
-                        state.timerSeconds = initial;
-                        state.timerInitialSeconds = initial;
-                        state.timerRunning = false;
-                        state.timerPaused = false;
-                        state.feedback = '';
-                        // Try to write to Firebase if it becomes available later
-                    }
-                    // Load first topic
-                    const ids = Object.keys(state.topics);
-                    if (ids.length > 0 && !state.currentTopicId) {
-                        state.currentTopicId = ids[0];
-                    }
-                    renderTopicList();
-                    updateStudentContent();
-                    updateAllTimers();
-                    updateStudentFeedback();
-                    updateTeacherFeedbackPreview();
-                    if (state.currentTopicId) loadTopicIntoEditor(state.currentTopicId);
-                    return;
-                }
-
-                // Online: listen to realtime updates
-                connDot.className = 'dot online';
-                connText.textContent = 'Connected';
-                syncLabel.textContent = 'Live';
-
-                // 1. Topics
-                db.ref('topics').on('value', (snapshot) => {
-                    const data = snapshot.val() || {};
-                    state.topics = data;
-                    renderTopicList();
-                    // If current topic no longer exists, pick first
-                    if (state.currentTopicId && !state.topics[state.currentTopicId]) {
-                        const ids = Object.keys(state.topics);
-                        state.currentTopicId = ids.length > 0 ? ids[0] : null;
-                        if (state.currentTopicId) {
-                            db.ref('currentTopicId').set(state.currentTopicId);
-                        }
-                    }
-                    updateStudentContent();
-                    if (state.currentTopicId) loadTopicIntoEditor(state.currentTopicId);
-                    editorStatus.textContent = '📥 Topics synced.';
-                });
-
-                // 2. Current topic
-                db.ref('currentTopicId').on('value', (snapshot) => {
-                    const id = snapshot.val();
-                    if (id && state.topics[id]) {
-                        state.currentTopicId = id;
-                        updateStudentContent();
-                        renderTopicList();
-                        loadTopicIntoEditor(id);
-                    } else if (id) {
-                        // Topic ID exists but not in topics yet — wait for topics sync
-                    }
-                });
-
-                // 3. Timer
-                db.ref('timer/seconds').on('value', (snapshot) => {
-                    const val = snapshot.val();
-                    if (typeof val === 'number') {
-                        state.timerSeconds = val;
-                        updateAllTimers();
-                    }
-                });
-                db.ref('timer/initialSeconds').on('value', (snapshot) => {
-                    const val = snapshot.val();
-                    if (typeof val === 'number') {
-                        state.timerInitialSeconds = val;
-                    }
-                });
-                db.ref('timer/isRunning').on('value', (snapshot) => {
-                    const val = snapshot.val();
-                    state.timerRunning = val === true;
-                    if (state.timerRunning && !state.timerPaused) {
-                        startLocalTimer();
-                    } else {
-                        stopLocalTimer();
-                    }
-                    updateAllTimers();
-                });
-                db.ref('timer/isPaused').on('value', (snapshot) => {
-                    const val = snapshot.val();
-                    state.timerPaused = val === true;
-                    if (state.timerRunning && state.timerPaused) {
-                        stopLocalTimer();
-                    } else if (state.timerRunning && !state.timerPaused) {
-                        startLocalTimer();
-                    }
-                    updateAllTimers();
-                });
-
-                // 4. Feedback
-                db.ref('feedback').on('value', (snapshot) => {
-                    const val = snapshot.val() || '';
-                    state.feedback = val;
-                    updateStudentFeedback();
-                    updateTeacherFeedbackPreview();
-                });
-
-                // 5. Connection status
-                db.ref('.info/connected').on('value', (snapshot) => {
-                    const connected = snapshot.val() === true;
-                    connDot.className = 'dot ' + (connected ? 'online' : 'offline');
-                    connText.textContent = connected ? 'Connected' : 'Offline';
-                    syncLabel.textContent = connected ? 'Live' : 'Reconnecting…';
-                });
-
-                // Initial load: if no topics, seed with defaults
-                setTimeout(() => {
-                    if (Object.keys(state.topics).length === 0) {
-                        // Seed default topics
-                        const defaults = {
-                            topic_1: {
-                                title: 'The Benefits of Remote Work',
-                                text: 'Remote work has become increasingly popular. It offers flexibility, saves commuting time, and can improve work-life balance. However, it also requires self-discipline and good communication skills. Many companies have adopted hybrid models, where employees work both from home and the office. This shift has changed how we collaborate and manage teams.',
-                                audioLink: '',
-                                question: 'Do you think remote work is better for companies and employees? Why or why not? Use examples from the text to support your opinion.',
-                                timerMinutes: 10,
-                            },
-                            topic_2: {
-                                title: 'The Importance of Healthy Eating',
-                                text: 'Eating a balanced diet is essential for good health. It provides energy, supports the immune system, and reduces the risk of chronic diseases. It\'s important to include fruits, vegetables, whole grains, and lean proteins in our meals. However, busy lifestyles often lead to poor food choices. Making small changes, like cooking at home more often, can have a big impact.',
-                                audioLink: '',
-                                question: 'How can we encourage people to eat healthier in today\'s fast-paced world? Use ideas from the text in your answer.',
-                                timerMinutes: 10,
-                            },
-                            topic_3: {
-                                title: 'The Role of Technology in Education',
-                                text: 'Technology has transformed education. Online learning platforms, interactive tools, and digital resources make learning more accessible and engaging. However, it also presents challenges such as the digital divide and excessive screen time. Teachers are now using apps and videos to explain complex topics. The future of education will likely blend traditional and digital methods.',
-                                audioLink: '',
-                                question: 'Is technology a help or a distraction in education? Give your opinion and use examples from the text to justify your view.',
-                                timerMinutes: 10,
-                            },
-                        };
-                        Object.keys(defaults).forEach(key => {
-                            db.ref('topics/' + key).set(defaults[key]);
-                        });
-                        db.ref('currentTopicId').set('topic_1');
-                        const initial = 10 * 60;
-                        db.ref('timer/seconds').set(initial);
-                        db.ref('timer/initialSeconds').set(initial);
-                        db.ref('timer/isRunning').set(false);
-                        db.ref('timer/isPaused').set(false);
-                        db.ref('feedback').set('');
-                        editorStatus.textContent = '📚 Default topics loaded.';
-                    }
-                }, 500);
-            }
-
-            // ---------- PRINT ----------
-            function printStickyNotes() {
-                // For teacher: print the feedback sticky notes
-                // For student: print the whole student view
-                if (state.isTeacher) {
-                    // Temporarily show all feedback content for print
-                    const origContent = studentFeedbackContent.textContent;
-                    // We'll just print the student view which includes feedback
-                    window.print();
-                } else {
-                    window.print();
-                }
-            }
-
-            // ---------- EVENT LISTENERS ----------
-            // Mode toggle with code
-            modeToggleBtn.addEventListener('click', function() {
-                if (!state.isTeacher) {
-                    // Switch to teacher mode — ask for code
-                    const code = prompt('Enter teacher code:');
-                    if (code === 'teacher123' || code === 'teacher 123@') {
-                        setMode(true);
-                    } else {
-                        alert('Incorrect code. Please try again.');
-                    }
-                } else {
-                    // Switch to student mode (no code needed)
-                    setMode(false);
-                    // Stop timer if running
-                    if (state.timerRunning) {
-                        stopLocalTimer();
-                        state.timerRunning = false;
-                        state.timerPaused = false;
-                        if (db) {
-                            db.ref('timer/isRunning').set(false);
-                            db.ref('timer/isPaused').set(false);
-                        }
-                        updateAllTimers();
-                    }
-                }
+                    <!-- Teacher feedback sticky note -->
+                    <div class="teacher-feedback" id="feedback_${idx}">
+                        <h4><i class="fas fa-sticky-note"></i> Teacher's feedback & new words</h4>
+                        <div class="sticky-note" id="stickyNote_${idx}">${topicState[idx].feedback || ''}</div>
+                        <div class="input-group">
+                            <textarea placeholder="Type new words and feedback here..." id="feedbackInput_${idx}"></textarea>
+                            <button class="add-feedback" data-topic="${idx}"><i class="fas fa-plus-circle"></i> Add note</button>
+                            <button class="clear-feedback secondary" data-topic="${idx}"><i class="fas fa-trash-alt"></i> Clear</button>
+                        </div>
+                    </div>
+                `;
+                topicContainer.appendChild(div);
             });
 
-            // Topic list: add
-            addTopicBtn.addEventListener('click', createNewTopic);
-
-            // Editor: save
-            saveTopicBtn.addEventListener('click', saveTopic);
-
-            // Editor: delete
-            deleteTopicBtn.addEventListener('click', function() {
-                if (state.editingId) {
-                    if (confirm(`Delete topic "${state.topics[state.editingId]?.title || state.editingId}"?`)) {
-                        deleteTopic(state.editingId);
-                    }
-                }
+            // Attach event listeners
+            document.querySelectorAll('.audio-play-btn').forEach(btn => {
+                btn.addEventListener('click', handleAudioPlay);
+            });
+            document.querySelectorAll('.speech-start').forEach(btn => {
+                btn.addEventListener('click', handleSpeechStart);
+            });
+            document.querySelectorAll('.speech-pause').forEach(btn => {
+                btn.addEventListener('click', handleSpeechPause);
+            });
+            document.querySelectorAll('.speech-reset').forEach(btn => {
+                btn.addEventListener('click', handleSpeechReset);
+            });
+            document.querySelectorAll('.add-feedback').forEach(btn => {
+                btn.addEventListener('click', handleAddFeedback);
+            });
+            document.querySelectorAll('.clear-feedback').forEach(btn => {
+                btn.addEventListener('click', handleClearFeedback);
             });
 
-            // Editor: cancel
-            cancelEditBtn.addEventListener('click', function() {
-                clearEditor();
-                if (state.currentTopicId) loadTopicIntoEditor(state.currentTopicId);
-                editorStatus.textContent = 'Edit cancelled.';
-            });
+            // Initially hide timer controls if teacher mode is off
+            updateTimerControlsVisibility();
+        }
 
-            // Timer controls
-            timerStartBtn.addEventListener('click', startTimer);
-            timerPauseBtn.addEventListener('click', pauseTimer);
-            timerResetBtn.addEventListener('click', resetTimer);
+        // ---------- AUDIO PLAY (simulated) ----------
+        function handleAudioPlay(e) {
+            const btn = e.currentTarget;
+            const topicIdx = parseInt(btn.dataset.topic);
+            // Just a visual feedback – in real class, teacher plays actual audio
+            btn.innerHTML = '<i class="fas fa-play"></i> Playing...';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-play"></i> Listen to the audio';
+                btn.disabled = false;
+                // Optionally mark that audio was played – we don't need to store.
+            }, 2000);
+        }
 
-            // Feedback
-            teacherFeedbackAddBtn.addEventListener('click', addFeedback);
-            teacherFeedbackClearBtn.addEventListener('click', clearFeedback);
-            teacherFeedbackInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && e.shiftKey) {
-                    e.preventDefault();
-                    addFeedback();
-                }
-            });
+        // ---------- SPEAKING TIMER ----------
+        function handleSpeechStart(e) {
+            const btn = e.currentTarget;
+            const topicIdx = parseInt(btn.dataset.topic);
+            const state = topicState[topicIdx];
 
-            // Print
-            studentPrintBtn.addEventListener('click', printStickyNotes);
-            teacherPrintBtn.addEventListener('click', printStickyNotes);
-
-            // Keyboard shortcut: Space to start/pause (teacher mode only)
-            document.addEventListener('keydown', function(e) {
-                if (!state.isTeacher) return;
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-                if (e.key === ' ' || e.key === 'Space') {
-                    e.preventDefault();
-                    if (state.timerRunning && !state.timerPaused) {
-                        pauseTimer();
-                    } else if (state.timerRunning && state.timerPaused) {
-                        startTimer();
-                    } else {
-                        startTimer();
-                    }
-                }
-            });
-
-            // ---------- INIT ----------
-            function init() {
-                // Default to student mode
-                setMode(false);
-
-                // Setup Firebase sync
-                setupFirebaseSync();
-
-                // If no topics loaded after 2s, seed fallback
-                setTimeout(() => {
-                    if (Object.keys(state.topics).length === 0) {
-                        // Local fallback topics
-                        const fallback = {
-                            topic_1: {
-                                title: 'The Benefits of Remote Work',
-                                text: 'Remote work has become increasingly popular. It offers flexibility, saves commuting time, and can improve work-life balance. However, it also requires self-discipline and good communication skills. Many companies have adopted hybrid models, where employees work both from home and the office. This shift has changed how we collaborate and manage teams.',
-                                audioLink: '',
-                                question: 'Do you think remote work is better for companies and employees? Why or why not? Use examples from the text to support your opinion.',
-                                timerMinutes: 10,
-                            },
-                            topic_2: {
-                                title: 'The Importance of Healthy Eating',
-                                text: 'Eating a balanced diet is essential for good health. It provides energy, supports the immune system, and reduces the risk of chronic diseases. It\'s important to include fruits, vegetables, whole grains, and lean proteins in our meals. However, busy lifestyles often lead to poor food choices. Making small changes, like cooking at home more often, can have a big impact.',
-                                audioLink: '',
-                                question: 'How can we encourage people to eat healthier in today\'s fast-paced world? Use ideas from the text in your answer.',
-                                timerMinutes: 10,
-                            },
-                            topic_3: {
-                                title: 'The Role of Technology in Education',
-                                text: 'Technology has transformed education. Online learning platforms, interactive tools, and digital resources make learning more accessible and engaging. However, it also presents challenges such as the digital divide and excessive screen time. Teachers are now using apps and videos to explain complex topics. The future of education will likely blend traditional and digital methods.',
-                                audioLink: '',
-                                question: 'Is technology a help or a distraction in education? Give your opinion and use examples from the text to justify your view.',
-                                timerMinutes: 10,
-                            },
-                        };
-                        state.topics = fallback;
-                        state.currentTopicId = 'topic_1';
-                        state.timerSeconds = 600;
-                        state.timerInitialSeconds = 600;
-                        state.timerRunning = false;
-                        state.timerPaused = false;
-                        state.feedback = '';
-                        renderTopicList();
-                        updateStudentContent();
-                        updateAllTimers();
-                        updateStudentFeedback();
-                        updateTeacherFeedbackPreview();
-                        if (state.currentTopicId) loadTopicIntoEditor(state.currentTopicId);
-                        editorStatus.textContent = '📚 Using local topics (no Firebase).';
-                    }
-                }, 1500);
-
-                console.log('🚀 SpeakUp ready! Teacher code: "teacher123"');
+            if (state.isSpeechRunning && !state.isSpeechPaused) return;
+            if (state.isSpeechPaused) {
+                // resume
+                state.isSpeechPaused = false;
+                state.isSpeechRunning = true;
+                state.speechTimer = setInterval(() => speechTick(topicIdx), 1000);
+                document.getElementById(`speechStatus_${topicIdx}`).textContent = 'Speaking...';
+                btn.textContent = 'Running';
+                btn.disabled = true;
+                return;
             }
 
-            init();
+            // fresh start
+            if (state.speechSeconds <= 0) {
+                state.speechSeconds = 600;
+                updateSpeechDisplay(topicIdx);
+            }
 
-        })();
-    </script>
+            state.isSpeechRunning = true;
+            state.isSpeechPaused = false;
+            state.speechTimer = setInterval(() => speechTick(topicIdx), 1000);
+            document.getElementById(`speechStatus_${topicIdx}`).textContent = 'Speaking...';
+            btn.textContent = 'Running';
+            btn.disabled = true;
+        }
+
+        function handleSpeechPause(e) {
+            const topicIdx = parseInt(e.currentTarget.dataset.topic);
+            const state = topicState[topicIdx];
+
+            if (!state.isSpeechRunning || state.isSpeechPaused) return;
+            state.isSpeechPaused = true;
+            clearInterval(state.speechTimer);
+            state.speechTimer = null;
+            document.getElementById(`speechStatus_${topicIdx}`).textContent = 'Paused';
+            const startBtn = document.querySelector(`.speech-start[data-topic="${topicIdx}"]`);
+            startBtn.disabled = false;
+            startBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+        }
+
+        function handleSpeechReset(e) {
+            const topicIdx = parseInt(e.currentTarget.dataset.topic);
+            const state = topicState[topicIdx];
+
+            clearInterval(state.speechTimer);
+            state.speechTimer = null;
+            state.isSpeechRunning = false;
+            state.isSpeechPaused = false;
+            state.speechSeconds = 600;
+            updateSpeechDisplay(topicIdx);
+            document.getElementById(`speechStatus_${topicIdx}`).textContent = 'Ready to speak';
+            const startBtn = document.querySelector(`.speech-start[data-topic="${topicIdx}"]`);
+            startBtn.disabled = false;
+            startBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+        }
+
+        function speechTick(idx) {
+            const state = topicState[idx];
+            state.speechSeconds--;
+            updateSpeechDisplay(idx);
+            if (state.speechSeconds <= 0) {
+                clearInterval(state.speechTimer);
+                state.speechTimer = null;
+                state.isSpeechRunning = false;
+                document.getElementById(`speechStatus_${idx}`).textContent = '⏰ Time is up! Well done!';
+                const startBtn = document.querySelector(`.speech-start[data-topic="${idx}"]`);
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+            }
+        }
+
+        function updateSpeechDisplay(idx) {
+            const secs = topicState[idx].speechSeconds;
+            const mins = String(Math.floor(secs / 60)).padStart(2, '0');
+            const secsStr = String(secs % 60).padStart(2, '0');
+            document.getElementById(`speechDisplay_${idx}`).textContent = `${mins}:${secsStr}`;
+        }
+
+        // ---------- TEACHER FEEDBACK ----------
+        function handleAddFeedback(e) {
+            const topicIdx = parseInt(e.currentTarget.dataset.topic);
+            const input = document.getElementById(`feedbackInput_${topicIdx}`);
+            const text = input.value.trim();
+            if (!text) return;
+            const state = topicState[topicIdx];
+            if (state.feedback) {
+                state.feedback += '\n\n' + text;
+            } else {
+                state.feedback = text;
+            }
+            document.getElementById(`stickyNote_${topicIdx}`).textContent = state.feedback;
+            input.value = '';
+        }
+
+        function handleClearFeedback(e) {
+            const topicIdx = parseInt(e.currentTarget.dataset.topic);
+            const state = topicState[topicIdx];
+            state.feedback = '';
+            document.getElementById(`stickyNote_${topicIdx}`).textContent = '';
+            document.getElementById(`feedbackInput_${topicIdx}`).value = '';
+        }
+
+        // ---------- TEACHER MODE TOGGLE WITH CODE ----------
+        teacherToggle.addEventListener('click', function() {
+            if (!teacherMode) {
+                // Ask for code
+                const code = prompt("Enter teacher code:");
+                if (code === TEACHER_CODE) {
+                    teacherMode = true;
+                    this.classList.add('active');
+                    this.innerHTML = '<i class="fas fa-chalkboard-teacher"></i> Teacher mode ON';
+                    // Show feedback and timer controls
+                    document.querySelectorAll('.teacher-feedback').forEach(el => el.classList.add('show'));
+                    document.querySelectorAll('.timer-controls-wrapper').forEach(el => el.classList.add('show'));
+                } else {
+                    alert("Incorrect code. Teacher mode not activated.");
+                }
+            } else {
+                // Turn off teacher mode
+                teacherMode = false;
+                this.classList.remove('active');
+                this.innerHTML = '<i class="fas fa-chalkboard-teacher"></i> Teacher mode';
+                document.querySelectorAll('.teacher-feedback').forEach(el => el.classList.remove('show'));
+                document.querySelectorAll('.timer-controls-wrapper').forEach(el => el.classList.remove('show'));
+            }
+        });
+
+        // Helper to update visibility based on initial state (teacherMode false)
+        function updateTimerControlsVisibility() {
+            if (!teacherMode) {
+                document.querySelectorAll('.timer-controls-wrapper').forEach(el => el.classList.remove('show'));
+                document.querySelectorAll('.teacher-feedback').forEach(el => el.classList.remove('show'));
+            } else {
+                document.querySelectorAll('.timer-controls-wrapper').forEach(el => el.classList.add('show'));
+                document.querySelectorAll('.teacher-feedback').forEach(el => el.classList.add('show'));
+            }
+        }
+
+        // ---------- PRINT ----------
+        printBtn.addEventListener('click', function() {
+            // Ensure teacher mode is on to show sticky notes in print (or we can just print them anyway)
+            // We'll temporarily show them if hidden
+            const wasTeacherMode = teacherMode;
+            if (!wasTeacherMode) {
+                // Temporarily show feedback for print
+                document.querySelectorAll('.teacher-feedback').forEach(el => el.classList.add('show'));
+            }
+            setTimeout(() => {
+                window.print();
+                // revert if not in teacher mode
+                if (!wasTeacherMode) {
+                    document.querySelectorAll('.teacher-feedback').forEach(el => el.classList.remove('show'));
+                }
+            }, 100);
+        });
+
+        // ---------- TAB SWITCH ----------
+        topicTabs.addEventListener('click', function(e) {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+            const idx = parseInt(btn.dataset.topic);
+            if (isNaN(idx)) return;
+
+            document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('.topic-content').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.topic-content[data-topic="${idx}"]`).classList.add('active');
+        });
+
+        // ---------- KEYBOARD SHORTCUT: SPACE to start/pause (only if teacher mode) ----------
+        document.addEventListener('keydown', function(e) {
+            if (!teacherMode) return;
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === ' ' || e.key === 'Space') {
+                e.preventDefault();
+                const activeTopic = document.querySelector('.topic-content.active');
+                if (!activeTopic) return;
+                const idx = parseInt(activeTopic.dataset.topic);
+                const state = topicState[idx];
+                if (state.isSpeechRunning && !state.isSpeechPaused) {
+                    const pauseBtn = document.querySelector(`.speech-pause[data-topic="${idx}"]`);
+                    if (pauseBtn) pauseBtn.click();
+                } else {
+                    const startBtn = document.querySelector(`.speech-start[data-topic="${idx}"]`);
+                    if (startBtn) startBtn.click();
+                }
+            }
+        });
+
+        // ---------- INIT ----------
+        renderTopics();
+        // Ensure teacher mode is off initially
+        teacherMode = false;
+        teacherToggle.classList.remove('active');
+        teacherToggle.innerHTML = '<i class="fas fa-chalkboard-teacher"></i> Teacher mode';
+        document.querySelectorAll('.teacher-feedback').forEach(el => el.classList.remove('show'));
+        document.querySelectorAll('.timer-controls-wrapper').forEach(el => el.classList.remove('show'));
+
+        console.log('SpeakUp ready! Teacher mode requires code: "teacher 123@"');
+    })();
+</script>
 
 </body>
 </html>
