@@ -3,1847 +3,484 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Two Futures · 4 Debates + 2 Listening Tasks (Teens)</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<title>Speak &amp; Dictate · 2 Speaking + 2 Listening Dictations</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
 <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-        font-family: 'Inter', sans-serif;
-        background: #eef3fa;
-        background-image:
-            radial-gradient(circle at 10% 4%, rgba(29, 78, 216, 0.09), transparent 40%),
-            radial-gradient(circle at 90% 96%, rgba(15, 118, 110, 0.09), transparent 40%);
-        background-attachment: fixed;
-        color: #13202d;
-        min-height: 100vh;
-        padding: 24px 18px 48px;
-    }
-
-    .app { max-width: 1180px; margin: 0 auto; }
-    .hidden { display: none !important; }
-
-    /* ---------- JOIN SCREEN ---------- */
-    .join-screen {
-        max-width: 480px; margin: 60px auto 0;
-        background: #ffffff; border-radius: 28px;
-        border: 1px solid #e6eef6;
-        box-shadow: 0 24px 60px rgba(20, 45, 80, 0.14);
-        padding: 32px 30px 28px;
-        animation: popIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.1);
-    }
-    @keyframes popIn {
-        from { opacity: 0; transform: translateY(18px) scale(0.95); }
-        to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .join-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
-    .join-logo {
-        width: 54px; height: 54px; border-radius: 17px;
-        background: linear-gradient(135deg, #1d4ed8, #0f766e);
-        color: #fff; display: flex; align-items: center; justify-content: center;
-        font-size: 22px; box-shadow: 0 10px 24px rgba(29, 78, 216, 0.28);
-        flex-shrink: 0;
-    }
-    .join-brand h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.2; }
-    .join-brand h1 span { color: #1d4ed8; }
-    .join-brand p { font-size: 12.5px; color: #6b8299; font-weight: 500; margin-top: 3px; }
-
-    .room-info {
-        background: #f7fafd; border: 1.5px solid #e2ecf5;
-        border-radius: 13px; padding: 12px 15px;
-        display: flex; align-items: center; gap: 10px;
-        margin-bottom: 16px; font-size: 12.5px; font-weight: 600;
-        color: #4a6580;
-    }
-    .room-info i { color: #1d4ed8; font-size: 14px; }
-    .room-info b { color: #13202d; letter-spacing: 1px; font-weight: 800; }
-
-    .field { margin-bottom: 14px; }
-    .field label {
-        display: block; font-size: 10.5px; font-weight: 800;
-        letter-spacing: 0.8px; text-transform: uppercase;
-        color: #7d92a8; margin-bottom: 7px;
-    }
-    .field input {
-        width: 100%; padding: 13px 15px; border-radius: 13px;
-        border: 1.5px solid #dbe7f1; background: #f7fafd;
-        font-family: inherit; font-size: 15px; font-weight: 600;
-        color: #13202d; outline: none; transition: all 0.15s;
-    }
-    .field input::placeholder { color: #a8bacb; font-weight: 500; }
-    .field input:focus { border-color: #1d4ed8; background: #fff; box-shadow: 0 0 0 4px #eaf1ff; }
-
-    .join-btn {
-        width: 100%; border: none; border-radius: 40px;
-        background: linear-gradient(135deg, #1d4ed8, #16389b);
-        color: #fff; padding: 15px 24px;
-        font-family: inherit; font-size: 15.5px; font-weight: 800;
-        cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-        box-shadow: 0 10px 24px rgba(29, 78, 216, 0.32);
-        transition: all 0.2s;
-    }
-    .join-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(29, 78, 216, 0.4); }
-    .join-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-    .join-error {
-        background: #fdeaea; color: #8f2f2f;
-        border: 1.5px solid #f6d5d5; border-radius: 12px;
-        padding: 11px 14px; font-size: 13px; font-weight: 600;
-        display: flex; align-items: flex-start; gap: 9px;
-        margin-top: 14px; line-height: 1.45;
-    }
-    .join-error i { margin-top: 2px; flex-shrink: 0; }
-
-    .join-hint {
-        font-size: 12px; line-height: 1.55; color: #8098ad;
-        margin-top: 16px; padding-top: 16px;
-        border-top: 1px dashed #e2ecf5; text-align: center; font-weight: 500;
-    }
-
-    /* ---------- TOP BAR ---------- */
-    .topbar {
-        display: flex; justify-content: space-between; align-items: center;
-        gap: 10px; flex-wrap: wrap;
-        background: #ffffff; border: 1px solid #e6eef6; border-radius: 20px;
-        padding: 12px 16px;
-        box-shadow: 0 10px 26px rgba(20, 45, 80, 0.08);
-        margin-bottom: 12px;
-        position: sticky; top: 10px; z-index: 100;
-    }
-    .room-chip {
-        display: flex; align-items: center; gap: 9px;
-        background: #f2f7fc; border-radius: 40px; padding: 8px 15px;
-        font-size: 13px; font-weight: 700; color: #4a6580;
-    }
-    .room-chip i { color: #1d4ed8; font-size: 13px; }
-    .room-chip b { color: #13202d; letter-spacing: 0.5px; }
-    .me-chip {
-        display: flex; align-items: center; gap: 9px;
-        border-radius: 40px; padding: 6px 14px 6px 8px;
-        font-size: 13px; font-weight: 700;
-    }
-    .me-chip.A { background: #eaf1ff; color: #1d4ed8; }
-    .me-chip.B { background: #e3f5f2; color: #0f766e; }
-    .me-chip.C { background: #fff4e0; color: #b45309; }
-    .me-chip.ghost { background: #f1ebff; color: #7c3aed; }
-    .me-dot {
-        width: 26px; height: 26px; border-radius: 50%;
-        color: #fff; display: flex; align-items: center; justify-content: center;
-        font-size: 11px; font-weight: 800;
-    }
-    .me-chip.A .me-dot { background: #1d4ed8; }
-    .me-chip.B .me-dot { background: #0f766e; }
-    .me-chip.C .me-dot { background: #b45309; }
-    .me-chip.ghost .me-dot { background: #7c3aed; font-size: 14px; }
-    .leave-btn {
-        border: none; background: transparent; color: #8098ad;
-        border-radius: 30px; padding: 8px 14px;
-        font-family: inherit; font-size: 12px; font-weight: 700;
-        cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
-        transition: all 0.15s;
-    }
-    .leave-btn:hover { background: #fdeaea; color: #a13d3d; }
-
-    .reset-answers-btn {
-        border: 1.5px solid #f0c88a;
-        background: #fff4e0;
-        color: #a0690c;
-        border-radius: 30px;
-        padding: 7px 14px;
-        font-family: inherit; font-size: 12px; font-weight: 800;
-        cursor: pointer;
-        display: inline-flex; align-items: center; gap: 6px;
-        transition: all 0.15s;
-    }
-    .reset-answers-btn:hover {
-        background: #ffe9c9;
-        border-color: #e0a860;
-        color: #7a4a00;
-        transform: translateY(-1px);
-    }
-
-    /* ---------- LOCATION BANNER ---------- */
-    .location-banner {
-        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-        background: linear-gradient(135deg, #1d4ed8 0%, #16389b 100%);
-        color: #fff;
-        border-radius: 16px;
-        padding: 14px 20px;
-        margin-bottom: 22px;
-        box-shadow: 0 12px 28px rgba(29, 78, 216, 0.28);
-    }
-    .loc-info {
-        display: flex; align-items: center; gap: 10px;
-        font-size: 14.5px; font-weight: 700;
-        flex: 1; min-width: 0;
-    }
-    .loc-info i { font-size: 17px; color: #ffd166; flex-shrink: 0; }
-    .loc-step-num {
-        background: rgba(255, 255, 255, 0.18);
-        padding: 3px 10px; border-radius: 30px;
-        font-size: 11.5px; font-weight: 800; letter-spacing: 0.4px;
-        flex-shrink: 0;
-    }
-    .loc-step-title {
-        font-weight: 800; letter-spacing: -0.2px;
-        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .loc-team-score {
-        display: flex; align-items: center; gap: 8px;
-        background: rgba(255, 255, 255, 0.16);
-        border: 1.5px solid rgba(255, 255, 255, 0.28);
-        border-radius: 30px; padding: 7px 16px;
-        font-size: 13px; font-weight: 800;
-        flex-shrink: 0;
-    }
-    .loc-team-score i { color: #ffd166; }
-    .loc-team-score b { font-size: 16px; letter-spacing: 0.5px; }
-    .loc-guide-btn {
-        border: none; border-radius: 30px;
-        background: #ffd166; color: #7a4a00;
-        padding: 9px 18px;
-        font-family: inherit; font-size: 12.5px; font-weight: 800;
-        cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        transition: all 0.15s;
-        flex-shrink: 0;
-    }
-    .loc-guide-btn:hover { background: #ffdf8a; transform: translateY(-1px); }
-
-    /* ---------- SECTIONS ---------- */
-    .section {
-        display: none; background: #ffffff;
-        border: 1px solid #e6eef6; border-radius: 26px;
-        box-shadow: 0 16px 38px rgba(20, 45, 80, 0.09);
-        overflow: hidden;
-    }
-    .section.active-step { display: block; animation: fadeSwap 0.4s ease-out; }
-    @keyframes fadeSwap {
-        from { opacity: 0; transform: translateY(10px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-    .section-head {
-        padding: 20px 26px 16px;
-        display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-        border-bottom: 1px solid #eaf1f8;
-    }
-    .sec-badge {
-        display: inline-flex; align-items: center; gap: 7px;
-        background: #eaf1ff; color: #1d4ed8;
-        padding: 5px 14px; border-radius: 30px;
-        font-size: 11px; font-weight: 800; letter-spacing: 0.7px;
-        text-transform: uppercase; white-space: nowrap;
-    }
-    .sec-badge.listen { background: #f1ebff; color: #7c3aed; }
-    .sec-title {
-        font-size: 21px; font-weight: 800; letter-spacing: -0.3px;
-        color: #13202d; line-height: 1.25;
-    }
-    .sec-num {
-        margin-left: auto; font-size: 12px; font-weight: 800;
-        color: #8098ad; background: #f2f7fc; border-radius: 40px;
-        padding: 6px 15px; white-space: nowrap;
-    }
-    .section-body { padding: 22px 26px 24px; }
-
-    /* ---------- THEME — arena ---------- */
-    .arena {
-        display: grid; grid-template-columns: 1fr auto 1fr;
-        gap: 14px; align-items: stretch; margin-bottom: 20px;
-    }
-    .side {
-        background: var(--tint); border: 2px solid transparent;
-        border-radius: 18px; padding: 18px 16px;
-        display: flex; flex-direction: column; align-items: center;
-        text-align: center; gap: 10px;
-        transition: all 0.2s;
-    }
-    .side:hover { border-color: var(--accent); transform: translateY(-3px); }
-    .side-icon-circle {
-        width: 96px; height: 96px; border-radius: 50%;
-        background: #ffffff; display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 8px 20px rgba(20, 45, 80, 0.14);
-        color: var(--accent); font-size: 42px; flex-shrink: 0;
-    }
-    .side-label {
-        font-size: 10px; font-weight: 800; letter-spacing: 1px;
-        text-transform: uppercase; color: var(--accent);
-        background: #ffffff; padding: 4px 12px; border-radius: 30px;
-    }
-    .side-name {
-        font-size: 16px; font-weight: 800; color: #13202d;
-        line-height: 1.2; letter-spacing: -0.2px;
-    }
-    .side-desc {
-        font-size: 11.5px; font-weight: 500; color: #5a7189;
-        line-height: 1.45; max-width: 220px;
-    }
-    .vs-circle {
-        align-self: center; width: 46px; height: 46px; border-radius: 50%;
-        background: #ffffff; border: 2px solid #e2ecf5;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 12px; font-weight: 800; color: #6b8299;
-        letter-spacing: 0.5px; flex-shrink: 0;
-        box-shadow: 0 8px 20px rgba(20, 45, 80, 0.1);
-    }
-
-    .theme-q {
-        background: #f7fafd; border-radius: 15px;
-        padding: 16px 20px; margin-bottom: 16px;
-        display: flex; align-items: flex-start; gap: 12px;
-        border-left: 4px solid #1d4ed8;
-    }
-    .theme-q i { color: #1d4ed8; font-size: 17px; margin-top: 2px; flex-shrink: 0; }
-    .theme-q p {
-        font-size: 16.5px; font-weight: 700; color: #13202d;
-        line-height: 1.45; letter-spacing: -0.2px;
-    }
-
-    .chips-label {
-        font-size: 10.5px; font-weight: 800; letter-spacing: 0.9px;
-        text-transform: uppercase; color: #98aec2; margin-bottom: 8px;
-    }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-    .chip {
-        background: #f4f8fd; border: 1.5px solid #dbe7f1; color: #33526e;
-        font-size: 13px; font-weight: 700; padding: 7px 15px;
-        border-radius: 40px; transition: all 0.15s;
-    }
-    .chip:hover {
-        background: #eaf1ff; border-color: #1d4ed8; color: #1d4ed8;
-        transform: translateY(-2px);
-    }
-
-    .proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .pc-box {
-        border-radius: 15px; padding: 13px 16px;
-        display: flex; align-items: flex-start; gap: 10px;
-        font-size: 13.5px; font-weight: 600; line-height: 1.45;
-    }
-    .pc-box i { font-size: 15px; margin-top: 1px; flex-shrink: 0; }
-    .pc-box.pros { background: #eafaf1; border: 1.5px solid #c6ebd8; color: #14603c; }
-    .pc-box.pros i { color: #16a34a; }
-    .pc-box.cons { background: #fdf0f0; border: 1.5px solid #f6d5d5; color: #8f2f2f; }
-    .pc-box.cons i { color: #dc2626; }
-
-    /* ---------- LISTENING ---------- */
-    .listening-section .section-head {
-        background: linear-gradient(135deg, #f1ebff 0%, #eaf1ff 100%);
-    }
-    .listening-section .sec-badge.listen { background: #ffffff; color: #7c3aed; }
-    .listening-section.listen2 .section-head {
-        background: linear-gradient(135deg, #e3f5f2 0%, #eafaf1 100%);
-    }
-    .listening-section.listen2 .sec-badge.listen { background: #ffffff; color: #0f766e; }
-
-    /* ---------- AUTH PANEL ---------- */
-    .auth-panel {
-        border-radius: 15px; padding: 16px 20px;
-        margin-bottom: 16px;
-        display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-    }
-    .auth-panel.locked {
-        background: #f7fafd; border: 1.5px dashed #c5d8eb;
-        color: #55708b;
-    }
-    .auth-panel.locked i.icon { color: #8098ad; font-size: 20px; flex-shrink: 0; }
-    .auth-panel.locked strong { display: block; color: #13202d; font-size: 14px; margin-bottom: 2px; }
-    .auth-panel.locked p { font-size: 12.5px; font-weight: 500; }
-
-    .auth-panel.go {
-        background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);
-        color: #fff;
-        box-shadow: 0 12px 28px rgba(22, 163, 74, 0.28);
-        animation: goBounce 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.15) both,
-                   goPulse 2s ease-in-out 0.6s infinite;
-    }
-    @keyframes goBounce {
-        0%   { opacity: 0; transform: scale(0.6); }
-        60%  { opacity: 1; transform: scale(1.05); }
-        100% { opacity: 1; transform: scale(1); }
-    }
-    @keyframes goPulse {
-        0%, 100% { box-shadow: 0 12px 28px rgba(22, 163, 74, 0.28), 0 0 0 0 rgba(22, 163, 74, 0.5); }
-        50%      { box-shadow: 0 12px 28px rgba(22, 163, 74, 0.28), 0 0 0 14px rgba(22, 163, 74, 0); }
-    }
-    .auth-panel.go .go-icon {
-        font-size: 28px; flex-shrink: 0;
-        animation: goWiggle 1.6s ease-in-out infinite;
-    }
-    @keyframes goWiggle {
-        0%, 100% { transform: rotate(0deg); }
-        25%      { transform: rotate(-12deg); }
-        75%      { transform: rotate(12deg); }
-    }
-    .auth-panel.go strong { display: block; font-size: 17px; font-weight: 800; margin-bottom: 2px; letter-spacing: -0.2px; }
-    .auth-panel.go p { font-size: 12.5px; opacity: 0.9; font-weight: 500; }
-
-    .auth-panel.ghost {
-        background: #f1ebff; border: 1.5px solid #d6c7f5;
-        color: #5b21b6;
-    }
-    .auth-panel.ghost i.icon { color: #7c3aed; font-size: 20px; flex-shrink: 0; }
-    .auth-panel.ghost strong { display: block; color: #4c1d95; font-size: 14px; margin-bottom: 2px; }
-    .auth-panel.ghost p { font-size: 12.5px; font-weight: 500; opacity: 0.85; }
-    .auth-btn {
-        margin-left: auto;
-        border: none; border-radius: 40px;
-        padding: 10px 20px;
-        font-family: inherit; font-size: 13px; font-weight: 800;
-        cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
-        transition: all 0.15s;
-        flex-shrink: 0;
-    }
-    .auth-btn.authorize {
-        background: #7c3aed; color: #fff;
-        box-shadow: 0 6px 16px rgba(124, 58, 237, 0.28);
-    }
-    .auth-btn.authorize:hover { background: #5b21b6; transform: translateY(-2px); box-shadow: 0 10px 22px rgba(124, 58, 237, 0.36); }
-    .auth-btn.revoke {
-        background: #fff; color: #a13d3d;
-        border: 1.5px solid #f6d5d5;
-    }
-    .auth-btn.revoke:hover { background: #fdeaea; }
-
-    /* ---------- AUDIO ---------- */
-    .audio-row {
-        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-        background: #f7fafd; border: 1px solid #eaf1f8;
-        border-radius: 15px; padding: 12px 15px; margin-bottom: 14px;
-    }
-    .audio-row > i { color: #7c3aed; font-size: 18px; flex-shrink: 0; }
-    .audio-row audio { flex: 1; min-width: 240px; height: 40px; }
-    .audio-teacher-only {
-        display: flex; align-items: center; gap: 12px;
-        background: #f1ebff; border-radius: 15px;
-        padding: 14px 18px; margin-bottom: 14px;
-        color: #5b21b6; font-size: 13px; font-weight: 600;
-    }
-    .audio-teacher-only i { font-size: 18px; flex-shrink: 0; }
-    .audio-teacher-only strong { color: #4c1d95; }
-
-    .listen-intro {
-        font-size: 13.5px; line-height: 1.55; color: #4a6580;
-        font-weight: 500; margin-bottom: 16px;
-    }
-    .progress-bar {
-        display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-        padding: 12px 16px; border-radius: 14px;
-        background: #f7fafd; border: 1px solid #eaf1f8;
-        margin-bottom: 18px;
-    }
-    .prog-item {
-        display: inline-flex; align-items: center; gap: 8px;
-        font-size: 12.5px; font-weight: 700; color: #55708b;
-        background: #ffffff; border-radius: 30px;
-        padding: 5px 13px 5px 5px; border: 1px solid #e2ecf5;
-    }
-    .prog-avatar {
-        width: 24px; height: 24px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 10.5px; font-weight: 800; color: #fff;
-    }
-    .prog-avatar.A { background: #1d4ed8; }
-    .prog-avatar.B { background: #0f766e; }
-    .prog-avatar.C { background: #b45309; }
-    .prog-count { color: #1d4ed8; font-weight: 800; }
-    .prog-count.done { color: #16a34a; }
-    .prog-pts {
-        background: #fef3c7; color: #92400e;
-        padding: 2px 8px; border-radius: 20px;
-        font-size: 11px; font-weight: 800;
-    }
-    .prog-divider { color: #c5d8eb; font-weight: 800; font-size: 11px; margin: 0 2px; }
-    .prog-name { color: #8098ad; font-weight: 700; font-size: 11.5px; }
-
-    .q-columns { display: grid; gap: 14px; }
-    .q-columns[data-count="1"] { grid-template-columns: 1fr; }
-    .q-columns[data-count="2"] { grid-template-columns: 1fr 1fr; }
-    .q-columns[data-count="3"] { grid-template-columns: 1fr 1fr 1fr; }
-
-    .q-col { display: flex; flex-direction: column; gap: 12px; }
-    .q-col-head {
-        display: flex; align-items: center; gap: 9px; padding: 0 4px 2px;
-        font-size: 12px; font-weight: 800; letter-spacing: 0.4px;
-        text-transform: uppercase; color: #4a6580; flex-wrap: wrap;
-    }
-    .player-tag {
-        display: inline-flex; align-items: center; gap: 6px;
-        padding: 4px 12px; border-radius: 30px;
-        font-size: 11px; font-weight: 800; letter-spacing: 0.4px;
-        text-transform: uppercase;
-    }
-    .player-tag.A { background: #eaf1ff; color: #1d4ed8; }
-    .player-tag.B { background: #e3f5f2; color: #0f766e; }
-    .player-tag.C { background: #fff4e0; color: #b45309; }
-    .q-col-head .you-badge {
-        margin-left: auto; font-size: 10px; font-weight: 800;
-        letter-spacing: 0.6px; text-transform: uppercase;
-        color: #ffffff; background: #16a34a;
-        padding: 3px 10px; border-radius: 30px;
-    }
-
-    .q-card {
-        background: #ffffff;
-        border: 1.5px solid #e2ecf5; border-radius: 15px;
-        padding: 14px 15px; transition: all 0.2s; position: relative;
-    }
-    .q-card.not-yours {
-        background: #fafbfd;
-        border-style: dashed;
-    }
-    .q-card.not-yours .q-num-badge { opacity: 0.65; }
-    .q-card.solved {
-        border-color: #16a34a;
-        background: linear-gradient(180deg, #f3fdf7 0%, #eafaf1 100%);
-    }
-    .q-card.solved::before {
-        content: '✓'; position: absolute;
-        top: 10px; right: 12px;
-        width: 22px; height: 22px; border-radius: 50%;
-        background: #16a34a; color: #fff;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 12px; font-weight: 800;
-    }
-    .q-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-    .q-head .owner-label {
-        display: none;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 0.4px;
-        text-transform: uppercase;
-        color: #8098ad;
-        background: #eef3f9;
-        padding: 3px 9px;
-        border-radius: 20px;
-        white-space: nowrap;
-        flex-shrink: 0;
-        margin-left: auto;
-    }
-    .q-num-badge {
-        width: 26px; height: 26px; border-radius: 8px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 1px;
-        background: #eaf1ff; color: #1d4ed8;
-    }
-    .q-col.B .q-num-badge { background: #e3f5f2; color: #0f766e; }
-    .q-col.C .q-num-badge { background: #fff4e0; color: #b45309; }
-    .q-text {
-        flex: 1; font-size: 13.5px; font-weight: 700; color: #1c3350;
-        line-height: 1.42; min-width: 180px;
-    }
-    .options { display: flex; flex-direction: column; gap: 7px; }
-    .opt {
-        width: 100%; text-align: left;
-        border: 1.5px solid #dbe7f1; background: #fbfdff;
-        border-radius: 11px; padding: 10px 12px;
-        display: flex; align-items: flex-start; gap: 10px;
-        font-family: inherit; font-size: 13px; font-weight: 600;
-        color: #33526e; line-height: 1.4;
-        cursor: pointer; transition: all 0.15s; position: relative;
-    }
-    .opt .opt-letter {
-        width: 22px; height: 22px; border-radius: 6px;
-        background: #eef3f9; color: #4a6580;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 11.5px; font-weight: 800; flex-shrink: 0;
-        transition: all 0.15s;
-    }
-    .opt:hover:not(:disabled) { border-color: #1d4ed8; background: #f4f9ff; transform: translateX(2px); }
-    .q-col.B .opt:hover:not(:disabled) { border-color: #0f766e; background: #f0faf7; }
-    .q-col.C .opt:hover:not(:disabled) { border-color: #b45309; background: #fffaf0; }
-    .opt.correct { background: #eafaf1; border-color: #16a34a; color: #14603c; }
-    .opt.correct .opt-letter { background: #16a34a; color: #fff; }
-    .opt.correct::after { content: '\2713'; margin-left: auto; color: #16a34a; font-weight: 800; font-size: 15px; }
-    .opt.wrong {
-        background: #fdeaea; border-color: #dc2626; color: #8f2f2f;
-        animation: shake 0.55s ease-in-out;
-    }
-    .opt.wrong .opt-letter { background: #dc2626; color: #fff; }
-    .opt.wrong::after { content: '\2717'; margin-left: auto; color: #dc2626; font-weight: 800; font-size: 15px; }
-    .opt:disabled { cursor: default; }
-    .opt:disabled:not(.correct):not(.wrong) { opacity: 0.65; }
-    @keyframes shake {
-        10%, 90% { transform: translateX(-2px); }
-        20%, 80% { transform: translateX(3px); }
-        30%, 50%, 70% { transform: translateX(-5px); }
-        40%, 60% { transform: translateX(5px); }
-    }
-    .feedback {
-        margin-top: 9px; font-size: 12.5px; font-weight: 700;
-        line-height: 1.4; padding: 8px 12px; border-radius: 9px;
-        display: none;
-    }
-    .feedback.success {
-        display: block; background: #eafaf1; color: #14603c;
-        border-left: 3px solid #16a34a;
-    }
-    .feedback.live {
-        display: block; background: #fff4e0; color: #92400e;
-        border-left: 3px solid #f59e0b;
-    }
-    .teamwork-banner {
-        margin-top: 16px;
-        background: linear-gradient(135deg, #16a34a, #0d9488);
-        border-radius: 16px; padding: 16px 20px; color: #fff;
-        display: none; align-items: center; gap: 14px;
-        box-shadow: 0 12px 28px rgba(13, 148, 136, 0.28);
-        animation: popIn 0.5s ease-out;
-    }
-    .teamwork-banner.show { display: flex; }
-    .teamwork-banner i { font-size: 26px; flex-shrink: 0; }
-    .teamwork-banner strong { display: block; font-size: 15px; margin-bottom: 2px; }
-    .teamwork-banner span { font-size: 12.5px; opacity: 0.95; font-weight: 500; }
-
-    /* ---------- STEP NAV ---------- */
-    .step-nav {
-        display: flex; align-items: center; justify-content: space-between;
-        gap: 14px; flex-wrap: wrap;
-        background: #ffffff; border: 1px solid #e6eef6; border-radius: 20px;
-        padding: 12px 16px;
-        box-shadow: 0 10px 26px rgba(20, 45, 80, 0.08);
-        margin-top: 22px;
-        position: sticky; bottom: 14px; z-index: 100;
-    }
-    .step-nav-btn {
-        border: none; border-radius: 40px; padding: 11px 22px;
-        font-family: inherit; font-size: 14px; font-weight: 700;
-        cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
-        transition: all 0.18s; background: #eef3f9; color: #3d5a75;
-    }
-    .step-nav-btn:hover:not(:disabled) { background: #dbe7f1; }
-    .step-nav-btn.primary {
-        background: linear-gradient(135deg, #1d4ed8, #16389b);
-        color: #fff; box-shadow: 0 8px 20px rgba(29, 78, 216, 0.3);
-    }
-    .step-nav-btn.primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(29, 78, 216, 0.38); }
-    .step-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; box-shadow: none; }
-    .step-dots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
-    .step-dot {
-        width: 26px; height: 26px; border-radius: 50%;
-        border: 2px solid #dbe7f1; background: #ffffff;
-        color: #6b8299; font-size: 10.5px; font-weight: 800;
-        cursor: pointer; display: flex; align-items: center; justify-content: center;
-        transition: all 0.18s; padding: 0; font-family: inherit;
-    }
-    .step-dot:hover { border-color: #1d4ed8; color: #1d4ed8; }
-    .step-dot.active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; width: 32px; border-radius: 15px; }
-
-    /* ---------- TOAST ---------- */
-    .toast {
-        position: fixed; bottom: 88px; left: 50%;
-        transform: translateX(-50%) translateY(20px);
-        background: #1d4ed8; color: #fff;
-        padding: 12px 22px; border-radius: 40px;
-        font-family: inherit; font-size: 13.5px; font-weight: 700;
-        box-shadow: 0 12px 30px rgba(29, 78, 216, 0.35);
-        opacity: 0; transition: all 0.3s; z-index: 1000;
-        pointer-events: none; max-width: 90vw;
-        text-align: center;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .toast.success { background: #16a34a; }
-    .toast.gold { background: linear-gradient(135deg, #d97706, #b45309); }
-
-    .footer-note {
-        margin-top: 24px; font-size: 12px; line-height: 1.6;
-        color: #8098ad; text-align: center; font-weight: 500;
-    }
-
-    /* ---------- RESPONSIVE ---------- */
-    @media (max-width: 900px) {
-        .q-columns[data-count] { grid-template-columns: 1fr; }
-        .arena { grid-template-columns: 1fr; }
-        .vs-circle { margin: -6px auto; }
-        .side { flex-direction: row; text-align: left; align-items: center; }
-        .side > div:last-child { display: flex; flex-direction: column; align-items: flex-start; }
-        .side-desc { max-width: none; }
-    }
-    @media (max-width: 640px) {
-        body { padding: 14px 10px 100px; }
-        .join-screen { padding: 26px 20px 22px; margin-top: 20px; }
-        .section-head { padding: 16px 18px 14px; }
-        .section-body { padding: 18px 16px 20px; }
-        .sec-title { font-size: 17.5px; }
-        .theme-q p { font-size: 15px; }
-        .proscons { grid-template-columns: 1fr; }
-        .topbar { padding: 10px 12px; position: static; }
-        .room-chip, .me-chip { font-size: 12px; }
-        .audio-row { padding: 10px 12px; }
-        .audio-row audio { min-width: 0; width: 100%; }
-        .side { flex-direction: column; text-align: center; align-items: center; }
-        .side > div:last-child { align-items: center; }
-        .side-icon-circle { width: 76px; height: 76px; font-size: 32px; }
-        .step-nav { padding: 10px 12px; }
-        .step-nav-btn { padding: 9px 16px; font-size: 12.5px; }
-        .step-dot { width: 24px; height: 24px; font-size: 10px; }
-        .step-dot.active { width: 28px; }
-        .progress-bar { flex-direction: column; align-items: stretch; }
-        .prog-item { justify-content: center; }
-        .location-banner { padding: 12px 16px; }
-        .loc-info { font-size: 12.5px; }
-        .loc-team-score { font-size: 12px; padding: 6px 13px; }
-        .loc-guide-btn { width: 100%; justify-content: center; }
-        .auth-panel { padding: 13px 16px; }
-        .auth-panel.go strong { font-size: 15px; }
-        .auth-btn { margin-left: 0; width: 100%; justify-content: center; margin-top: 8px; }
-    }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#eef3fa;background-image:radial-gradient(circle at 10% 4%,rgba(29,78,216,.09),transparent 40%),radial-gradient(circle at 90% 96%,rgba(15,118,110,.09),transparent 40%);background-attachment:fixed;color:#13202d;min-height:100vh;padding:24px 18px 48px}
+.app{max-width:1180px;margin:0 auto}.hidden{display:none!important}
+.join-screen{max-width:480px;margin:60px auto 0;background:#fff;border-radius:28px;border:1px solid #e6eef6;box-shadow:0 24px 60px rgba(20,45,80,.14);padding:32px 30px 28px}
+.join-brand{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.join-logo{width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,#1d4ed8,#0f766e);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.join-brand h1{font-size:21px;font-weight:800;line-height:1.2}.join-brand h1 span{color:#1d4ed8}
+.join-brand p{font-size:12.5px;color:#6b8299;font-weight:500;margin-top:3px}
+.room-info{background:#f7fafd;border:1.5px solid #e2ecf5;border-radius:13px;padding:12px 15px;margin-bottom:16px;font-size:12.5px;font-weight:600;color:#4a6580}
+.room-info b{color:#13202d;letter-spacing:1px}
+.field label{display:block;font-size:10.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#7d92a8;margin-bottom:7px}
+.field input{width:100%;padding:13px 15px;border-radius:13px;border:1.5px solid #dbe7f1;background:#f7fafd;font:600 15px 'Inter',sans-serif;color:#13202d;outline:none;margin-bottom:14px}
+.field input:focus{border-color:#1d4ed8;background:#fff;box-shadow:0 0 0 4px #eaf1ff}
+.btn{border:none;border-radius:40px;padding:12px 24px;font:800 14px 'Inter',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(135deg,#1d4ed8,#16389b);color:#fff;box-shadow:0 8px 20px rgba(29,78,216,.3);transition:.18s}
+.btn:hover:not(:disabled){transform:translateY(-2px)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.wide{width:100%}.btn.soft{background:#eef3f9;color:#3d5a75;box-shadow:none}.btn.soft:hover:not(:disabled){background:#dbe7f1}
+.btn.warn{background:#fff4e0;color:#a0690c;border:1.5px solid #f0c88a;box-shadow:none;padding:8px 14px;font-size:12px}
+.join-error{background:#fdeaea;color:#8f2f2f;border:1.5px solid #f6d5d5;border-radius:12px;padding:11px 14px;font-size:13px;font-weight:600;margin-top:14px}
+.join-hint{font-size:12px;line-height:1.55;color:#8098ad;margin-top:16px;padding-top:16px;border-top:1px dashed #e2ecf5;text-align:center;font-weight:500}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid #e6eef6;border-radius:20px;padding:12px 16px;box-shadow:0 10px 26px rgba(20,45,80,.08);margin-bottom:12px;position:sticky;top:10px;z-index:100}
+.room-chip{background:#f2f7fc;border-radius:40px;padding:8px 15px;font-size:13px;font-weight:700;color:#4a6580}.room-chip b{color:#13202d}
+.me-chip{display:flex;align-items:center;gap:9px;border-radius:40px;padding:6px 14px 6px 8px;font-size:13px;font-weight:700}
+.me-chip.A{background:#eaf1ff;color:#1d4ed8}.me-chip.B{background:#e3f5f2;color:#0f766e}.me-chip.C{background:#fff4e0;color:#b45309}.me-chip.ghost{background:#f1ebff;color:#7c3aed}
+.me-dot{width:26px;height:26px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.A .me-dot,.me-dot.A{background:#1d4ed8}.B .me-dot,.me-dot.B{background:#0f766e}.C .me-dot,.me-dot.C{background:#b45309}.ghost .me-dot{background:#7c3aed}
+.leave-btn{border:none;background:transparent;color:#8098ad;border-radius:30px;padding:8px 14px;font:700 12px 'Inter',sans-serif;cursor:pointer}.leave-btn:hover{background:#fdeaea;color:#a13d3d}
+.location-banner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#1d4ed8,#16389b);color:#fff;border-radius:16px;padding:14px 20px;margin-bottom:22px;box-shadow:0 12px 28px rgba(29,78,216,.28)}
+.loc-info{display:flex;align-items:center;gap:10px;font-size:14.5px;font-weight:700;flex:1;min-width:0}.loc-info i{color:#ffd166}
+.loc-step-num{background:rgba(255,255,255,.18);padding:3px 10px;border-radius:30px;font-size:11.5px;font-weight:800}
+.loc-team-score{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.28);border-radius:30px;padding:7px 16px;font-size:13px;font-weight:800}
+.loc-team-score i{color:#ffd166}.loc-team-score b{font-size:16px}
+.loc-guide-btn{border:none;border-radius:30px;background:#ffd166;color:#7a4a00;padding:9px 18px;font:800 12.5px 'Inter',sans-serif;cursor:pointer}
+.section{background:#fff;border:1px solid #e6eef6;border-radius:26px;box-shadow:0 16px 38px rgba(20,45,80,.09);overflow:hidden}
+.section-head{padding:20px 26px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #eaf1f8}
+.section-head.l{background:linear-gradient(135deg,#f1ebff,#eaf1ff)}
+.sec-badge{display:inline-flex;align-items:center;gap:7px;background:#eaf1ff;color:#1d4ed8;padding:5px 14px;border-radius:30px;font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
+.sec-badge.listen{background:#fff;color:#7c3aed}
+.sec-title{font-size:21px;font-weight:800;letter-spacing:-.3px}
+.sec-num{margin-left:auto;font-size:12px;font-weight:800;color:#8098ad;background:#f2f7fc;border-radius:40px;padding:6px 15px}
+.section-body{padding:22px 26px 24px}
+.panel{border-radius:15px;padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.panel strong{display:block;font-size:15px;margin-bottom:2px}.panel p{font-size:12.5px;font-weight:500}
+.panel .ic{font-size:24px;flex-shrink:0}
+.panel.locked{background:#f7fafd;border:1.5px dashed #c5d8eb;color:#55708b}.panel.locked strong{color:#13202d}
+.panel.go{background:linear-gradient(135deg,#16a34a,#0d9488);color:#fff;box-shadow:0 12px 28px rgba(22,163,74,.28)}
+.panel.ghost{background:#f1ebff;border:1.5px solid #d6c7f5;color:#5b21b6}.panel.ghost strong{color:#4c1d95}
+.timer{margin-left:auto;font-size:34px;font-weight:800;letter-spacing:1px;font-variant-numeric:tabular-nums}
+.pics{display:grid;gap:14px;margin-bottom:6px}.pics[data-n="2"]{grid-template-columns:1fr 1fr}.pics[data-n="3"]{grid-template-columns:repeat(3,1fr)}
+.pic{background:var(--tint);border:2.5px solid transparent;border-radius:18px;padding:18px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:9px;opacity:.55;transition:.2s}
+.pic.now{opacity:1;border-color:var(--accent);box-shadow:0 14px 30px rgba(20,45,80,.16);transform:translateY(-3px)}
+.pic.done{opacity:.75}
+.pic-icon{width:96px;height:96px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(20,45,80,.14);color:var(--accent);font-size:40px}
+.pic-tag{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);background:#fff;padding:4px 12px;border-radius:30px}
+.pic h3{font-size:17px;font-weight:800}.pic p{font-size:12px;font-weight:500;color:#5a7189;line-height:1.45}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.chip{background:#fff;border:1.5px solid #dbe7f1;color:#33526e;font-size:12px;font-weight:700;padding:5px 12px;border-radius:40px}
+.who{font-size:12.5px;font-weight:800;color:#13202d;background:#fff;border-radius:30px;padding:5px 12px}
+.textcard{background:linear-gradient(180deg,#fffdf5,#fff8e6);border:2px solid #f2dfa6;border-radius:18px;padding:22px 24px;margin-bottom:16px}
+.textcard small{display:block;font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:#a0690c;margin-bottom:10px}
+.textcard p{font-size:20px;line-height:1.65;font-weight:600;color:#3a2b0a}
+.order{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.order span{font-size:12px;font-weight:800;padding:6px 14px;border-radius:30px;background:#f2f7fc;color:#6b8299}
+.order span.now{background:#1d4ed8;color:#fff}.order span.done{background:#eafaf1;color:#14603c}
+.progress-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:12px 16px;border-radius:14px;background:#f7fafd;border:1px solid #eaf1f8;margin-bottom:18px}
+.prog-item{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:#55708b;background:#fff;border-radius:30px;padding:5px 13px 5px 5px;border:1px solid #e2ecf5}
+.prog-item .me-dot{width:24px;height:24px;font-size:10.5px}
+.prog-count{color:#1d4ed8;font-weight:800}.prog-count.done{color:#16a34a}
+.prog-pts{background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:800}
+.q-columns{display:grid;gap:14px}.q-columns[data-n="1"]{grid-template-columns:1fr}.q-columns[data-n="2"]{grid-template-columns:1fr 1fr}
+.q-col{display:flex;flex-direction:column;gap:12px}
+.q-col-head{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:800;color:#4a6580;flex-wrap:wrap}
+.player-tag{padding:4px 12px;border-radius:30px;font-size:11px;font-weight:800;text-transform:uppercase}
+.player-tag.A{background:#eaf1ff;color:#1d4ed8}.player-tag.B{background:#e3f5f2;color:#0f766e}.player-tag.C{background:#fff4e0;color:#b45309}
+.you-badge{margin-left:auto;font-size:10px;font-weight:800;text-transform:uppercase;color:#fff;background:#16a34a;padding:3px 10px;border-radius:30px}
+.q-card{background:#fff;border:1.5px solid #e2ecf5;border-radius:15px;padding:14px 15px;position:relative}
+.q-card.not-yours{background:#fafbfd;border-style:dashed}
+.q-card.solved{border-color:#16a34a;background:linear-gradient(180deg,#f3fdf7,#eafaf1)}
+.q-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.q-num{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;background:#eaf1ff;color:#1d4ed8}
+.q-text{flex:1;font-size:13.5px;font-weight:700;color:#1c3350;line-height:1.42}
+.options{display:flex;flex-direction:column;gap:7px}
+.opt{width:100%;text-align:left;border:1.5px solid #dbe7f1;background:#fbfdff;border-radius:11px;padding:10px 12px;display:flex;align-items:flex-start;gap:10px;font:600 13px 'Inter',sans-serif;color:#33526e;line-height:1.4;cursor:pointer;transition:.15s}
+.opt .l{width:22px;height:22px;border-radius:6px;background:#eef3f9;color:#4a6580;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:800;flex-shrink:0}
+.opt:hover:not(:disabled){border-color:#1d4ed8;background:#f4f9ff;transform:translateX(2px)}
+.opt.correct{background:#eafaf1;border-color:#16a34a;color:#14603c}.opt.correct .l{background:#16a34a;color:#fff}
+.opt.wrong{background:#fdeaea;border-color:#dc2626;color:#8f2f2f;animation:shake .55s}.opt.wrong .l{background:#dc2626;color:#fff}
+.opt:disabled{cursor:default}.opt:disabled:not(.correct):not(.wrong){opacity:.65}
+@keyframes shake{20%,80%{transform:translateX(3px)}30%,50%,70%{transform:translateX(-5px)}40%,60%{transform:translateX(5px)}}
+.feedback{margin-top:9px;font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:9px}
+.feedback.ok{background:#eafaf1;color:#14603c;border-left:3px solid #16a34a}.feedback.live{background:#fff4e0;color:#92400e;border-left:3px solid #f59e0b}
+.teamwork{margin-top:16px;background:linear-gradient(135deg,#16a34a,#0d9488);border-radius:16px;padding:16px 20px;color:#fff;display:flex;align-items:center;gap:14px}
+.teamwork i{font-size:26px}.teamwork span{display:block;font-size:12.5px;opacity:.95}
+.step-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#fff;border:1px solid #e6eef6;border-radius:20px;padding:12px 16px;box-shadow:0 10px 26px rgba(20,45,80,.08);margin-top:22px;position:sticky;bottom:14px;z-index:100}
+.step-dots{display:flex;gap:6px}
+.step-dot{width:26px;height:26px;border-radius:50%;border:2px solid #dbe7f1;background:#fff;color:#6b8299;font:800 10.5px 'Inter',sans-serif;cursor:pointer}
+.step-dot.active{background:#1d4ed8;border-color:#1d4ed8;color:#fff;width:32px;border-radius:15px}
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%);background:#1d4ed8;color:#fff;padding:12px 22px;border-radius:40px;font-size:13.5px;font-weight:700;box-shadow:0 12px 30px rgba(29,78,216,.35);z-index:1000;max-width:90vw;text-align:center}
+.toast.success{background:#16a34a}.toast.gold{background:#d97706}
+.footer-note{margin-top:24px;font-size:12px;color:#8098ad;text-align:center}
+@media(max-width:900px){.pics[data-n],.q-columns[data-n]{grid-template-columns:1fr}}
+@media(max-width:640px){body{padding:14px 10px 100px}.section-body{padding:18px 16px}.topbar{position:static}.textcard p{font-size:17px}}
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     JOIN SCREEN
-     ============================================================ -->
 <div class="join-screen" id="joinScreen">
-    <div class="join-brand">
-        <div class="join-logo"><i class="fas fa-comments"></i></div>
-        <div>
-            <h1>Two Futures <span>· Team Activity</span></h1>
-            <p>4 choices · 2 listening tasks · play together</p>
-        </div>
-    </div>
-
-    <div class="room-info">
-        <i class="fas fa-users"></i>
-        <span>You are joining room <b id="roomNameDisplay">TEENFUTURES</b></span>
-    </div>
-
-    <div class="field">
-        <label for="nameInput">Your name</label>
-        <input id="nameInput" type="text" maxlength="24" placeholder="Type your name here" autocomplete="off" />
-    </div>
-
-    <button type="button" class="join-btn" id="joinBtn">
-        <i class="fas fa-arrow-right-to-bracket"></i> Join the room
-    </button>
-
-    <div class="join-error hidden" id="joinError">
-        <i class="fas fa-circle-exclamation"></i>
-        <span id="joinErrorText"></span>
-    </div>
-
-    <p class="join-hint">
-        Everyone on this page is in the same room. The system will assign you Player A, B, or C automatically.
-    </p>
+  <div class="join-brand">
+    <div class="join-logo"><i class="fas fa-comments"></i></div>
+    <div><h1>Speak &amp; Dictate <span>· Team Activity</span></h1><p>2 speaking rounds · 2 listening dictations</p></div>
+  </div>
+  <div class="room-info"><i class="fas fa-users"></i> You are joining room <b id="roomNameDisplay"></b></div>
+  <div class="field"><label for="nameInput">Your name</label>
+    <input id="nameInput" type="text" maxlength="24" placeholder="Type your name here" autocomplete="off" /></div>
+  <button type="button" class="btn wide" id="joinBtn"><i class="fas fa-arrow-right-to-bracket"></i> Join the room</button>
+  <div class="join-error hidden" id="joinError"></div>
+  <p class="join-hint">Everyone on this page is in the same room. The system will assign you Player A, B, or C automatically.</p>
 </div>
 
-<!-- ============================================================
-     MAIN APP
-     ============================================================ -->
 <div class="app hidden" id="mainApp">
-
-    <div class="topbar">
-        <div class="room-chip">
-            <i class="fas fa-users"></i>
-            <span>Room</span>
-            <b id="roomCodeDisplay">—</b>
-        </div>
-        <div class="me-chip A" id="meChip">
-            <span class="me-dot" id="meInitial">?</span>
-            <b id="meName">—</b>
-            <span id="meRole">Player A</span>
-        </div>
-        <button type="button" class="reset-answers-btn hidden" id="resetAnswersBtn">
-            <i class="fas fa-eraser"></i> Reset answers
-        </button>
-        <button class="leave-btn" id="leaveBtn">
-            <i class="fas fa-right-from-bracket"></i> Leave
-        </button>
-    </div>
-
-    <div class="location-banner">
-        <div class="loc-info">
-            <i class="fas fa-location-dot"></i>
-            <span class="loc-step-num" id="locStepNum">1 / 6</span>
-            <span class="loc-step-title" id="locStepTitle">—</span>
-        </div>
-        <div class="loc-team-score">
-            <i class="fas fa-trophy"></i>
-            <span>Team</span>
-            <b id="teamScoreVal">0</b>
-            <span>pts</span>
-        </div>
-        <button type="button" class="loc-guide-btn hidden" id="guideBtn">
-            <i class="fas fa-paper-plane"></i> Send class here
-        </button>
-    </div>
-
-    <div id="sections"></div>
-
-    <nav class="step-nav">
-        <button class="step-nav-btn" id="prevStep">
-            <i class="fas fa-arrow-left"></i> Previous
-        </button>
-        <div class="step-dots" id="stepDots"></div>
-        <button class="step-nav-btn primary" id="nextStep">
-            Next <i class="fas fa-arrow-right"></i>
-        </button>
-    </nav>
-
-    <p class="footer-note">
-        All situations here are imaginary and are used only to practise English.
-    </p>
+  <div class="topbar">
+    <div class="room-chip"><i class="fas fa-users"></i> Room <b id="roomCode"></b></div>
+    <div class="me-chip A" id="meChip"><span class="me-dot" id="meInitial">?</span><b id="meName"></b><span id="meRole"></span></div>
+    <button type="button" class="btn warn hidden" id="resetBtn"><i class="fas fa-eraser"></i> Reset everything</button>
+    <button class="leave-btn" id="leaveBtn"><i class="fas fa-right-from-bracket"></i> Leave</button>
+  </div>
+  <div class="location-banner">
+    <div class="loc-info"><i class="fas fa-location-dot"></i><span class="loc-step-num" id="locNum"></span><span id="locTitle"></span></div>
+    <div class="loc-team-score"><i class="fas fa-trophy"></i> Team <b id="teamScore">0</b> pts</div>
+    <button type="button" class="loc-guide-btn hidden" id="guideBtn"><i class="fas fa-paper-plane"></i> Send class here</button>
+  </div>
+  <div id="sections"></div>
+  <nav class="step-nav">
+    <button class="btn soft" id="prevStep"><i class="fas fa-arrow-left"></i> Previous</button>
+    <div class="step-dots" id="stepDots"></div>
+    <button class="btn" id="nextStep">Next <i class="fas fa-arrow-right"></i></button>
+  </nav>
+  <p class="footer-note">All situations here are imaginary and used only to practise English.</p>
 </div>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <script>
 (function () {
-    'use strict';
+'use strict';
+const FIREBASE_URL = 'https://english-meetings-f08e4-default-rtdb.firebaseio.com';
+const ROOM = 'SPEAKDICTATE';
+const GHOSTS = ['andre prof','prof andre','andre professor','professor andre','prof. andre','andre prof.'];
+const CLIENT_ID = 'c_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+const KEY = 'speak-dictate-v1';
+const ROLES = ['A','B','C'];
+const TURN_MS = 5 * 60 * 1000;
+const COLORS = [['#1d4ed8','#eaf1ff'],['#0f766e','#e3f5f2'],['#b45309','#fff4e0']];
 
-    /* ================================================================
-       CONSTANTS
-       ================================================================ */
-    const FIREBASE_URL = 'https://english-meetings-f08e4-default-rtdb.firebaseio.com';
-    const FIXED_ROOM = 'TEENFUTURES';
-    const GHOST_NAMES = ['andre prof', 'prof andre', 'andre professor', 'professor andre', 'prof. andre', 'andre prof.'];
-    const CLIENT_ID = 'c_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-    const STORAGE_KEY = 'two-futures-teen-v1';
-    const ROLES = ['A', 'B', 'C'];
+/* ---------------- DATA ---------------- */
+const STEPS = [
+ { type:'speak', id:'s1', title:'Speaking 1 · Ask your friends', topics:[
+   { n:'A birthday party', i:'fa-cake-candles', d:'Imagine the last great party you went to.', c:['guests','food','music','presents','games'] },
+   { n:'A trip abroad', i:'fa-plane', d:'Think about a place you would like to visit.', c:['hotel','tickets','weather','sightseeing','food'] },
+   { n:'A weekend of sport', i:'fa-futbol', d:'Think about the sports people play or watch.', c:['team','training','stadium','win','injury'] } ] },
+ { type:'dict', id:'d1', title:'Listening Dictation 1 · Careers and the future of work', texts:[
+   { t:'Three years ago, Camila left her job as an accountant to become a web developer. She studied online for eight months and worked at night to pay for her course. Now she earns more than before and works for a company in Lisbon, but she says the first year was very hard.',
+     q:[['What was Camila\'s old job?',['Teacher','Accountant','Nurse'],1],['How long did she study online?',['Eight months','Eighteen months','Eight weeks'],0],['How did she pay for her course?',['She won a scholarship','She borrowed money','She worked at night'],2],['Where does she work now?',['Lisbon','Madrid','London'],0]] },
+   { t:'More companies now let employees work from home, and many people like it because they save time and money on transport. However, some workers feel lonely, and managers worry about teamwork. One solution is a hybrid model: three days at home and two days in the office.',
+     q:[['Why do many people like working from home?',['They earn more','They save time and money','They have longer holidays'],1],['What do some workers feel?',['Lonely','Bored','Angry'],0],['What do managers worry about?',['Salaries','Equipment','Teamwork'],2],['What is the hybrid model?',['Three days at home, two in the office','Two days at home, three in the office','Every day at home'],0]] },
+   { t:'Artificial intelligence is changing many jobs. Experts say it will not replace all workers, but it will change the tasks people do. Workers who learn to use new tools will have better chances. A recent report says that by 2030, about one in five employees will need to learn new skills.',
+     q:[['What will artificial intelligence change?',['The tasks people do','The office buildings','The salaries'],0],['Who will have better chances?',['Young workers only','People who work longer hours','Workers who learn new tools'],2],['Which year does the report mention?',['2025','2030','2040'],1],['How many employees will need new skills?',['One in ten','One in three','One in five'],2]] } ] },
+ { type:'speak', id:'s3', title:'Speaking 2 · Ask your friends', topics:[
+   { n:'Technology', i:'fa-mobile-screen', d:'Phones, apps and the things we use every day.', c:['app','battery','screen','internet','social media'] },
+   { n:'Pets and animals', i:'fa-dog', d:'Think about animals you know or would like to have.', c:['dog','cat','food','vet','walk'] },
+   { n:'Music and concerts', i:'fa-music', d:'Think about the songs and artists you enjoy.', c:['band','ticket','lyrics','instrument','festival'] } ] },
+ { type:'dict', id:'d2', title:'Listening Dictation 2 · Living abroad and job skills', texts:[
+   { t:'Marcos moved to Toronto two years ago to work as an engineer. The hardest part was the winter, because temperatures fall to minus twenty degrees. He also misses his family and Brazilian food. On the other hand, he loves the public transport and the multicultural friends he has made.',
+     q:[['Which city did Marcos move to?',['Vancouver','Toronto','Dublin'],1],['What was the hardest part for him?',['The winter','The language','The paperwork'],0],['What does he miss?',['His old job','His house','His family and Brazilian food'],2],['What does he love about his new life?',['The salary','Public transport and multicultural friends','The weather'],1]] },
+   { t:'Before a job interview, research the company and prepare examples of your work. Arrive ten minutes early and dress in a way that fits the company culture. At the end, ask at least one question, because it shows that you are interested. Finally, send a thank-you email the next day.',
+     q:[['What should you do before the interview?',['Research the company','Call the manager','Buy new clothes'],0],['When should you arrive?',['Thirty minutes early','Ten minutes early','Exactly on time'],1],['Why should you ask a question?',['To finish faster','To ask about salary','To show interest'],2],['When should you send a thank-you email?',['The next day','The same night','The next week'],0]] },
+   { t:'Some countries are testing a four-day work week with the same salary. In one trial, sixty companies took part for six months. Most of them said that workers were happier and less tired, and productivity stayed the same. Only a few companies decided to go back to five days.',
+     q:[['What are some countries testing?',['A six-hour day','A four-day work week','Longer holidays'],1],['How many companies took part?',['Sixteen','Six hundred','Sixty'],2],['How long did the trial last?',['Six months','One year','Three months'],0],['What did most companies say?',['Productivity fell','Workers were unhappy','Workers were happier and less tired'],2]] } ] }
+];
+const ALLQ = {};
 
-    const OWNER_2P = { 1: 'A', 2: 'B', 3: 'A', 4: 'B', 5: 'A', 6: 'B' };
-    const OWNER_3P = { 1: 'A', 2: 'B', 3: 'C', 4: 'A', 5: 'B', 6: 'C' };
+/* ---------------- STATE ---------------- */
+let me = { role:null, name:'', isGhost:false };
+let state = { players:{}, turns:{}, answers:{}, lastGuide:null };
+let step = 0, db = null, fbOk = false, offset = 0, lastGuideId = null, solvedSeen = {}, scheduled = {};
 
-    function getMode(presentRoles) {
-        if (presentRoles.length >= 3) return 'three';
-        if (presentRoles.length === 1) return 'one';
-        return 'two';
-    }
-    function ownerOfQ(n, mode) {
-        if (mode === 'three') return OWNER_3P[n];
-        if (mode === 'one') {
-            const present = presentRolesOf(state);
-            return present[0] || 'A';
-        }
-        return OWNER_2P[n];
-    }
-    function rolesForMode(mode) {
-        if (mode === 'three') return ['A', 'B', 'C'];
-        if (mode === 'one') {
-            const present = presentRolesOf(state);
-            return present.length ? [present[0]] : ['A'];
-        }
-        return ['A', 'B'];
-    }
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const now = () => Date.now() + offset;
+const present = () => ROLES.filter(r => state.players && state.players[r]);
+const pname = r => (state.players[r] && state.players[r].name) || ('Player ' + r);
+const initials = n => (n || '?').trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+const isGhostName = n => GHOSTS.includes(String(n || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim());
+const pts = a => a === 1 ? 3 : a === 2 ? 2 : 1;
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const arr = v => Array.isArray(v) ? v : Object.keys(v || {}).sort((a, b) => a - b).map(k => v[k]);
+function toast(msg, kind) {
+  const el = document.createElement('div'); el.className = 'toast ' + (kind || ''); el.textContent = msg;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 3000);
+}
 
-    /* ================================================================
-       DATA — 4 A1–A2 teen themes
-       ================================================================ */
-    const THEMES = [
-        {
-            id: 'theme1',
-            title: 'School uniform vs Free clothes',
-            question: 'Which is better for students? Why? Tell your partner one good thing and one bad thing about each.',
-            sideA: { label: 'Choice A', name: 'School uniform', desc: 'Everyone wears the same clothes at school.', color: '#1d4ed8', tint: '#eaf1ff', icon: 'fa-user-tie' },
-            sideB: { label: 'Choice B', name: 'Free clothes', desc: 'Students choose what to wear every day.', color: '#0f766e', tint: '#e3f5f2', icon: 'fa-shirt' },
-            chips: ['comfortable', 'expensive', 'cool', 'boring', 'my style', 'easy'],
-            prosPrompt: 'One good thing about this choice',
-            consPrompt: 'One bad thing about this choice'
-        },
-        {
-            id: 'theme2',
-            title: 'Video games vs Sport',
-            question: 'Which is better for your free time? Why? Tell your partner one good thing and one bad thing about each.',
-            sideA: { label: 'Choice A', name: 'Video games', desc: 'Playing games with friends online or at home.', color: '#1d4ed8', tint: '#eaf1ff', icon: 'fa-gamepad' },
-            sideB: { label: 'Choice B', name: 'Sport', desc: 'Playing football, basketball, or going to the gym.', color: '#0f766e', tint: '#e3f5f2', icon: 'fa-futbol' },
-            chips: ['fun', 'healthy', 'friends', 'alone', 'team', 'tiring'],
-            prosPrompt: 'One good thing about this choice',
-            consPrompt: 'One bad thing about this choice'
-        },
-        {
-            id: 'theme3',
-            title: 'TikTok vs YouTube',
-            question: 'Which is better for teenagers? Why? Tell your partner one good thing and one bad thing about each.',
-            sideA: { label: 'Choice A', name: 'TikTok', desc: 'Short videos, music, and quick fun.', color: '#1d4ed8', tint: '#eaf1ff', icon: 'fa-music' },
-            sideB: { label: 'Choice B', name: 'YouTube', desc: 'Long videos — tutorials, vlogs, and more.', color: '#0f766e', tint: '#e3f5f2', icon: 'fa-circle-play' },
-            chips: ['funny', 'useful', 'learn', 'waste time', 'long', 'short'],
-            prosPrompt: 'One good thing about this choice',
-            consPrompt: 'One bad thing about this choice'
-        },
-        {
-            id: 'theme4',
-            title: 'YouTuber vs Doctor or Engineer',
-            question: 'Which is a better future job? Why? Tell your partner one good thing and one bad thing about each.',
-            sideA: { label: 'Choice A', name: 'Famous YouTuber', desc: 'Making videos for millions of people.', color: '#1d4ed8', tint: '#eaf1ff', icon: 'fa-star' },
-            sideB: { label: 'Choice B', name: 'Doctor or Engineer', desc: 'A job with study, exams, and steady work.', color: '#0f766e', tint: '#e3f5f2', icon: 'fa-stethoscope' },
-            chips: ['money', 'fame', 'help people', 'stress', 'safe', 'risky'],
-            prosPrompt: 'One good thing about this choice',
-            consPrompt: 'One bad thing about this choice'
-        }
-    ];
+/* ---------------- DB LAYER (Firebase, with local fallback) ---------------- */
+function localSet(path, val) {
+  const p = path.split('/'); let o = state;
+  for (let i = 0; i < p.length - 1; i++) { if (o[p[i]] == null) o[p[i]] = {}; o = o[p[i]]; }
+  if (val === null) delete o[p[p.length - 1]]; else o[p[p.length - 1]] = val;
+}
+function localGet(path) { let o = state; for (const k of path.split('/')) { if (o == null) return null; o = o[k]; } return o == null ? null : o; }
+function setPath(path, val) {
+  localSet(path, val); render();
+  if (fbOk) db.ref('rooms/' + ROOM + '/' + path).set(val).catch(e => console.warn(e));
+}
+function multi(updates) {
+  Object.keys(updates).forEach(p => localSet(p, updates[p])); render();
+  if (fbOk) { const u = {}; Object.keys(updates).forEach(p => u['rooms/' + ROOM + '/' + p] = updates[p]); db.ref().update(u).catch(e => console.warn(e)); }
+}
+function txn(path, fn) {
+  if (fbOk) db.ref('rooms/' + ROOM + '/' + path).transaction(fn, () => {});
+  else { const r = fn(localGet(path)); if (r !== undefined) { localSet(path, r); render(); } }
+}
+function initFirebase() {
+  if (typeof firebase === 'undefined' || !firebase.initializeApp) return;
+  try {
+    firebase.initializeApp({ databaseURL: FIREBASE_URL }); db = firebase.database(); fbOk = true;
+    db.ref('.info/serverTimeOffset').on('value', s => { offset = s.val() || 0; });
+  } catch (e) { console.warn(e); }
+}
 
-    /* ================================================================
-       DATA — 2 A1–A2 listenings (teen speakers)
-       ================================================================ */
-    const LISTENINGS = [
-        {
-            id: 'listening1', variant: 'listen1',
-            title: 'Listening 1 · Lucas — my school day',
-            audio: 'https://files.catbox.moe/wd1mfp.mp3',
-            intro: 'Listen to Lucas. He is sixteen. Then choose the correct answer.',
-            questions: [
-                { id: 'l1q1', num: 1, text: 'How old is Lucas?',
-                  options: [
-                      { k: 'a', text: 'Fourteen' },
-                      { k: 'b', text: 'Sixteen' },
-                      { k: 'c', text: 'Eighteen' }
-                  ], correct: 'b', explain: 'he says: "I\'m sixteen"' },
-                { id: 'l1q2', num: 2, text: 'What time does his school start?',
-                  options: [
-                      { k: 'a', text: 'Seven thirty' },
-                      { k: 'b', text: 'Eight o\'clock' },
-                      { k: 'c', text: 'Seven o\'clock' }
-                  ], correct: 'a', explain: 'his school starts at seven thirty' },
-                { id: 'l1q3', num: 3, text: 'What is his favourite subject?',
-                  options: [
-                      { k: 'a', text: 'Math' },
-                      { k: 'b', text: 'History' },
-                      { k: 'c', text: 'English' }
-                  ], correct: 'b', explain: 'his favourite subject is history' },
-                { id: 'l1q4', num: 4, text: 'Why does he not like math?',
-                  options: [
-                      { k: 'a', text: 'It is too difficult' },
-                      { k: 'b', text: 'It is boring' },
-                      { k: 'c', text: 'The teacher is strict' }
-                  ], correct: 'a', explain: 'he says math is too difficult for him' },
-                { id: 'l1q5', num: 5, text: 'What do he and his friends talk about at lunch?',
-                  options: [
-                      { k: 'a', text: 'Sports' },
-                      { k: 'b', text: 'School subjects' },
-                      { k: 'c', text: 'Games and music' }
-                  ], correct: 'c', explain: 'they talk about games and music' },
-                { id: 'l1q6', num: 6, text: 'When does he have soccer practice?',
-                  options: [
-                      { k: 'a', text: 'Mondays and Wednesdays' },
-                      { k: 'b', text: 'Tuesdays and Thursdays' },
-                      { k: 'c', text: 'Fridays' }
-                  ], correct: 'b', explain: 'he has soccer practice on Tuesdays and Thursdays' }
-            ]
-        },
-        {
-            id: 'listening2', variant: 'listen2',
-            title: 'Listening 2 · Sofia — my weekend',
-            audio: 'https://files.catbox.moe/4j5ode.mp3',
-            intro: 'Listen to Sofia. She is fifteen. Then choose the correct answer.',
-            questions: [
-                { id: 'l2q1', num: 1, text: 'How old is Sofia?',
-                  options: [
-                      { k: 'a', text: 'Fifteen' },
-                      { k: 'b', text: 'Thirteen' },
-                      { k: 'c', text: 'Seventeen' }
-                  ], correct: 'a', explain: 'she says: "I\'m fifteen"' },
-                { id: 'l2q2', num: 2, text: 'What time does she wake up on Saturday?',
-                  options: [
-                      { k: 'a', text: 'Eight or nine' },
-                      { k: 'b', text: 'Ten or eleven' },
-                      { k: 'c', text: 'Twelve' }
-                  ], correct: 'b', explain: 'she sleeps until ten or eleven' },
-                { id: 'l2q3', num: 3, text: 'Where does she go in the afternoon?',
-                  options: [
-                      { k: 'a', text: 'To the mall' },
-                      { k: 'b', text: 'To the park' },
-                      { k: 'c', text: 'To her friend\'s house' }
-                  ], correct: 'c', explain: 'she goes to her friend\'s house' },
-                { id: 'l2q4', num: 4, text: 'Where does her family go on Sunday?',
-                  options: [
-                      { k: 'a', text: 'To her grandmother\'s house' },
-                      { k: 'b', text: 'To the beach' },
-                      { k: 'c', text: 'To a restaurant' }
-                  ], correct: 'a', explain: 'they go to her grandmother\'s house' },
-                { id: 'l2q5', num: 5, text: 'What do they eat for lunch?',
-                  options: [
-                      { k: 'a', text: 'Pizza and salad' },
-                      { k: 'b', text: 'Rice, beans, chicken and cake' },
-                      { k: 'c', text: 'Pasta and fish' }
-                  ], correct: 'b', explain: 'they eat rice, beans, chicken and cake' },
-                { id: 'l2q6', num: 6, text: 'When does she do her homework?',
-                  options: [
-                      { k: 'a', text: 'Friday night' },
-                      { k: 'b', text: 'Sunday evening' },
-                      { k: 'c', text: 'Saturday night' }
-                  ], correct: 'b', explain: 'she does her homework on Sunday evening' }
-            ]
-        }
-    ];
-
-    const ITEMS = [
-        { type: 'theme', data: THEMES[0] },
-        { type: 'listening', data: LISTENINGS[0] },
-        { type: 'theme', data: THEMES[1] },
-        { type: 'listening', data: LISTENINGS[1] },
-        { type: 'theme', data: THEMES[2] },
-        { type: 'theme', data: THEMES[3] }
-    ];
-
-    const ALL_QUESTIONS = {};
-    LISTENINGS.forEach(l => l.questions.forEach(q => { ALL_QUESTIONS[q.id] = q; }));
-
-    function stepLabel(item) {
-        if (item.type === 'theme') return 'Choice · ' + item.data.title;
-        return item.data.title;
-    }
-
-    /* ================================================================
-       STATE
-       ================================================================ */
-    let me = { role: null, name: '', room: FIXED_ROOM, isGhost: false };
-    let state = { players: {}, answers: {}, auth: {}, lastGuide: null };
-    let currentStep = 0;
-    let sectionsEls = [];
-    let lastRolesStr = '';
-    let lastKnownSolved = {};
-    let lastSeenGuidePushId = null;
-    let lastAuthSnapshot = {};
-    let db = null;
-    let firebaseOk = false;
-    let roomRef = null;
-
-    /* ================================================================
-       HELPERS
-       ================================================================ */
-    function $(sel, root) { return (root || document).querySelector(sel); }
-    function $$(sel, root) { return Array.from((root || document).querySelectorAll(sel)); }
-    function escapeHtml(str) {
-        return String(str).replace(/[&<>"']/g, ch => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[ch]));
-    }
-    function initials(name) {
-        if (!name) return '?';
-        return name.trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
-    }
-    function toast(msg, kind) {
-        const el = document.createElement('div');
-        el.className = 'toast' + (kind ? ' ' + kind : '');
-        el.textContent = msg;
-        document.body.appendChild(el);
-        requestAnimationFrame(() => el.classList.add('show'));
-        setTimeout(() => {
-            el.classList.remove('show');
-            setTimeout(() => el.remove(), 300);
-        }, 3000);
-    }
-    function presentRolesOf(s) { return ROLES.filter(r => s.players && s.players[r]); }
-    function isGhostName(name) {
-        const n = String(name || '').toLowerCase()
-            .normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-        return GHOST_NAMES.indexOf(n) !== -1;
-    }
-    function pointsForAttempt(attempts) {
-        if (attempts === 1) return 3;
-        if (attempts === 2) return 2;
-        return 1;
-    }
-
-    /* ================================================================
-       FIREBASE
-       ================================================================ */
-    function initFirebase() {
-        if (typeof firebase === 'undefined' || !firebase.initializeApp) return;
-        try {
-            firebase.initializeApp({ databaseURL: FIREBASE_URL });
-            db = firebase.database();
-            firebaseOk = true;
-        } catch (e) { console.warn('Firebase init failed:', e); }
-    }
-
-    /* ================================================================
-       JOIN SCREEN
-       ================================================================ */
-    const joinScreen = document.getElementById('joinScreen');
-    const mainApp = document.getElementById('mainApp');
-    const nameInput = document.getElementById('nameInput');
-    const joinBtn = document.getElementById('joinBtn');
-    const joinError = document.getElementById('joinError');
-    const joinErrorText = document.getElementById('joinErrorText');
-
-    document.getElementById('roomNameDisplay').textContent = FIXED_ROOM;
-
-    (function prefill() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            try {
-                const s = JSON.parse(saved);
-                if (s.name) nameInput.value = s.name;
-            } catch (e) {}
-        }
-    })();
-
-    function showJoinError(msg) { joinErrorText.textContent = msg; joinError.classList.remove('hidden'); }
-    function hideJoinError() { joinError.classList.add('hidden'); }
-
-    joinBtn.addEventListener('click', async () => {
-        const name = (nameInput.value || '').trim();
-        hideJoinError();
-        if (!name) { showJoinError('Please write your name.'); return; }
-
-        me.name = name;
-        me.room = FIXED_ROOM;
-        me.isGhost = isGhostName(name);
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ name })); } catch (e) {}
-
-        joinBtn.disabled = true;
-        joinBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining…';
-
-        try {
-            if (me.isGhost) {
-                me.role = 'ghost';
-                finalizeJoin();
-            } else {
-                await claimSlot();
-                finalizeJoin();
-            }
-        } catch (err) {
-            console.warn(err);
-            showJoinError(err.message || 'Could not join. Try again.');
-            joinBtn.disabled = false;
-            joinBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Join the room';
-        }
+/* ---------------- JOIN ---------------- */
+$('roomNameDisplay').textContent = ROOM;
+try { const s = JSON.parse(localStorage.getItem(KEY) || '{}'); if (s.name) $('nameInput').value = s.name; } catch (e) {}
+function joinErr(m) { const e = $('joinError'); e.textContent = m; e.classList.toggle('hidden', !m); }
+$('joinBtn').addEventListener('click', async () => {
+  const name = $('nameInput').value.trim(); joinErr('');
+  if (!name) return joinErr('Please write your name.');
+  me.name = name; me.isGhost = isGhostName(name);
+  try { localStorage.setItem(KEY, JSON.stringify({ name })); } catch (e) {}
+  $('joinBtn').disabled = true;
+  try { if (me.isGhost) me.role = 'ghost'; else await claimSlot(); finalizeJoin(); }
+  catch (err) { joinErr(err.message || 'Could not join.'); $('joinBtn').disabled = false; }
+});
+function claimSlot() {
+  return new Promise((resolve, reject) => {
+    if (!fbOk) { me.role = 'A'; state.players = { A: { name: me.name } }; return resolve(); }
+    db.ref('rooms/' + ROOM + '/players').transaction(cur => {
+      cur = cur || {};
+      for (const r of ROLES) if (cur[r] && cur[r].clientId === CLIENT_ID) return cur;
+      for (const r of ROLES) if (!cur[r]) { cur[r] = { name: me.name, clientId: CLIENT_ID, ts: Date.now() }; return cur; }
+      return;
+    }, (err, ok, snap) => {
+      if (err) return reject(new Error('Connection error. Please try again.'));
+      if (!ok) return reject(new Error('Room is full (3 players max).'));
+      const f = snap.val() || {}; const r = ROLES.find(x => f[x] && f[x].clientId === CLIENT_ID);
+      if (!r) return reject(new Error('Could not claim a slot. Try again.'));
+      me.role = r; try { db.ref('rooms/' + ROOM + '/players/' + r).onDisconnect().remove(); } catch (e) {}
+      resolve();
     });
-
-    function claimSlot() {
-        return new Promise((resolve, reject) => {
-            if (!firebaseOk) {
-                me.role = 'A';
-                state.players = { A: { name: me.name } };
-                resolve();
-                return;
-            }
-            const playersRef = db.ref('rooms/' + me.room + '/players');
-            playersRef.transaction(current => {
-                current = current || {};
-                for (const role of ROLES) {
-                    if (current[role] && current[role].clientId === CLIENT_ID) return current;
-                }
-                for (const role of ROLES) {
-                    if (!current[role]) {
-                        current[role] = { name: me.name, clientId: CLIENT_ID, ts: Date.now() };
-                        return current;
-                    }
-                }
-                return;
-            }, (err, committed, snapshot) => {
-                if (err) { reject(new Error('Connection error. Please try again.')); return; }
-                if (!committed) { reject(new Error('Room is full (3 players max).')); return; }
-                const finalPlayers = snapshot.val() || {};
-                let myRole = null;
-                for (const role of ROLES) {
-                    if (finalPlayers[role] && finalPlayers[role].clientId === CLIENT_ID) {
-                        myRole = role;
-                        break;
-                    }
-                }
-                if (!myRole) { reject(new Error('Could not claim a slot. Try again.')); return; }
-                me.role = myRole;
-                try {
-                    db.ref('rooms/' + me.room + '/players/' + myRole).onDisconnect().remove();
-                } catch (e) {}
-                resolve();
-            });
-        });
+  });
+}
+function finalizeJoin() {
+  $('joinScreen').classList.add('hidden'); $('mainApp').classList.remove('hidden');
+  $('roomCode').textContent = ROOM; $('meName').textContent = me.name;
+  $('meInitial').textContent = me.isGhost ? '👻' : initials(me.name);
+  $('meRole').textContent = me.isGhost ? 'Teacher view' : 'Player ' + me.role;
+  $('meChip').className = 'me-chip ' + (me.isGhost ? 'ghost' : me.role);
+  if (me.isGhost) { $('guideBtn').classList.remove('hidden'); $('resetBtn').classList.remove('hidden'); }
+  render();
+  if (!fbOk) return;
+  db.ref('rooms/' + ROOM).on('value', snap => {
+    const v = snap.val() || {};
+    state.players = v.players || {}; state.turns = v.turns || {}; state.answers = v.answers || {}; state.lastGuide = v.lastGuide || null;
+    if (state.lastGuide && state.lastGuide.pushId !== lastGuideId) {
+      if (!me.isGhost && lastGuideId !== null) { step = Number(state.lastGuide.step) || 0; toast('📍 Teacher: "Go to ' + STEPS[step].title + '"', 'gold'); }
+      lastGuideId = state.lastGuide.pushId;
     }
+    if (!Object.keys(state.answers).length) solvedSeen = {};
+    render();
+  }, () => { fbOk = false; render(); });
+}
 
-    function finalizeJoin() {
-        joinScreen.classList.add('hidden');
-        mainApp.classList.remove('hidden');
-
-        document.getElementById('roomCodeDisplay').textContent = me.room;
-        document.getElementById('meName').textContent = me.name;
-        document.getElementById('meInitial').textContent = me.isGhost ? '👻' : initials(me.name);
-        document.getElementById('meRole').textContent = me.isGhost ? 'Ghost mode' : 'Player ' + me.role;
-        document.getElementById('meChip').className = 'me-chip ' + (me.isGhost ? 'ghost' : me.role);
-
-        if (me.isGhost) {
-            document.getElementById('guideBtn').classList.remove('hidden');
-            document.getElementById('resetAnswersBtn').classList.remove('hidden');
-        }
-
-        renderSections();
-        updateStepNav();
-        updateLocationBanner();
-        connectRealtime();
+/* ---------------- TURN LOGIC ---------------- */
+function startRound(st) {
+  const pr = present();
+  if (pr.length < 2) return toast('You need at least 2 players to start.', 'gold');
+  setPath('turns/' + st.id, { order: shuffle(pr), idx: 0, t0: now(), done: false });
+}
+function advance(stId, expIdx) {
+  txn('turns/' + stId, c => {
+    if (!c || c.done || c.idx !== expIdx) return c;
+    const order = arr(c.order);
+    present().forEach(r => { if (!order.includes(r)) order.push(r); });
+    let i = c.idx + 1;
+    while (i < order.length && !state.players[order[i]]) i++;
+    return { order, idx: i, t0: now(), done: i >= order.length };
+  });
+}
+function fmt(ms) { ms = Math.max(0, ms); const s = Math.ceil(ms / 1000); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+setInterval(() => {
+  if (!me.role) return;
+  STEPS.forEach(st => {
+    const T = state.turns[st.id]; if (!T || T.done) return;
+    const order = arr(T.order), cur = order[T.idx];
+    if (st.type === 'speak') {
+      const rem = TURN_MS - (now() - T.t0);
+      if (st.id === STEPS[step].id) { const el = $('timer'); if (el) el.textContent = fmt(rem); }
+      if (rem <= 0) advance(st.id, T.idx);
     }
+    if (cur && !state.players[cur] && fbOk) advance(st.id, T.idx);
+  });
+}, 500);
 
-    /* ================================================================
-       REALTIME
-       ================================================================ */
-    function connectRealtime() {
-        if (!firebaseOk) {
-            applyState(state, { skipToast: true });
-            return;
-        }
-        try {
-            roomRef = db.ref('rooms/' + me.room);
-            roomRef.on('value', snap => {
-                const val = snap.val() || {};
-                state.players = val.players || {};
-                state.answers = val.answers || {};
-                state.auth = val.auth || {};
-                state.lastGuide = val.lastGuide || null;
-                applyState(state);
-            }, err => {
-                console.warn('Room read failed:', err);
-                firebaseOk = false;
-                applyState(state, { skipToast: true });
-            });
-        } catch (e) {
-            console.warn('Room subscribe failed:', e);
-            firebaseOk = false;
-            applyState(state, { skipToast: true });
-        }
+/* ---------------- DICTATION HELPERS ---------------- */
+function ownerOf(n, reader) {
+  const ans = present().filter(r => r !== reader);
+  if (!ans.length) return null;
+  return ans.length === 1 ? ans[0] : ans[(n - 1) % 2];
+}
+const qkey = (id, idx, n) => id + '_' + idx + '_' + n;
+function dictSolved(st, T) { return [1, 2, 3, 4].every(n => { const a = state.answers[qkey(st.id, T.idx, n)]; return a && a.correct; }); }
+
+/* ---------------- RENDER ---------------- */
+function render() {
+  if (!me.role) return;
+  const st = STEPS[step];
+  $('sections').innerHTML = st.type === 'speak' ? speakHTML(st) : dictHTML(st);
+  $('locNum').textContent = (step + 1) + ' / ' + STEPS.length;
+  $('locTitle').textContent = (st.type === 'speak' ? '💬 ' : '🎧 ') + st.title;
+  $('stepDots').innerHTML = STEPS.map((_, i) => `<button class="step-dot ${i === step ? 'active' : ''}" data-step="${i}" type="button">${i + 1}</button>`).join('');
+  document.querySelector('.step-nav').classList.toggle('hidden', !me.isGhost);
+  $('prevStep').disabled = step === 0; $('nextStep').disabled = step === STEPS.length - 1;
+  let total = 0; Object.keys(state.answers).forEach(k => { const a = state.answers[k]; if (a && a.correct) total += a.points || 0; });
+  $('teamScore').textContent = total;
+  // auto-advance dictation after all answered
+  STEPS.filter(s => s.type === 'dict').forEach(s => {
+    const T = state.turns[s.id]; if (!T || T.done) return;
+    const k = s.id + T.idx;
+    if (dictSolved(s, T) && !scheduled[k]) { scheduled[k] = true; setTimeout(() => advance(s.id, T.idx), 3500); }
+  });
+  // toasts for other players' correct answers
+  Object.keys(state.answers).forEach(k => {
+    const a = state.answers[k]; if (!a || !a.correct || solvedSeen[k]) return;
+    solvedSeen[k] = true;
+    if (!me.isGhost && a.who !== me.role && state.players[a.who] && Object.keys(solvedSeen).length > 0) toast('✅ ' + pname(a.who) + ' got a question right (+' + (a.points || 0) + ' pts)', 'success');
+  });
+}
+
+function head(st, listen) {
+  return `<div class="section-head ${listen ? 'l' : ''}"><span class="sec-badge ${listen ? 'listen' : ''}"><i class="fas ${listen ? 'fa-headphones' : 'fa-comments'}"></i> ${listen ? 'Listening dictation' : 'Speaking'}</span><span class="sec-title">${esc(st.title)}</span><span class="sec-num">${step + 1} / ${STEPS.length}</span></div>`;
+}
+function startPanel(st, msg) {
+  const pr = present();
+  const info = `Here now: ${pr.length ? pr.map(pname).map(esc).join(', ') : 'nobody yet'}. `;
+  if (!me.isGhost) return `<div class="panel locked"><i class="fas fa-hourglass-half ic"></i><div><strong>Wait for your teacher</strong><p>${info}Your teacher will start the round.</p></div></div>`;
+  return `<div class="panel ghost"><i class="fas fa-play ic"></i><div><strong>${esc(msg)}</strong><p>${info}${pr.length < 2 ? 'Waiting for at least 2 students…' : 'The system will choose randomly.'}</p></div>
+  <button type="button" class="btn" style="margin-left:auto" data-act="start" ${pr.length < 2 ? 'disabled' : ''}><i class="fas fa-shuffle"></i> Start (random order)</button></div>`;
+}
+
+function speakHTML(st) {
+  const T = state.turns[st.id], pr = present();
+  const order = T ? arr(T.order) : [];
+  const n = Math.min(st.topics.length, Math.max(2, order.length, pr.length));
+  const active = T && !T.done;
+  let panel = '';
+  if (!T) panel = startPanel(st, 'Ready to ask questions?');
+  else if (T.done) panel = `<div class="panel go"><i class="fas fa-flag-checkered ic"></i><div><strong>Everyone has been the interviewer. Well done!</strong><p>All the pictures were used.</p></div>${me.isGhost ? '<button type="button" class="btn soft" style="margin-left:auto" data-act="restart">Play again</button>' : ''}</div>`;
+  else {
+    const cur = order[T.idx], topic = st.topics[T.idx];
+    const canSkip = me.isGhost;
+    const skip = canSkip ? `<button type="button" class="btn soft" data-act="skip"><i class="fas fa-forward"></i> Next turn</button>` : '';
+    if (me.role === cur) panel = `<div class="panel go"><i class="fas fa-microphone ic"></i><div><strong>YOUR TURN — you are the interviewer!</strong><p>Look at “${esc(topic.n)}”. Ask your friends questions out loud. No reading from the screen.</p></div><span class="timer" id="timer">5:00</span>${skip}</div>`;
+    else panel = `<div class="panel ${me.isGhost ? 'ghost' : 'locked'}"><i class="fas fa-ear-listen ic"></i><div><strong>${esc(pname(cur))} is asking questions about “${esc(topic.n)}”</strong><p>${me.isGhost ? 'Teacher view: the students speak without the screen.' : 'Listen and answer out loud. Do not look for help on the screen.'}</p></div><span class="timer" id="timer">5:00</span>${skip}</div>`;
+  }
+  const cards = st.topics.slice(0, n).map((t, i) => {
+    const cls = !T ? '' : (T.done || i < T.idx) ? 'done' : i === T.idx ? 'now' : '';
+    const asg = order[i] ? esc(pname(order[i])) : null;
+    const tag = cls === 'now' ? 'Asking now' : cls === 'done' ? '✓ Done' : 'Picture ' + (i + 1);
+    return `<div class="pic ${cls || (!T ? 'now' : '')}" style="--accent:${COLORS[i][0]};--tint:${COLORS[i][1]}">
+      <div class="pic-icon"><i class="fas ${t.i}"></i></div><span class="pic-tag">${tag}</span>
+      <h3>${esc(t.n)}</h3><p>${esc(t.d)}</p>
+      <div class="chips">${t.c.map(w => `<span class="chip">${esc(w)}</span>`).join('')}</div>
+      ${asg ? `<span class="who"><i class="fas fa-user"></i> ${asg}</span>` : ''}</div>`;
+  }).join('');
+  return `${head(st, false)}<div class="section-body">${panel}
+    ${active || !T ? '' : ''}<div class="pics" data-n="${n}">${cards}</div>
+    <p class="join-hint" style="border:0;padding-top:12px">Each turn lasts 5 minutes. When time is up, the next person gets the next picture. A third person adds a third picture.</p></div>`;
+}
+
+function dictHTML(st) {
+  const T = state.turns[st.id];
+  if (!T) return `${head(st, true)}<div class="section-body">${startPanel(st, 'Ready for the dictation?')}</div>`;
+  const order = arr(T.order);
+  const bar = `<div class="order">${order.map((r, i) => `<span class="${T.done || i < T.idx ? 'done' : i === T.idx ? 'now' : ''}">${T.done || i < T.idx ? '✓ ' : ''}Reader ${i + 1}: ${esc(pname(r))}</span>`).join('')}</div>`;
+  if (T.done) return `${head(st, true)}<div class="section-body">${bar}<div class="panel go"><i class="fas fa-champagne-glasses ic"></i><div><strong>Great teamwork! 🎉</strong><p>Everyone has read a text.</p></div>${me.isGhost ? '<button type="button" class="btn soft" style="margin-left:auto" data-act="restart">Play again</button>' : ''}</div></div>`;
+  const reader = order[T.idx], text = st.texts[T.idx], isReader = me.role === reader;
+  const answerers = present().filter(r => r !== reader);
+  const solved = dictSolved(st, T);
+  let panel;
+  if (isReader) panel = `<div class="panel go"><i class="fas fa-book-open-reader ic"></i><div><strong>YOUR TURN — read the text aloud!</strong><p>Read slowly and clearly. Only you can see this text. Your friends will answer the questions.</p></div></div>`;
+  else if (me.isGhost) panel = `<div class="panel ghost"><i class="fas fa-eye ic"></i><div><strong>Teacher view — ${esc(pname(reader))} is reading</strong><p>You can see the current text and the questions.</p></div></div>`;
+  else panel = `<div class="panel go"><i class="fas fa-ear-listen ic"></i><div><strong>${esc(pname(reader))} is reading. Listen and answer!</strong><p>${answerers.length > 1 ? 'You answer only your own questions. ' : 'You answer all 4 questions. '}First try = 3 pts · second = 2 pts · third = 1 pt.</p></div></div>`;
+  const textBlock = (isReader || me.isGhost) ? `<div class="textcard"><small>${isReader ? 'Your text — read it aloud' : 'Current reader’s text'}</small><p>${esc(text.t)}</p></div>` : '';
+  let qs = '';
+  if (!isReader) {
+    qs = `<div class="progress-bar">${answerers.map(r => {
+      const mine = [1, 2, 3, 4].filter(n => ownerOf(n, reader) === r);
+      let d = 0, p = 0; mine.forEach(n => { const a = state.answers[qkey(st.id, T.idx, n)]; if (a && a.correct) { d++; p += a.points || 0; } });
+      return `<span class="prog-item"><span class="me-dot ${r}">${esc(initials(pname(r)))}</span>${esc(pname(r))} <span class="prog-count ${d === mine.length ? 'done' : ''}">${d}/${mine.length}</span>${p ? `<span class="prog-pts">${p} pts</span>` : ''}</span>`;
+    }).join('') || 'Waiting for friends…'}</div>
+    <div class="q-columns" data-n="${answerers.length || 1}">${answerers.map(r => `<div class="q-col"><div class="q-col-head"><span class="player-tag ${r}">Player ${r}</span>${[1, 2, 3, 4].filter(n => ownerOf(n, reader) === r).length} questions${r === me.role ? '<span class="you-badge">You</span>' : ''}</div>
+      ${[1, 2, 3, 4].filter(n => ownerOf(n, reader) === r).map(n => qCard(st, T, text, n, r)).join('')}</div>`).join('')}</div>`;
+  }
+  const banner = solved ? `<div class="teamwork"><i class="fas fa-champagne-glasses"></i><div><strong>All answers are correct! 🎉</strong><span>The next reader is coming up…</span></div></div>` : '';
+  return `${head(st, true)}<div class="section-body">${bar}${panel}${textBlock}${qs}${banner}</div>`;
+}
+
+function qCard(st, T, text, n, owner) {
+  const q = text.q[n - 1], key = qkey(st.id, T.idx, n), a = state.answers[key];
+  const ok = !!(a && a.correct), wrong = !!(a && !a.correct);
+  const mine = owner === me.role && !me.isGhost, can = mine && !ok;
+  const L = ['a', 'b', 'c'];
+  const fb = ok ? `<div class="feedback ok">✅ ${esc(pname(a.who))} got it right · +${a.points} pts</div>` : wrong ? `<div class="feedback live">👀 ${esc(pname(a.who))} tried (${L[a.choice]}) — next try worth ${pts(a.attempts + 1)} pt${pts(a.attempts + 1) > 1 ? 's' : ''}</div>` : '';
+  return `<div class="q-card ${ok ? 'solved' : ''} ${mine ? '' : 'not-yours'}"><div class="q-head"><span class="q-num">${n}</span><p class="q-text">${esc(q[0])}</p></div>
+    <div class="options">${q[1].map((o, i) => `<button class="opt ${ok && a.choice === i ? 'correct' : ''} ${wrong && a.choice === i ? 'wrong' : ''}" type="button" data-q="${key}" data-n="${n}" data-c="${i}" ${can ? '' : 'disabled'}><span class="l">${L[i]}</span><span>${esc(o)}</span></button>`).join('')}</div>${fb}</div>`;
+}
+
+/* ---------------- EVENTS ---------------- */
+$('sections').addEventListener('click', e => {
+  const st = STEPS[step];
+  const act = e.target.closest('[data-act]');
+  if (act) {
+    const a = act.dataset.act, T = state.turns[st.id];
+    if (a === 'start' && me.isGhost) startRound(st);
+    if (a === 'skip' && T && me.isGhost) advance(st.id, T.idx);
+    if (a === 'restart' && me.isGhost) {
+      const u = { ['turns/' + st.id]: null };
+      Object.keys(state.answers).forEach(k => { if (k.indexOf(st.id + '_') === 0) u['answers/' + k] = null; });
+      multi(u);
     }
+    return;
+  }
+  const opt = e.target.closest('.opt');
+  if (!opt || opt.disabled || me.isGhost) return;
+  const T = state.turns[st.id]; if (!T || T.done) return;
+  const reader = arr(T.order)[T.idx], n = Number(opt.dataset.n);
+  if (ownerOf(n, reader) !== me.role) return toast('This is another player’s question.', 'gold');
+  const key = opt.dataset.q, c = Number(opt.dataset.c), q = st.texts[T.idx].q[n - 1];
+  const prev = state.answers[key]; if (prev && prev.correct) return;
+  const attempts = ((prev && prev.attempts) || 0) + 1, correct = c === q[2];
+  const data = { choice: c, correct, who: me.role, attempts, points: correct ? pts(attempts) : 0 };
+  setPath('answers/' + key, data);
+  if (correct) toast('🏆 +' + data.points + ' pts! ' + (attempts === 1 ? 'Perfect first try!' : 'Nice recovery!'), 'success');
+});
+function go(i) { if (i < 0 || i >= STEPS.length) return; step = i; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+$('prevStep').addEventListener('click', () => go(step - 1));
+$('nextStep').addEventListener('click', () => go(step + 1));
+$('stepDots').addEventListener('click', e => { const d = e.target.closest('.step-dot'); if (d) go(Number(d.dataset.step)); });
+$('guideBtn').addEventListener('click', () => {
+  if (!me.isGhost) return;
+  const g = { step, pushId: CLIENT_ID + '_' + Date.now() };
+  if (fbOk) db.ref('rooms/' + ROOM + '/lastGuide').set(g).then(() => toast('📤 Class guided to: ' + STEPS[step].title, 'gold'));
+  else toast('📤 (local mode) Guided to: ' + STEPS[step].title, 'gold');
+});
+$('resetBtn').addEventListener('click', () => {
+  if (!me.isGhost || !confirm('Reset all rounds, answers and points?')) return;
+  solvedSeen = {}; scheduled = {};
+  multi({ turns: null, answers: null, lastGuide: null }); toast('🧹 Everything was reset', 'success');
+});
+$('leaveBtn').addEventListener('click', () => {
+  if (!confirm('Are you sure you want to leave the room?')) return;
+  if (fbOk && me.role && me.role !== 'ghost') { try { db.ref('rooms/' + ROOM + '/players/' + me.role).remove(); } catch (e) {} }
+  setTimeout(() => location.reload(), 250);
+});
 
-    /* ================================================================
-       RENDER SECTIONS
-       ================================================================ */
-    function renderSections() {
-        const holder = document.getElementById('sections');
-        holder.innerHTML = '';
-        sectionsEls = [];
-        ITEMS.forEach((item, i) => {
-            const el = item.type === 'theme'
-                ? renderTheme(item.data, i + 1, ITEMS.length)
-                : renderListening(item.data, i + 1, ITEMS.length);
-            el.dataset.step = i;
-            if (i === 0) el.classList.add('active-step');
-            holder.appendChild(el);
-            sectionsEls.push(el);
-        });
-    }
-
-    function renderTheme(theme, num, total) {
-        const sec = document.createElement('section');
-        sec.className = 'section theme-section';
-        sec.dataset.themeId = theme.id;
-
-        const aVisual = `<div class="side-icon-circle"><i class="fas ${theme.sideA.icon}"></i></div>`;
-        const bVisual = `<div class="side-icon-circle"><i class="fas ${theme.sideB.icon}"></i></div>`;
-
-        sec.innerHTML = `
-            <div class="section-head">
-                <span class="sec-badge"><i class="fas fa-comments"></i> Choice</span>
-                <span class="sec-title">${escapeHtml(theme.title)}</span>
-                <span class="sec-num">${num} / ${total}</span>
-            </div>
-            <div class="section-body">
-                <div class="arena">
-                    <div class="side" style="--accent:${theme.sideA.color}; --tint:${theme.sideA.tint};">
-                        ${aVisual}
-                        <div>
-                            <span class="side-label">${escapeHtml(theme.sideA.label)}</span>
-                            <h3 class="side-name">${escapeHtml(theme.sideA.name)}</h3>
-                            <p class="side-desc">${escapeHtml(theme.sideA.desc)}</p>
-                        </div>
-                    </div>
-                    <div class="vs-circle">VS</div>
-                    <div class="side" style="--accent:${theme.sideB.color}; --tint:${theme.sideB.tint};">
-                        ${bVisual}
-                        <div>
-                            <span class="side-label">${escapeHtml(theme.sideB.label)}</span>
-                            <h3 class="side-name">${escapeHtml(theme.sideB.name)}</h3>
-                            <p class="side-desc">${escapeHtml(theme.sideB.desc)}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="theme-q">
-                    <i class="fas fa-question"></i>
-                    <p>${escapeHtml(theme.question)}</p>
-                </div>
-
-                <p class="chips-label">Words you can use</p>
-                <div class="chips">
-                    ${theme.chips.map(w => `<span class="chip">${escapeHtml(w)}</span>`).join('')}
-                </div>
-
-                <div class="proscons">
-                    <div class="pc-box pros">
-                        <i class="fas fa-thumbs-up"></i>
-                        <span>${escapeHtml(theme.prosPrompt)}</span>
-                    </div>
-                    <div class="pc-box cons">
-                        <i class="fas fa-thumbs-down"></i>
-                        <span>${escapeHtml(theme.consPrompt)}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        return sec;
-    }
-
-    function renderListening(listen, num, total) {
-        const sec = document.createElement('section');
-        sec.className = 'section listening-section ' + listen.variant;
-        sec.dataset.listeningId = listen.id;
-        sec.innerHTML = `
-            <div class="section-head">
-                <span class="sec-badge listen"><i class="fas fa-headphones"></i> Listening</span>
-                <span class="sec-title">${escapeHtml(listen.title)}</span>
-                <span class="sec-num">${num} / ${total}</span>
-            </div>
-            <div class="section-body">
-                <div data-auth-panel></div>
-                <div data-audio-row></div>
-                <p class="listen-intro">${escapeHtml(listen.intro)}</p>
-                <div class="progress-bar" data-progress></div>
-                <div class="q-columns" data-cols></div>
-                <div class="teamwork-banner" data-teamwork>
-                    <i class="fas fa-champagne-glasses"></i>
-                    <div>
-                        <strong>Great job, team! 🎉</strong>
-                        <span>All the questions are answered.</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        return sec;
-    }
-
-    /* ================================================================
-       AUTH PANEL
-       ================================================================ */
-    function renderAuthPanel(listen, authorized) {
-        if (me.isGhost) {
-            if (authorized) {
-                return `
-                    <div class="auth-panel ghost">
-                        <i class="fas fa-unlock icon"></i>
-                        <div>
-                            <strong>Answers are open</strong>
-                            <p>Students can answer now — but only their own questions. Lock again if you need to.</p>
-                        </div>
-                        <button type="button" class="auth-btn revoke" data-revoke-auth="${listen.id}">
-                            <i class="fas fa-lock"></i> Lock again
-                        </button>
-                    </div>
-                `;
-            }
-            return `
-                <div class="auth-panel ghost">
-                    <i class="fas fa-shield-halved icon"></i>
-                    <div>
-                        <strong>Answers are locked</strong>
-                        <p>Play the audio first, then authorize students to answer.</p>
-                    </div>
-                    <button type="button" class="auth-btn authorize" data-authorize="${listen.id}">
-                        <i class="fas fa-unlock"></i> Authorize answers
-                    </button>
-                </div>
-            `;
-        }
-        if (authorized) {
-            return `
-                <div class="auth-panel go">
-                    <div class="go-icon">🎮</div>
-                    <div>
-                        <strong>GO! Answer the questions now!</strong>
-                        <p>Answer only <b>your own</b> questions. First try = 3 points · Second try = 2 points · Third try = 1 point.</p>
-                    </div>
-                </div>
-            `;
-        }
-        return `
-            <div class="auth-panel locked">
-                <i class="fas fa-lock icon"></i>
-                <div>
-                    <strong>Wait for your teacher</strong>
-                    <p>The questions will open after the audio finishes on the Zoom screen.</p>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderAudioRow(listen) {
-        if (me.isGhost) {
-            return `
-                <div class="audio-row">
-                    <i class="fas fa-headphones"></i>
-                    <audio controls preload="none" src="${listen.audio}"></audio>
-                </div>
-            `;
-        }
-        return `
-            <div class="audio-teacher-only">
-                <i class="fas fa-tv"></i>
-                <div>
-                    <strong>Listen on the Zoom screen.</strong>
-                    <span style="display:block;font-weight:500;opacity:0.85;margin-top:2px;">Your teacher is playing the audio. Concentrate and take notes.</span>
-                </div>
-            </div>
-        `;
-    }
-
-    /* ================================================================
-       LISTENING COLUMNS
-       ================================================================ */
-    function refreshListeningColumns(listen, mode) {
-        const sec = document.querySelector(`[data-listening-id="${listen.id}"]`);
-        if (!sec) return;
-        const cols = sec.querySelector('[data-cols]');
-        if (!cols) return;
-        const list = rolesForMode(mode);
-        cols.dataset.count = list.length;
-        cols.innerHTML = list.map(role => {
-            const qs = listen.questions.filter(q => ownerOfQ(q.num, mode) === role);
-            return `
-                <div class="q-col ${role}">
-                    <div class="q-col-head ${role}">
-                        <span class="player-tag ${role}"><i class="fas fa-user"></i> Player ${role}</span>
-                        <span>${qs.length} question${qs.length !== 1 ? 's' : ''}</span>
-                        <span class="you-badge" data-you-badge="${role}" style="display:none;">You</span>
-                    </div>
-                    ${qs.map(q => renderQuestion(q)).join('')}
-                </div>
-            `;
-        }).join('');
-    }
-
-    function renderQuestion(q) {
-        return `
-            <div class="q-card" data-qid="${q.id}">
-                <div class="q-head">
-                    <span class="q-num-badge">${q.num}</span>
-                    <p class="q-text">${escapeHtml(q.text)}</p>
-                    <span class="owner-label" data-owner-label></span>
-                </div>
-                <div class="options">
-                    ${q.options.map(o => `
-                        <button class="opt" type="button" data-choice="${o.k}" disabled>
-                            <span class="opt-letter">${o.k}</span>
-                            <span class="opt-body">${escapeHtml(o.text)}</span>
-                        </button>
-                    `).join('')}
-                </div>
-                <div class="feedback" data-feedback></div>
-                <div data-points></div>
-            </div>
-        `;
-    }
-
-    /* ================================================================
-       APPLY STATE
-       ================================================================ */
-    function applyState(s, opts) {
-        opts = opts || {};
-        const presentRoles = presentRolesOf(s);
-        const mode = getMode(presentRoles);
-        const rolesStr = presentRoles.join(',') + '|' + mode;
-
-        if (Object.keys(s.answers || {}).length === 0) {
-            lastKnownSolved = {};
-        }
-
-        if (rolesStr !== lastRolesStr) {
-            LISTENINGS.forEach(l => refreshListeningColumns(l, mode));
-            lastRolesStr = rolesStr;
-        }
-
-        $$('[data-you-badge]').forEach(el => {
-            el.style.display = (!me.isGhost && el.dataset.youBadge === me.role) ? 'inline-flex' : 'none';
-        });
-
-        updateTeamScore(s);
-
-        if (s.lastGuide && s.lastGuide.pushId && s.lastGuide.pushId !== lastSeenGuidePushId) {
-            if (!me.isGhost) {
-                const stepIdx = Number(s.lastGuide.step);
-                if (!isNaN(stepIdx) && stepIdx >= 0 && stepIdx < ITEMS.length) {
-                    navigateTo(stepIdx, { fromGuide: true });
-                    toast('📍 Teacher: "Go to ' + stepLabel(ITEMS[stepIdx]) + '"', 'gold');
-                }
-            }
-            lastSeenGuidePushId = s.lastGuide.pushId;
-        }
-
-        LISTENINGS.forEach(listen => {
-            const sec = document.querySelector(`[data-listening-id="${listen.id}"]`);
-            if (!sec) return;
-            const auth = !!s.auth[listen.id];
-            updateListeningState(sec, listen, mode, s, auth);
-
-            if (!me.isGhost && auth && !lastAuthSnapshot[listen.id]) {
-                if (!sec.classList.contains('active-step')) {
-                    toast('🎮 ' + listen.title + ' is now open!', 'success');
-                }
-            }
-            lastAuthSnapshot[listen.id] = auth;
-        });
-
-        if (!opts.skipToast && !me.isGhost) {
-            Object.keys(s.answers || {}).forEach(qid => {
-                const ans = s.answers[qid];
-                if (!ans || !ans.correct) return;
-                if (lastKnownSolved[qid]) return;
-                lastKnownSolved[qid] = true;
-                if (ans.who === me.role) return;
-                const player = s.players[ans.who];
-                if (!player) return;
-                const q = ALL_QUESTIONS[qid];
-                if (!q) return;
-                toast('✅ ' + player.name + ' got Question ' + q.num + ' right (+' + (ans.points || 0) + ' pts)', 'success');
-            });
-        }
-    }
-
-    function updateListeningState(sec, listen, mode, s, auth) {
-        const panel = sec.querySelector('[data-auth-panel]');
-        if (panel) {
-            const newHtml = renderAuthPanel(listen, auth);
-            if (panel.innerHTML.trim() !== newHtml.trim()) {
-                panel.innerHTML = newHtml;
-            }
-        }
-        const audioRow = sec.querySelector('[data-audio-row]');
-        if (audioRow) {
-            const newHtml = renderAudioRow(listen);
-            if (audioRow.innerHTML.trim() !== newHtml.trim()) {
-                audioRow.innerHTML = newHtml;
-            }
-        }
-
-        listen.questions.forEach(q => {
-            const card = sec.querySelector(`[data-qid="${q.id}"]`);
-            if (!card) return;
-            const ans = s.answers[q.id];
-            const solved = !!(ans && ans.correct);
-            const isWrongAttempt = !!(ans && !ans.correct);
-            const owner = ownerOfQ(q.num, mode);
-            const isMine = owner === me.role && !me.isGhost;
-            const iCanClick = isMine && !solved && auth;
-
-            card.classList.toggle('solved', solved);
-
-            const ownerLabel = card.querySelector('[data-owner-label]');
-            if (ownerLabel) {
-                if (isMine) {
-                    ownerLabel.style.display = 'none';
-                } else {
-                    ownerLabel.textContent = 'Player ' + owner + "'s";
-                    ownerLabel.style.display = 'inline-flex';
-                }
-            }
-            card.classList.toggle('not-yours', !isMine && !me.isGhost);
-
-            card.querySelectorAll('.opt').forEach(opt => {
-                const isChosen = ans && opt.dataset.choice === ans.choice;
-                opt.classList.toggle('correct', solved && isChosen);
-                opt.classList.toggle('wrong', isWrongAttempt && isChosen);
-                opt.disabled = !iCanClick;
-            });
-
-            const fb = card.querySelector('[data-feedback]');
-            const whoName = (s.players[ans && ans.who] && s.players[ans.who].name) || (ans ? ('Player ' + ans.who) : '');
-
-            if (solved) {
-                fb.className = 'feedback success';
-                fb.textContent = '✅ ' + whoName + ' got it right · ' + q.explain;
-            } else if (isWrongAttempt) {
-                fb.className = 'feedback live';
-                fb.textContent = '👀 ' + whoName + ' tried (' + ans.choice + ') — still thinking';
-            } else {
-                fb.className = 'feedback';
-                fb.textContent = '';
-            }
-
-            const pointsEl = card.querySelector('[data-points]');
-            if (pointsEl) {
-                if (solved && ans.points) {
-                    pointsEl.innerHTML = `<span class="points-badge">🏆 +${ans.points} pts</span>`;
-                } else if (isWrongAttempt && ans.attempts) {
-                    const nextPoints = pointsForAttempt(ans.attempts + 1);
-                    pointsEl.innerHTML = `<span class="points-badge">Next try worth ${nextPoints} pt${nextPoints !== 1 ? 's' : ''}</span>`;
-                } else {
-                    pointsEl.innerHTML = '';
-                }
-            }
-        });
-
-        updateProgressBar(sec, listen, mode, s);
-        updateTeamwork(sec, listen, s);
-    }
-
-    function updateProgressBar(sec, listen, mode, s) {
-        const el = sec.querySelector('[data-progress]');
-        if (!el) return;
-        const visible = rolesForMode(mode);
-        const items = visible.map(role => {
-            const roleQs = listen.questions.filter(q => ownerOfQ(q.num, mode) === role);
-            let done = 0;
-            let pts = 0;
-            roleQs.forEach(q => {
-                const ans = s.answers[q.id];
-                if (ans && ans.correct) {
-                    done++;
-                    pts += (typeof ans.points === 'number') ? ans.points : 0;
-                }
-            });
-            const isPresent = !!(s.players[role]);
-            const name = (s.players[role] && s.players[role].name) || ('Player ' + role);
-            return `
-                <span class="prog-item" ${isPresent ? '' : 'style="opacity:.55;"'}>
-                    <span class="prog-avatar ${role}">${escapeHtml(initials(isPresent ? name : role))}</span>
-                    <span class="prog-name">${isPresent ? escapeHtml(name) : 'Waiting for Player ' + role}</span>
-                    <span class="prog-count ${done === roleQs.length ? 'done' : ''}">${done}/${roleQs.length}</span>
-                    ${pts > 0 ? `<span class="prog-pts">${pts} pts</span>` : ''}
-                </span>
-            `;
-        }).join('<span class="prog-divider">·</span>');
-        el.innerHTML = items;
-    }
-
-    function updateTeamScore(s) {
-        let total = 0;
-        LISTENINGS.forEach(l => l.questions.forEach(q => {
-            const ans = s.answers[q.id];
-            if (ans && ans.correct) {
-                total += (typeof ans.points === 'number') ? ans.points : 0;
-            }
-        }));
-        const el = document.getElementById('teamScoreVal');
-        if (el) el.textContent = total;
-    }
-
-    function updateTeamwork(sec, listen, s) {
-        const banner = sec.querySelector('[data-teamwork]');
-        if (!banner) return;
-        const allDone = listen.questions.every(q => s.answers[q.id] && s.answers[q.id].correct);
-        banner.classList.toggle('show', allDone);
-    }
-
-    /* ================================================================
-       CLICKS — auth, revoke, answers
-       ================================================================ */
-    document.getElementById('sections').addEventListener('click', (e) => {
-        const authBtn = e.target.closest('[data-authorize]');
-        if (authBtn) {
-            const listenId = authBtn.dataset.authorize;
-            if (firebaseOk) {
-                db.ref('rooms/' + me.room + '/auth/' + listenId).set(true)
-                    .then(() => toast('🔓 Answers are now open for students', 'success'))
-                    .catch(err => console.warn('Auth write failed:', err));
-            } else {
-                state.auth[listenId] = true;
-                applyState(state, { skipToast: true });
-            }
-            return;
-        }
-
-        const revokeBtn = e.target.closest('[data-revoke-auth]');
-        if (revokeBtn) {
-            if (!confirm('Lock the answers again? Students will not be able to answer until you open them again.')) return;
-            const listenId = revokeBtn.dataset.revokeAuth;
-            if (firebaseOk) {
-                db.ref('rooms/' + me.room + '/auth/' + listenId).set(false)
-                    .catch(err => console.warn('Revoke write failed:', err));
-            } else {
-                state.auth[listenId] = false;
-                applyState(state, { skipToast: true });
-            }
-            return;
-        }
-
-        const opt = e.target.closest('.opt');
-        if (opt && !opt.disabled) {
-            handleAnswer(opt);
-        }
-    });
-
-    /* ================================================================
-       ANSWER — with ownership + auth + scoring
-       ================================================================ */
-    function handleAnswer(opt) {
-        const card = opt.closest('.q-card');
-        if (!card) return;
-        const qid = card.dataset.qid;
-        const q = ALL_QUESTIONS[qid];
-        if (!q) return;
-
-        if (me.isGhost) return;
-
-        const presentRoles = presentRolesOf(state);
-        const mode = getMode(presentRoles);
-        const owner = ownerOfQ(q.num, mode);
-        if (owner !== me.role) {
-            toast('This is Player ' + owner + "'s question — you can only answer your own.", 'gold');
-            return;
-        }
-
-        if (state.answers[qid] && state.answers[qid].correct) return;
-
-        const listen = LISTENINGS.find(l => l.questions.some(x => x.id === qid));
-        if (!listen) return;
-        if (!state.auth || !state.auth[listen.id]) {
-            toast('⏳ Wait for your teacher to open the questions.', 'gold');
-            return;
-        }
-
-        const choice = opt.dataset.choice;
-        const isCorrect = choice === q.correct;
-        const prevAns = state.answers[qid];
-        const prevAttempts = (prevAns && typeof prevAns.attempts === 'number') ? prevAns.attempts : 0;
-        const newAttempts = prevAttempts + 1;
-        let points = 0;
-        if (isCorrect) points = pointsForAttempt(newAttempts);
-
-        const answerData = {
-            choice, correct: isCorrect, who: me.role,
-            attempts: newAttempts, points,
-            ts: firebase.database.ServerValue.TIMESTAMP
-        };
-
-        state.answers[qid] = { choice, correct: isCorrect, who: me.role, attempts: newAttempts, points };
-        applyState(state, { skipToast: true });
-
-        if (firebaseOk) {
-            db.ref('rooms/' + me.room + '/answers/' + qid).set(answerData)
-                .catch(err => console.warn('Answer write failed:', err));
-        }
-
-        if (isCorrect) {
-            toast('🏆 +' + points + ' pts! ' + (newAttempts === 1 ? 'Perfect first try!' : 'Nice recovery!'), 'success');
-        }
-    }
-
-    /* ================================================================
-       GUIDE BUTTON (ghost)
-       ================================================================ */
-    document.getElementById('guideBtn').addEventListener('click', () => {
-        if (!me.isGhost) return;
-        const pushId = CLIENT_ID + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
-        if (firebaseOk) {
-            db.ref('rooms/' + me.room + '/lastGuide').set({
-                step: currentStep, pushId,
-                ts: firebase.database.ServerValue.TIMESTAMP
-            }).then(() => toast('📤 Class guided to: ' + stepLabel(ITEMS[currentStep]), 'gold'))
-              .catch(err => console.warn('Guide write failed:', err));
-        } else {
-            toast('📤 (local mode) Guided to: ' + stepLabel(ITEMS[currentStep]), 'gold');
-        }
-    });
-
-    /* ================================================================
-       RESET ANSWERS (ghost only)
-       ================================================================ */
-    document.getElementById('resetAnswersBtn').addEventListener('click', () => {
-        if (!me.isGhost) return;
-        if (!confirm('Reset all answers and lock the questions again?\n\nThis clears all points, attempts and correct answers. You will need to authorize students again for the next class.')) return;
-
-        if (firebaseOk) {
-            const updates = {};
-            updates['rooms/' + me.room + '/answers'] = null;
-            updates['rooms/' + me.room + '/auth/listening1'] = null;
-            updates['rooms/' + me.room + '/auth/listening2'] = null;
-            updates['rooms/' + me.room + '/lastGuide'] = null;
-            db.ref().update(updates)
-                .then(() => {
-                    lastKnownSolved = {};
-                    lastAuthSnapshot = {};
-                    lastSeenGuidePushId = null;
-                    state.answers = {};
-                    state.auth = {};
-                    state.lastGuide = null;
-                    applyState(state, { skipToast: true });
-                    toast('🧹 Answers cleared, questions locked', 'success');
-                })
-                .catch(err => {
-                    console.warn('Reset failed:', err);
-                    toast('Could not reset. Try again.', 'gold');
-                });
-        } else {
-            state.answers = {};
-            state.auth = {};
-            state.lastGuide = null;
-            lastKnownSolved = {};
-            lastAuthSnapshot = {};
-            lastSeenGuidePushId = null;
-            applyState(state, { skipToast: true });
-            toast('🧹 Answers cleared (local mode)', 'success');
-        }
-    });
-
-    /* ================================================================
-       STEP NAV
-       ================================================================ */
-    function navigateTo(step, opts) {
-        opts = opts || {};
-        if (step < 0 || step >= ITEMS.length) return;
-        $$('audio').forEach(a => { try { a.pause(); } catch (e) {} });
-        currentStep = step;
-        sectionsEls.forEach((el, i) => el.classList.toggle('active-step', i === step));
-        updateStepNav();
-        updateLocationBanner();
-        if (!opts.fromGuide) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
-
-    function updateStepNav() {
-        const dots = document.getElementById('stepDots');
-        dots.innerHTML = ITEMS.map((_, i) => {
-            const cls = i === currentStep ? 'step-dot active' : 'step-dot';
-            return `<button class="${cls}" data-step="${i}" type="button" aria-label="Step ${i + 1}">${i + 1}</button>`;
-        }).join('');
-        document.getElementById('prevStep').disabled = currentStep === 0;
-        document.getElementById('nextStep').disabled = currentStep === ITEMS.length - 1;
-    }
-
-    function updateLocationBanner() {
-        const item = ITEMS[currentStep];
-        const icon = item.type === 'listening' ? '🎧' : '💬';
-        document.getElementById('locStepNum').textContent = (currentStep + 1) + ' / ' + ITEMS.length;
-        document.getElementById('locStepTitle').textContent = icon + ' ' + stepLabel(item);
-    }
-
-    document.getElementById('prevStep').addEventListener('click', () => navigateTo(currentStep - 1));
-    document.getElementById('nextStep').addEventListener('click', () => navigateTo(currentStep + 1));
-    document.getElementById('stepDots').addEventListener('click', (e) => {
-        const dot = e.target.closest('.step-dot');
-        if (!dot) return;
-        navigateTo(parseInt(dot.dataset.step, 10));
-    });
-
-    /* ================================================================
-       LEAVE
-       ================================================================ */
-    document.getElementById('leaveBtn').addEventListener('click', () => {
-        if (!confirm('Are you sure you want to leave the room? Your player data and answers will be removed from the shared room.')) return;
-
-        if (firebaseOk && me.role && me.role !== 'ghost') {
-            try { removeMyData(); } catch (e) { console.warn(e); }
-        }
-        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-        if (roomRef) { try { roomRef.off(); } catch (e) {} }
-        setTimeout(() => location.reload(), 250);
-    });
-
-    function removeMyData() {
-        const root = 'rooms/' + me.room;
-        const role = me.role;
-        db.ref(root + '/players/' + role).remove();
-        db.ref(root + '/answers').once('value', snap => {
-            const answers = snap.val() || {};
-            Object.keys(answers).forEach(qid => {
-                if (answers[qid] && answers[qid].who === role) {
-                    db.ref(root + '/answers/' + qid).remove();
-                }
-            });
-        });
-    }
-
-    /* ================================================================
-       BOOT
-       ================================================================ */
-    initFirebase();
+initFirebase();
 })();
 </script>
-
 </body>
 </html>
