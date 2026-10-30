@@ -3,147 +3,131 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Speak &amp; Dictate · 2 Speaking + 2 Listening Dictations</title>
+<title>B1 Teen Speak &amp; Dictate Activity</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:#eef3fa;background-image:radial-gradient(circle at 10% 4%,rgba(29,78,216,.09),transparent 40%),radial-gradient(circle at 90% 96%,rgba(15,118,110,.09),transparent 40%);background-attachment:fixed;color:#13202d;min-height:100vh;padding:24px 18px 48px}
-.app{max-width:1180px;margin:0 auto}.hidden{display:none!important}
-.join-screen{max-width:480px;margin:60px auto 0;background:#fff;border-radius:28px;border:1px solid #e6eef6;box-shadow:0 24px 60px rgba(20,45,80,.14);padding:32px 30px 28px}
+.app{max-width:850px;margin:0 auto}
+.hidden{display:none!important}
+
+/* JOIN SCREEN */
+.join-screen{max-width:440px;margin:60px auto 0;background:#fff;border-radius:28px;border:1px solid #e6eef6;box-shadow:0 24px 60px rgba(20,45,80,.14);padding:32px 30px 28px}
 .join-brand{display:flex;align-items:center;gap:14px;margin-bottom:22px}
 .join-logo{width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,#1d4ed8,#0f766e);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .join-brand h1{font-size:21px;font-weight:800;line-height:1.2}.join-brand h1 span{color:#1d4ed8}
 .join-brand p{font-size:12.5px;color:#6b8299;font-weight:500;margin-top:3px}
-.room-info{background:#f7fafd;border:1.5px solid #e2ecf5;border-radius:13px;padding:12px 15px;margin-bottom:16px;font-size:12.5px;font-weight:600;color:#4a6580}
-.room-info b{color:#13202d;letter-spacing:1px}
 .field label{display:block;font-size:10.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#7d92a8;margin-bottom:7px}
 .field input{width:100%;padding:13px 15px;border-radius:13px;border:1.5px solid #dbe7f1;background:#f7fafd;font:600 15px 'Inter',sans-serif;color:#13202d;outline:none;margin-bottom:14px}
 .field input:focus{border-color:#1d4ed8;background:#fff;box-shadow:0 0 0 4px #eaf1ff}
-.btn{border:none;border-radius:40px;padding:12px 24px;font:800 14px 'Inter',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(135deg,#1d4ed8,#16389b);color:#fff;box-shadow:0 8px 20px rgba(29,78,216,.3);transition:.18s}
-.btn:hover:not(:disabled){transform:translateY(-2px)}.btn:disabled{opacity:.5;cursor:not-allowed}
-.btn.wide{width:100%}.btn.soft{background:#eef3f9;color:#3d5a75;box-shadow:none}.btn.soft:hover:not(:disabled){background:#dbe7f1}
-.btn.warn{background:#fff4e0;color:#a0690c;border:1.5px solid #f0c88a;box-shadow:none;padding:8px 14px;font-size:12px}
-.join-error{background:#fdeaea;color:#8f2f2f;border:1.5px solid #f6d5d5;border-radius:12px;padding:11px 14px;font-size:13px;font-weight:600;margin-top:14px}
-.join-hint{font-size:12px;line-height:1.55;color:#8098ad;margin-top:16px;padding-top:16px;border-top:1px dashed #e2ecf5;text-align:center;font-weight:500}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid #e6eef6;border-radius:20px;padding:12px 16px;box-shadow:0 10px 26px rgba(20,45,80,.08);margin-bottom:12px;position:sticky;top:10px;z-index:100}
-.room-chip{background:#f2f7fc;border-radius:40px;padding:8px 15px;font-size:13px;font-weight:700;color:#4a6580}.room-chip b{color:#13202d}
-.me-chip{display:flex;align-items:center;gap:9px;border-radius:40px;padding:6px 14px 6px 8px;font-size:13px;font-weight:700}
-.me-chip.A{background:#eaf1ff;color:#1d4ed8}.me-chip.B{background:#e3f5f2;color:#0f766e}.me-chip.C{background:#fff4e0;color:#b45309}.me-chip.ghost{background:#f1ebff;color:#7c3aed}
-.me-dot{width:26px;height:26px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
-.A .me-dot,.me-dot.A{background:#1d4ed8}.B .me-dot,.me-dot.B{background:#0f766e}.C .me-dot,.me-dot.C{background:#b45309}.ghost .me-dot{background:#7c3aed}
-.leave-btn{border:none;background:transparent;color:#8098ad;border-radius:30px;padding:8px 14px;font:700 12px 'Inter',sans-serif;cursor:pointer}.leave-btn:hover{background:#fdeaea;color:#a13d3d}
-.location-banner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#1d4ed8,#16389b);color:#fff;border-radius:16px;padding:14px 20px;margin-bottom:22px;box-shadow:0 12px 28px rgba(29,78,216,.28)}
-.loc-info{display:flex;align-items:center;gap:10px;font-size:14.5px;font-weight:700;flex:1;min-width:0}.loc-info i{color:#ffd166}
-.loc-step-num{background:rgba(255,255,255,.18);padding:3px 10px;border-radius:30px;font-size:11.5px;font-weight:800}
-.loc-team-score{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.28);border-radius:30px;padding:7px 16px;font-size:13px;font-weight:800}
-.loc-team-score i{color:#ffd166}.loc-team-score b{font-size:16px}
-.loc-guide-btn{border:none;border-radius:30px;background:#ffd166;color:#7a4a00;padding:9px 18px;font:800 12.5px 'Inter',sans-serif;cursor:pointer}
+
+/* TOPBAR */
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid #e6eef6;border-radius:20px;padding:14px 20px;box-shadow:0 10px 26px rgba(20,45,80,.08);margin-bottom:16px}
+.brand-title{font-size:18px;font-weight:800;color:#1d4ed8;display:flex;align-items:center;gap:10px}
+.me-chip{display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:30px;font-size:13px;font-weight:700}
+.me-chip.student{background:#eaf1ff;color:#1d4ed8}
+.me-chip.ghost{background:#f1ebff;color:#7c3aed}
+.score-chip{background:#fff4e0;border:1.5px solid #f0c88a;border-radius:30px;padding:6px 16px;font-size:13px;font-weight:800;color:#b45309;display:flex;align-items:center;gap:7px}
+
+.location-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(135deg,#1d4ed8,#16389b);color:#fff;border-radius:16px;padding:14px 20px;margin-bottom:22px;box-shadow:0 12px 28px rgba(29,78,216,.28)}
+.loc-info{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700}.loc-info i{color:#ffd166}
+.loc-step-num{background:rgba(255,255,255,.2);padding:4px 12px;border-radius:30px;font-size:12px;font-weight:800}
+
+/* CONTROL PANELS */
+.control-panel{background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:16px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.control-panel.teacher{background:#f1ebff;border-color:#d6c7f5}
+
 .section{background:#fff;border:1px solid #e6eef6;border-radius:26px;box-shadow:0 16px 38px rgba(20,45,80,.09);overflow:hidden}
 .section-head{padding:20px 26px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #eaf1f8}
 .section-head.l{background:linear-gradient(135deg,#f1ebff,#eaf1ff)}
 .sec-badge{display:inline-flex;align-items:center;gap:7px;background:#eaf1ff;color:#1d4ed8;padding:5px 14px;border-radius:30px;font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
 .sec-badge.listen{background:#fff;color:#7c3aed}
-.sec-title{font-size:21px;font-weight:800;letter-spacing:-.3px}
-.sec-num{margin-left:auto;font-size:12px;font-weight:800;color:#8098ad;background:#f2f7fc;border-radius:40px;padding:6px 15px}
-.section-body{padding:22px 26px 24px}
-.panel{border-radius:15px;padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.panel strong{display:block;font-size:15px;margin-bottom:2px}.panel p{font-size:12.5px;font-weight:500}
-.panel .ic{font-size:24px;flex-shrink:0}
-.panel.locked{background:#f7fafd;border:1.5px dashed #c5d8eb;color:#55708b}.panel.locked strong{color:#13202d}
-.panel.go{background:linear-gradient(135deg,#16a34a,#0d9488);color:#fff;box-shadow:0 12px 28px rgba(22,163,74,.28)}
-.panel.ghost{background:#f1ebff;border:1.5px solid #d6c7f5;color:#5b21b6}.panel.ghost strong{color:#4c1d95}
-.timer{margin-left:auto;font-size:34px;font-weight:800;letter-spacing:1px;font-variant-numeric:tabular-nums}
-.pics{display:grid;gap:14px;margin-bottom:6px}.pics[data-n="2"]{grid-template-columns:1fr 1fr}.pics[data-n="3"]{grid-template-columns:repeat(3,1fr)}
-.pic{background:var(--tint);border:2.5px solid transparent;border-radius:18px;padding:18px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:9px;opacity:.55;transition:.2s}
-.pic.now{opacity:1;border-color:var(--accent);box-shadow:0 14px 30px rgba(20,45,80,.16);transform:translateY(-3px)}
-.pic.done{opacity:.75}
-.pic-icon{width:96px;height:96px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(20,45,80,.14);color:var(--accent);font-size:40px}
-.pic-tag{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);background:#fff;padding:4px 12px;border-radius:30px}
-.pic h3{font-size:17px;font-weight:800}.pic p{font-size:12px;font-weight:500;color:#5a7189;line-height:1.45}
-.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
-.chip{background:#fff;border:1.5px solid #dbe7f1;color:#33526e;font-size:12px;font-weight:700;padding:5px 12px;border-radius:40px}
-.who{font-size:12.5px;font-weight:800;color:#13202d;background:#fff;border-radius:30px;padding:5px 12px}
-.textcard{background:linear-gradient(180deg,#fffdf5,#fff8e6);border:2px solid #f2dfa6;border-radius:18px;padding:22px 24px;margin-bottom:16px}
-.textcard small{display:block;font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:#a0690c;margin-bottom:10px}
-.textcard p{font-size:20px;line-height:1.65;font-weight:600;color:#3a2b0a}
-.order{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.order span{font-size:12px;font-weight:800;padding:6px 14px;border-radius:30px;background:#f2f7fc;color:#6b8299}
-.order span.now{background:#1d4ed8;color:#fff}.order span.done{background:#eafaf1;color:#14603c}
-.progress-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:12px 16px;border-radius:14px;background:#f7fafd;border:1px solid #eaf1f8;margin-bottom:18px}
-.prog-item{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:#55708b;background:#fff;border-radius:30px;padding:5px 13px 5px 5px;border:1px solid #e2ecf5}
-.prog-item .me-dot{width:24px;height:24px;font-size:10.5px}
-.prog-count{color:#1d4ed8;font-weight:800}.prog-count.done{color:#16a34a}
-.prog-pts{background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:800}
-.q-columns{display:grid;gap:14px}.q-columns[data-n="1"]{grid-template-columns:1fr}.q-columns[data-n="2"]{grid-template-columns:1fr 1fr}
-.q-col{display:flex;flex-direction:column;gap:12px}
-.q-col-head{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:800;color:#4a6580;flex-wrap:wrap}
-.player-tag{padding:4px 12px;border-radius:30px;font-size:11px;font-weight:800;text-transform:uppercase}
-.player-tag.A{background:#eaf1ff;color:#1d4ed8}.player-tag.B{background:#e3f5f2;color:#0f766e}.player-tag.C{background:#fff4e0;color:#b45309}
-.you-badge{margin-left:auto;font-size:10px;font-weight:800;text-transform:uppercase;color:#fff;background:#16a34a;padding:3px 10px;border-radius:30px}
-.q-card{background:#fff;border:1.5px solid #e2ecf5;border-radius:15px;padding:14px 15px;position:relative}
-.q-card.not-yours{background:#fafbfd;border-style:dashed}
+.sec-title{font-size:20px;font-weight:800}
+.section-body{padding:26px}
+
+/* SPEAKING SINGLE TOPIC CAROUSEL */
+.topic-carousel{display:flex;flex-direction:column;align-items:center}
+.topic-nav-controls{display:flex;align-items:center;justify-content:space-between;width:100%;margin-bottom:18px}
+.topic-counter{font-size:13px;font-weight:800;color:#6b8299;background:#f2f7fc;padding:6px 14px;border-radius:30px}
+.pic-card{background:var(--tint);border:3px solid var(--accent);border-radius:24px;padding:36px 28px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;box-shadow:0 18px 36px rgba(20,45,80,.14);width:100%;max-width:550px;transition:all .3s ease}
+.pic-icon{width:120px;height:120px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(20,45,80,.15);color:var(--accent);font-size:52px}
+.pic-card h3{font-size:24px;font-weight:800;color:#13202d}
+.pic-card p{font-size:15px;font-weight:500;color:#4a6580;line-height:1.55;max-width:440px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:6px}
+.chip{background:#fff;border:1.5px solid #dbe7f1;color:#2c4359;font-size:13px;font-weight:700;padding:6px 14px;border-radius:40px}
+.timer-display{font-size:32px;font-weight:800;letter-spacing:1px;color:#1d4ed8;font-variant-numeric:tabular-nums}
+
+/* AUDIO PLAYER CONTAINER */
+.audio-box{background:#f1ebff;border:1.5px solid #d6c7f5;border-radius:16px;padding:16px 20px;margin-bottom:20px}
+.audio-box label{display:block;font-size:11px;font-weight:800;text-transform:uppercase;color:#7c3aed;margin-bottom:8px;letter-spacing:.8px}
+audio{width:100%;border-radius:10px}
+
+/* QUESTIONS */
+.q-card{background:#fff;border:1.5px solid #e2ecf5;border-radius:16px;padding:18px;margin-bottom:14px;transition:all .2s}
 .q-card.solved{border-color:#16a34a;background:linear-gradient(180deg,#f3fdf7,#eafaf1)}
-.q-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
-.q-num{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;background:#eaf1ff;color:#1d4ed8}
-.q-text{flex:1;font-size:13.5px;font-weight:700;color:#1c3350;line-height:1.42}
-.options{display:flex;flex-direction:column;gap:7px}
-.opt{width:100%;text-align:left;border:1.5px solid #dbe7f1;background:#fbfdff;border-radius:11px;padding:10px 12px;display:flex;align-items:flex-start;gap:10px;font:600 13px 'Inter',sans-serif;color:#33526e;line-height:1.4;cursor:pointer;transition:.15s}
-.opt .l{width:22px;height:22px;border-radius:6px;background:#eef3f9;color:#4a6580;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:800;flex-shrink:0}
-.opt:hover:not(:disabled){border-color:#1d4ed8;background:#f4f9ff;transform:translateX(2px)}
+.q-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.q-num{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;background:#eaf1ff;color:#1d4ed8}
+.q-text{flex:1;font-size:14.5px;font-weight:700;color:#1c3350;line-height:1.45}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{width:100%;text-align:left;border:1.5px solid #dbe7f1;background:#fbfdff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;font:600 13.5px 'Inter',sans-serif;color:#33526e;cursor:pointer;transition:.15s}
+.opt .l{width:24px;height:24px;border-radius:6px;background:#eef3f9;color:#4a6580;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.opt:hover:not(:disabled){border-color:#1d4ed8;background:#f4f9ff}
 .opt.correct{background:#eafaf1;border-color:#16a34a;color:#14603c}.opt.correct .l{background:#16a34a;color:#fff}
-.opt.wrong{background:#fdeaea;border-color:#dc2626;color:#8f2f2f;animation:shake .55s}.opt.wrong .l{background:#dc2626;color:#fff}
-.opt:disabled{cursor:default}.opt:disabled:not(.correct):not(.wrong){opacity:.65}
-@keyframes shake{20%,80%{transform:translateX(3px)}30%,50%,70%{transform:translateX(-5px)}40%,60%{transform:translateX(5px)}}
-.feedback{margin-top:9px;font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:9px}
-.feedback.ok{background:#eafaf1;color:#14603c;border-left:3px solid #16a34a}.feedback.live{background:#fff4e0;color:#92400e;border-left:3px solid #f59e0b}
-.teamwork{margin-top:16px;background:linear-gradient(135deg,#16a34a,#0d9488);border-radius:16px;padding:16px 20px;color:#fff;display:flex;align-items:center;gap:14px}
-.teamwork i{font-size:26px}.teamwork span{display:block;font-size:12.5px;opacity:.95}
-.step-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#fff;border:1px solid #e6eef6;border-radius:20px;padding:12px 16px;box-shadow:0 10px 26px rgba(20,45,80,.08);margin-top:22px;position:sticky;bottom:14px;z-index:100}
-.step-dots{display:flex;gap:6px}
-.step-dot{width:26px;height:26px;border-radius:50%;border:2px solid #dbe7f1;background:#fff;color:#6b8299;font:800 10.5px 'Inter',sans-serif;cursor:pointer}
-.step-dot.active{background:#1d4ed8;border-color:#1d4ed8;color:#fff;width:32px;border-radius:15px}
-.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%);background:#1d4ed8;color:#fff;padding:12px 22px;border-radius:40px;font-size:13.5px;font-weight:700;box-shadow:0 12px 30px rgba(29,78,216,.35);z-index:1000;max-width:90vw;text-align:center}
-.toast.success{background:#16a34a}.toast.gold{background:#d97706}
-.footer-note{margin-top:24px;font-size:12px;color:#8098ad;text-align:center}
-@media(max-width:900px){.pics[data-n],.q-columns[data-n]{grid-template-columns:1fr}}
-@media(max-width:640px){body{padding:14px 10px 100px}.section-body{padding:18px 16px}.topbar{position:static}.textcard p{font-size:17px}}
+.opt.wrong{background:#fdeaea;border-color:#dc2626;color:#8f2f2f}.opt.wrong .l{background:#dc2626;color:#fff}
+.opt:disabled{cursor:default}.opt:disabled:not(.correct):not(.wrong){opacity:.6}
+
+/* BUTTONS & NAV */
+.btn{border:none;border-radius:40px;padding:12px 24px;font:800 14px 'Inter',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(135deg,#1d4ed8,#16389b);color:#fff;box-shadow:0 8px 20px rgba(29,78,216,.3);transition:.18s}
+.btn:hover:not(:disabled){transform:translateY(-2px)}.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn.soft{background:#eef3f9;color:#3d5a75;box-shadow:none}.btn.soft:hover:not(:disabled){background:#dbe7f1}
+.btn.gold{background:#ffd166;color:#7a4a00;box-shadow:0 8px 20px rgba(255,209,102,.3)}
+.step-nav{display:flex;align-items:center;justify-content:center;gap:14px;background:#fff;border:1px solid #e6eef6;border-radius:20px;padding:14px 20px;box-shadow:0 10px 26px rgba(20,45,80,.08);margin-top:22px}
+.step-dots{display:flex;gap:8px}
+.step-dot{width:32px;height:32px;border-radius:50%;border:2px solid #dbe7f1;background:#fff;color:#6b8299;font:800 12px 'Inter',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.step-dot.active{background:#1d4ed8;border-color:#1d4ed8;color:#fff;width:40px;border-radius:18px}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#16a34a;color:#fff;padding:12px 24px;border-radius:40px;font-size:14px;font-weight:700;box-shadow:0 12px 30px rgba(22,163,74,.35);z-index:1000}
 </style>
 </head>
 <body>
 
+<!-- JOIN SCREEN -->
 <div class="join-screen" id="joinScreen">
   <div class="join-brand">
     <div class="join-logo"><i class="fas fa-comments"></i></div>
-    <div><h1>Speak &amp; Dictate <span>· Team Activity</span></h1><p>2 speaking rounds · 2 listening dictations</p></div>
+    <div><h1>Speak &amp; Dictate <span>Activity</span></h1><p>B1 Teen Practice Module</p></div>
   </div>
-  <div class="room-info"><i class="fas fa-users"></i> You are joining room <b id="roomNameDisplay"></b></div>
-  <div class="field"><label for="nameInput">Your name</label>
-    <input id="nameInput" type="text" maxlength="24" placeholder="Type your name here" autocomplete="off" /></div>
-  <button type="button" class="btn wide" id="joinBtn"><i class="fas fa-arrow-right-to-bracket"></i> Join the room</button>
-  <div class="join-error hidden" id="joinError"></div>
-  <p class="join-hint">Everyone on this page is in the same room. The system will assign you Player A, B, or C automatically.</p>
+  <div class="field">
+    <label for="nameInput">Your Name</label>
+    <input id="nameInput" type="text" maxlength="24" placeholder="Type your name..." autocomplete="off" />
+  </div>
+  <button type="button" class="btn" style="width:100%" id="joinBtn"><i class="fas fa-arrow-right-to-bracket"></i> Enter Activity</button>
 </div>
 
+<!-- MAIN APP -->
 <div class="app hidden" id="mainApp">
   <div class="topbar">
-    <div class="room-chip"><i class="fas fa-users"></i> Room <b id="roomCode"></b></div>
-    <div class="me-chip A" id="meChip"><span class="me-dot" id="meInitial">?</span><b id="meName"></b><span id="meRole"></span></div>
-    <button type="button" class="btn warn hidden" id="resetBtn"><i class="fas fa-eraser"></i> Reset everything</button>
-    <button class="leave-btn" id="leaveBtn"><i class="fas fa-right-from-bracket"></i> Leave</button>
+    <div class="brand-title"><i class="fas fa-comment-dots"></i> Speak &amp; Dictate</div>
+    <div class="me-chip student" id="meChip"><span id="meName">Student</span></div>
+    <div class="score-chip"><i class="fas fa-trophy"></i> <span id="scoreDisplay">0</span> Points</div>
   </div>
+
   <div class="location-banner">
-    <div class="loc-info"><i class="fas fa-location-dot"></i><span class="loc-step-num" id="locNum"></span><span id="locTitle"></span></div>
-    <div class="loc-team-score"><i class="fas fa-trophy"></i> Team <b id="teamScore">0</b> pts</div>
-    <button type="button" class="loc-guide-btn hidden" id="guideBtn"><i class="fas fa-paper-plane"></i> Send class here</button>
+    <div class="loc-info">
+      <i class="fas fa-compass"></i>
+      <span class="loc-step-num" id="locNum">Page 1 / 4</span>
+      <span id="locTitle">Speaking Practice 1</span>
+    </div>
+    <button type="button" class="btn gold hidden" id="sendStudentBtn"><i class="fas fa-paper-plane"></i> Send Student Here</button>
   </div>
-  <div id="sections"></div>
+
+  <div id="sectionContainer"></div>
+
   <nav class="step-nav">
-    <button class="btn soft" id="prevStep"><i class="fas fa-arrow-left"></i> Previous</button>
+    <button class="btn soft hidden" id="prevBtn"><i class="fas fa-arrow-left"></i> Back</button>
     <div class="step-dots" id="stepDots"></div>
-    <button class="btn" id="nextStep">Next <i class="fas fa-arrow-right"></i></button>
+    <button class="btn hidden" id="nextBtn">Next <i class="fas fa-arrow-right"></i></button>
   </nav>
-  <p class="footer-note">All situations here are imaginary and used only to practise English.</p>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -151,332 +135,305 @@ body{font-family:'Inter',sans-serif;background:#eef3fa;background-image:radial-g
 <script>
 (function () {
 'use strict';
+
 const FIREBASE_URL = 'https://english-meetings-f08e4-default-rtdb.firebaseio.com';
-const ROOM = 'SPEAKDICTATE';
+const ROOM = 'B1_TEEN_SINGLE_ACTIVITY';
 const GHOSTS = ['andre prof','prof andre','andre professor','professor andre','prof. andre','andre prof.'];
-const CLIENT_ID = 'c_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-const KEY = 'speak-dictate-v1';
-const ROLES = ['A','B','C'];
-const TURN_MS = 5 * 60 * 1000;
-const COLORS = [['#1d4ed8','#eaf1ff'],['#0f766e','#e3f5f2'],['#b45309','#fff4e0']];
 
-/* ---------------- DATA ---------------- */
-const STEPS = [
- { type:'speak', id:'s1', title:'Speaking 1 · Ask your friends', topics:[
-   { n:'A birthday party', i:'fa-cake-candles', d:'Imagine the last great party you went to.', c:['guests','food','music','presents','games'] },
-   { n:'A trip abroad', i:'fa-plane', d:'Think about a place you would like to visit.', c:['hotel','tickets','weather','sightseeing','food'] },
-   { n:'A weekend of sport', i:'fa-futbol', d:'Think about the sports people play or watch.', c:['team','training','stadium','win','injury'] } ] },
- { type:'dict', id:'d1', title:'Listening Dictation 1 · Careers and the future of work', texts:[
-   { t:'Three years ago, Camila left her job as an accountant to become a web developer. She studied online for eight months and worked at night to pay for her course. Now she earns more than before and works for a company in Lisbon, but she says the first year was very hard.',
-     q:[['What was Camila\'s old job?',['Teacher','Accountant','Nurse'],1],['How long did she study online?',['Eight months','Eighteen months','Eight weeks'],0],['How did she pay for her course?',['She won a scholarship','She borrowed money','She worked at night'],2],['Where does she work now?',['Lisbon','Madrid','London'],0]] },
-   { t:'More companies now let employees work from home, and many people like it because they save time and money on transport. However, some workers feel lonely, and managers worry about teamwork. One solution is a hybrid model: three days at home and two days in the office.',
-     q:[['Why do many people like working from home?',['They earn more','They save time and money','They have longer holidays'],1],['What do some workers feel?',['Lonely','Bored','Angry'],0],['What do managers worry about?',['Salaries','Equipment','Teamwork'],2],['What is the hybrid model?',['Three days at home, two in the office','Two days at home, three in the office','Every day at home'],0]] },
-   { t:'Artificial intelligence is changing many jobs. Experts say it will not replace all workers, but it will change the tasks people do. Workers who learn to use new tools will have better chances. A recent report says that by 2030, about one in five employees will need to learn new skills.',
-     q:[['What will artificial intelligence change?',['The tasks people do','The office buildings','The salaries'],0],['Who will have better chances?',['Young workers only','People who work longer hours','Workers who learn new tools'],2],['Which year does the report mention?',['2025','2030','2040'],1],['How many employees will need new skills?',['One in ten','One in three','One in five'],2]] } ] },
- { type:'speak', id:'s3', title:'Speaking 2 · Ask your friends', topics:[
-   { n:'Technology', i:'fa-mobile-screen', d:'Phones, apps and the things we use every day.', c:['app','battery','screen','internet','social media'] },
-   { n:'Pets and animals', i:'fa-dog', d:'Think about animals you know or would like to have.', c:['dog','cat','food','vet','walk'] },
-   { n:'Music and concerts', i:'fa-music', d:'Think about the songs and artists you enjoy.', c:['band','ticket','lyrics','instrument','festival'] } ] },
- { type:'dict', id:'d2', title:'Listening Dictation 2 · Living abroad and job skills', texts:[
-   { t:'Marcos moved to Toronto two years ago to work as an engineer. The hardest part was the winter, because temperatures fall to minus twenty degrees. He also misses his family and Brazilian food. On the other hand, he loves the public transport and the multicultural friends he has made.',
-     q:[['Which city did Marcos move to?',['Vancouver','Toronto','Dublin'],1],['What was the hardest part for him?',['The winter','The language','The paperwork'],0],['What does he miss?',['His old job','His house','His family and Brazilian food'],2],['What does he love about his new life?',['The salary','Public transport and multicultural friends','The weather'],1]] },
-   { t:'Before a job interview, research the company and prepare examples of your work. Arrive ten minutes early and dress in a way that fits the company culture. At the end, ask at least one question, because it shows that you are interested. Finally, send a thank-you email the next day.',
-     q:[['What should you do before the interview?',['Research the company','Call the manager','Buy new clothes'],0],['When should you arrive?',['Thirty minutes early','Ten minutes early','Exactly on time'],1],['Why should you ask a question?',['To finish faster','To ask about salary','To show interest'],2],['When should you send a thank-you email?',['The next day','The same night','The next week'],0]] },
-   { t:'Some countries are testing a four-day work week with the same salary. In one trial, sixty companies took part for six months. Most of them said that workers were happier and less tired, and productivity stayed the same. Only a few companies decided to go back to five days.',
-     q:[['What are some countries testing?',['A six-hour day','A four-day work week','Longer holidays'],1],['How many companies took part?',['Sixteen','Six hundred','Sixty'],2],['How long did the trial last?',['Six months','One year','Three months'],0],['What did most companies say?',['Productivity fell','Workers were unhappy','Workers were happier and less tired'],2]] } ] }
+const PAGES = [
+  {
+    type: 'speak',
+    title: 'Page 1 · Speaking Practice (Set 1)',
+    topics: [
+      { n: 'Technology & Gadgets', i: 'fa-mobile-screen-button', d: 'Talk about your favorite device, how often you use it, and what apps you like most.', c: ['screen time', 'social media', 'video games', 'apps'], color: ['#1d4ed8', '#eaf1ff'] },
+      { n: 'Hobbies & Free Time', i: 'fa-gamepad', d: 'Describe what you enjoy doing on weekends, who you do it with, and why you find it fun.', c: ['sports', 'drawing', 'hanging out', 'relaxing'], color: ['#0f766e', '#e3f5f2'] },
+      { n: 'Travel & Holidays', i: 'fa-plane-departure', d: 'Talk about a memorable trip you took or a destination you would love to visit in the future.', c: ['sightseeing', 'hotel', 'packing', 'flight'], color: ['#b45309', '#fff4e0'] }
+    ]
+  },
+  {
+    type: 'dict',
+    title: 'Page 2 · Listening Dictation 1',
+    audio: 'https://files.catbox.moe/luvtjc.mp3',
+    audioTitle: 'The Smartphone Fast',
+    questions: [
+      { q: "How old is Leo?", opts: ["14 years old", "15 years old", "16 years old"], ans: 1 },
+      { q: "What time did he turn off his phone every evening?", opts: ["After 7 PM", "After 8 PM", "After 9 PM"], ans: 0 },
+      { q: "Why did his school grades improve?", opts: ["He bought new books", "He studied with friends", "He finished homework faster without phone alerts"], ans: 2 },
+      { q: "Where does Leo keep his phone now when studying?", opts: ["In his backpack", "In another room", "Under his pillow"], ans: 1 }
+    ]
+  },
+  {
+    type: 'speak',
+    title: 'Page 3 · Speaking Practice (Set 2)',
+    topics: [
+      { n: 'The Environment', i: 'fa-seedling', d: 'Explain what young people can do to help nature and protect the planet.', c: ['recycling', 'saving water', 'plastic waste', 'clean up'], color: ['#16a34a', '#eafaf1'] },
+      { n: 'School Life & Subjects', i: 'fa-graduation-cap', d: 'Talk about your favorite subject at school, your teachers, and what you want to study later.', c: ['exams', 'classmates', 'break time', 'project'], color: ['#7c3aed', '#f1ebff'] },
+      { n: 'Music & Movies', i: 'fa-film', d: 'Discuss your favorite music band or movie genre, and why you recommend it.', c: ['playlist', 'cinema', 'soundtrack', 'actors'], color: ['#dc2626', '#fdeaea'] }
+    ]
+  },
+  {
+    type: 'dict',
+    title: 'Page 4 · Listening Dictation 2',
+    audio: 'https://files.catbox.moe/848g7y.mp3',
+    audioTitle: 'The Eco-Friendly School',
+    questions: [
+      { q: "Where is the high school located?", opts: ["London", "Manchester", "Liverpool"], ans: 1 },
+      { q: "How many plastic bottles did the students collect in one month?", opts: ["Over 1,000", "Over 2,000", "Over 5,000"], ans: 1 },
+      { q: "What did the school buy with the recycling money?", opts: ["10 new bicycles", "New computers", "Sports equipment"], ans: 0 },
+      { q: "According to the headteacher, what can make a huge difference?", opts: ["Longer holidays", "Higher taxes", "Small changes in daily habits"], ans: 2 }
+    ]
+  }
 ];
-const ALLQ = {};
 
-/* ---------------- STATE ---------------- */
-let me = { role:null, name:'', isGhost:false };
-let state = { players:{}, turns:{}, answers:{}, lastGuide:null };
-let step = 0, db = null, fbOk = false, offset = 0, lastGuideId = null, solvedSeen = {}, scheduled = {};
+let isGhost = false;
+let userName = '';
+let currentPage = 0;
+let topicIndices = { 0: 0, 2: 0 };
+let userAnswers = {};
+let score = 0;
+let db = null, fbOk = false;
+let timerInterval = null, timerEndsAt = 0;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const now = () => Date.now() + offset;
-const present = () => ROLES.filter(r => state.players && state.players[r]);
-const pname = r => (state.players[r] && state.players[r].name) || ('Player ' + r);
-const initials = n => (n || '?').trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
-const isGhostName = n => GHOSTS.includes(String(n || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim());
-const pts = a => a === 1 ? 3 : a === 2 ? 2 : 1;
-const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-const arr = v => Array.isArray(v) ? v : Object.keys(v || {}).sort((a, b) => a - b).map(k => v[k]);
-function toast(msg, kind) {
-  const el = document.createElement('div'); el.className = 'toast ' + (kind || ''); el.textContent = msg;
-  document.body.appendChild(el); setTimeout(() => el.remove(), 3000);
+
+function toast(msg) {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2500);
 }
 
-/* ---------------- DB LAYER (Firebase, with local fallback) ---------------- */
-function localSet(path, val) {
-  const p = path.split('/'); let o = state;
-  for (let i = 0; i < p.length - 1; i++) { if (o[p[i]] == null) o[p[i]] = {}; o = o[p[i]]; }
-  if (val === null) delete o[p[p.length - 1]]; else o[p[p.length - 1]] = val;
-}
-function localGet(path) { let o = state; for (const k of path.split('/')) { if (o == null) return null; o = o[k]; } return o == null ? null : o; }
-function setPath(path, val) {
-  localSet(path, val); render();
-  if (fbOk) db.ref('rooms/' + ROOM + '/' + path).set(val).catch(e => console.warn(e));
-}
-function multi(updates) {
-  Object.keys(updates).forEach(p => localSet(p, updates[p])); render();
-  if (fbOk) { const u = {}; Object.keys(updates).forEach(p => u['rooms/' + ROOM + '/' + p] = updates[p]); db.ref().update(u).catch(e => console.warn(e)); }
-}
-function txn(path, fn) {
-  if (fbOk) db.ref('rooms/' + ROOM + '/' + path).transaction(fn, () => {});
-  else { const r = fn(localGet(path)); if (r !== undefined) { localSet(path, r); render(); } }
-}
 function initFirebase() {
   if (typeof firebase === 'undefined' || !firebase.initializeApp) return;
   try {
-    firebase.initializeApp({ databaseURL: FIREBASE_URL }); db = firebase.database(); fbOk = true;
-    db.ref('.info/serverTimeOffset').on('value', s => { offset = s.val() || 0; });
+    firebase.initializeApp({ databaseURL: FIREBASE_URL });
+    db = firebase.database();
+    fbOk = true;
   } catch (e) { console.warn(e); }
 }
 
-/* ---------------- JOIN ---------------- */
-$('roomNameDisplay').textContent = ROOM;
-try { const s = JSON.parse(localStorage.getItem(KEY) || '{}'); if (s.name) $('nameInput').value = s.name; } catch (e) {}
-function joinErr(m) { const e = $('joinError'); e.textContent = m; e.classList.toggle('hidden', !m); }
-$('joinBtn').addEventListener('click', async () => {
-  const name = $('nameInput').value.trim(); joinErr('');
-  if (!name) return joinErr('Please write your name.');
-  me.name = name; me.isGhost = isGhostName(name);
-  try { localStorage.setItem(KEY, JSON.stringify({ name })); } catch (e) {}
-  $('joinBtn').disabled = true;
-  try { if (me.isGhost) me.role = 'ghost'; else await claimSlot(); finalizeJoin(); }
-  catch (err) { joinErr(err.message || 'Could not join.'); $('joinBtn').disabled = false; }
-});
-function claimSlot() {
-  return new Promise((resolve, reject) => {
-    if (!fbOk) { me.role = 'A'; state.players = { A: { name: me.name } }; return resolve(); }
-    db.ref('rooms/' + ROOM + '/players').transaction(cur => {
-      cur = cur || {};
-      for (const r of ROLES) if (cur[r] && cur[r].clientId === CLIENT_ID) return cur;
-      for (const r of ROLES) if (!cur[r]) { cur[r] = { name: me.name, clientId: CLIENT_ID, ts: Date.now() }; return cur; }
-      return;
-    }, (err, ok, snap) => {
-      if (err) return reject(new Error('Connection error. Please try again.'));
-      if (!ok) return reject(new Error('Room is full (3 players max).'));
-      const f = snap.val() || {}; const r = ROLES.find(x => f[x] && f[x].clientId === CLIENT_ID);
-      if (!r) return reject(new Error('Could not claim a slot. Try again.'));
-      me.role = r; try { db.ref('rooms/' + ROOM + '/players/' + r).onDisconnect().remove(); } catch (e) {}
-      resolve();
-    });
-  });
-}
-function finalizeJoin() {
-  $('joinScreen').classList.add('hidden'); $('mainApp').classList.remove('hidden');
-  $('roomCode').textContent = ROOM; $('meName').textContent = me.name;
-  $('meInitial').textContent = me.isGhost ? '👻' : initials(me.name);
-  $('meRole').textContent = me.isGhost ? 'Teacher view' : 'Player ' + me.role;
-  $('meChip').className = 'me-chip ' + (me.isGhost ? 'ghost' : me.role);
-  if (me.isGhost) { $('guideBtn').classList.remove('hidden'); $('resetBtn').classList.remove('hidden'); }
+$('joinBtn').addEventListener('click', () => {
+  const name = $('nameInput').value.trim();
+  if (!name) return;
+  userName = name;
+  const clean = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  isGhost = GHOSTS.includes(clean);
+
+  $('joinScreen').classList.add('hidden');
+  $('mainApp').classList.remove('hidden');
+  $('meName').textContent = isGhost ? '👻 Andre Prof (Teacher)' : userName;
+  $('meChip').className = 'me-chip ' + (isGhost ? 'ghost' : 'student');
+
+  if (isGhost) {
+    $('sendStudentBtn').classList.remove('hidden');
+    $('prevBtn').classList.remove('hidden');
+    $('nextBtn').classList.remove('hidden');
+  }
+
+  listenSync();
   render();
+});
+
+function listenSync() {
   if (!fbOk) return;
   db.ref('rooms/' + ROOM).on('value', snap => {
-    const v = snap.val() || {};
-    state.players = v.players || {}; state.turns = v.turns || {}; state.answers = v.answers || {}; state.lastGuide = v.lastGuide || null;
-    if (state.lastGuide && state.lastGuide.pushId !== lastGuideId) {
-      if (!me.isGhost && lastGuideId !== null) { step = Number(state.lastGuide.step) || 0; toast('📍 Teacher: "Go to ' + STEPS[step].title + '"', 'gold'); }
-      lastGuideId = state.lastGuide.pushId;
+    const data = snap.val() || {};
+    if (!isGhost && data.currentPage !== undefined) {
+      currentPage = data.currentPage;
     }
-    if (!Object.keys(state.answers).length) solvedSeen = {};
+    if (data.topicIndices) {
+      topicIndices = data.topicIndices;
+    }
+    if (data.timerEndsAt) {
+      timerEndsAt = data.timerEndsAt;
+      startTimerCountdown();
+    }
     render();
-  }, () => { fbOk = false; render(); });
-}
-
-/* ---------------- TURN LOGIC ---------------- */
-function startRound(st) {
-  const pr = present();
-  if (pr.length < 2) return toast('You need at least 2 players to start.', 'gold');
-  setPath('turns/' + st.id, { order: shuffle(pr), idx: 0, t0: now(), done: false });
-}
-function advance(stId, expIdx) {
-  txn('turns/' + stId, c => {
-    if (!c || c.done || c.idx !== expIdx) return c;
-    const order = arr(c.order);
-    present().forEach(r => { if (!order.includes(r)) order.push(r); });
-    let i = c.idx + 1;
-    while (i < order.length && !state.players[order[i]]) i++;
-    return { order, idx: i, t0: now(), done: i >= order.length };
   });
 }
-function fmt(ms) { ms = Math.max(0, ms); const s = Math.ceil(ms / 1000); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
-setInterval(() => {
-  if (!me.role) return;
-  STEPS.forEach(st => {
-    const T = state.turns[st.id]; if (!T || T.done) return;
-    const order = arr(T.order), cur = order[T.idx];
-    if (st.type === 'speak') {
-      const rem = TURN_MS - (now() - T.t0);
-      if (st.id === STEPS[step].id) { const el = $('timer'); if (el) el.textContent = fmt(rem); }
-      if (rem <= 0) advance(st.id, T.idx);
+
+function syncState() {
+  if (fbOk && isGhost) {
+    db.ref('rooms/' + ROOM).update({
+      currentPage,
+      topicIndices
+    });
+  }
+}
+
+function startTimerCountdown() {
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    const rem = Math.max(0, Math.ceil((timerEndsAt - Date.now()) / 1000));
+    const timerEl = $('timerDisplay');
+    if (timerEl) {
+      const mins = Math.floor(rem / 60);
+      const secs = String(rem % 60).padStart(2, '0');
+      timerEl.textContent = `${mins}:${secs}`;
     }
-    if (cur && !state.players[cur] && fbOk) advance(st.id, T.idx);
-  });
-}, 500);
-
-/* ---------------- DICTATION HELPERS ---------------- */
-function ownerOf(n, reader) {
-  const ans = present().filter(r => r !== reader);
-  if (!ans.length) return null;
-  return ans.length === 1 ? ans[0] : ans[(n - 1) % 2];
+    if (rem <= 0) clearInterval(timerInterval);
+  }, 500);
 }
-const qkey = (id, idx, n) => id + '_' + idx + '_' + n;
-function dictSolved(st, T) { return [1, 2, 3, 4].every(n => { const a = state.answers[qkey(st.id, T.idx, n)]; return a && a.correct; }); }
 
-/* ---------------- RENDER ---------------- */
 function render() {
-  if (!me.role) return;
-  const st = STEPS[step];
-  $('sections').innerHTML = st.type === 'speak' ? speakHTML(st) : dictHTML(st);
-  $('locNum').textContent = (step + 1) + ' / ' + STEPS.length;
-  $('locTitle').textContent = (st.type === 'speak' ? '💬 ' : '🎧 ') + st.title;
-  $('stepDots').innerHTML = STEPS.map((_, i) => `<button class="step-dot ${i === step ? 'active' : ''}" data-step="${i}" type="button">${i + 1}</button>`).join('');
-  document.querySelector('.step-nav').classList.toggle('hidden', !me.isGhost);
-  $('prevStep').disabled = step === 0; $('nextStep').disabled = step === STEPS.length - 1;
-  let total = 0; Object.keys(state.answers).forEach(k => { const a = state.answers[k]; if (a && a.correct) total += a.points || 0; });
-  $('teamScore').textContent = total;
-  // auto-advance dictation after all answered
-  STEPS.filter(s => s.type === 'dict').forEach(s => {
-    const T = state.turns[s.id]; if (!T || T.done) return;
-    const k = s.id + T.idx;
-    if (dictSolved(s, T) && !scheduled[k]) { scheduled[k] = true; setTimeout(() => advance(s.id, T.idx), 3500); }
-  });
-  // toasts for other players' correct answers
-  Object.keys(state.answers).forEach(k => {
-    const a = state.answers[k]; if (!a || !a.correct || solvedSeen[k]) return;
-    solvedSeen[k] = true;
-    if (!me.isGhost && a.who !== me.role && state.players[a.who] && Object.keys(solvedSeen).length > 0) toast('✅ ' + pname(a.who) + ' got a question right (+' + (a.points || 0) + ' pts)', 'success');
-  });
-}
+  const page = PAGES[currentPage];
+  $('locNum').textContent = `Page ${currentPage + 1} / ${PAGES.length}`;
+  $('locTitle').textContent = page.title;
 
-function head(st, listen) {
-  return `<div class="section-head ${listen ? 'l' : ''}"><span class="sec-badge ${listen ? 'listen' : ''}"><i class="fas ${listen ? 'fa-headphones' : 'fa-comments'}"></i> ${listen ? 'Listening dictation' : 'Speaking'}</span><span class="sec-title">${esc(st.title)}</span><span class="sec-num">${step + 1} / ${STEPS.length}</span></div>`;
-}
-function startPanel(st, msg) {
-  const pr = present();
-  const info = `Here now: ${pr.length ? pr.map(pname).map(esc).join(', ') : 'nobody yet'}. `;
-  if (!me.isGhost) return `<div class="panel locked"><i class="fas fa-hourglass-half ic"></i><div><strong>Wait for your teacher</strong><p>${info}Your teacher will start the round.</p></div></div>`;
-  return `<div class="panel ghost"><i class="fas fa-play ic"></i><div><strong>${esc(msg)}</strong><p>${info}${pr.length < 2 ? 'Waiting for at least 2 students…' : 'The system will choose randomly.'}</p></div>
-  <button type="button" class="btn" style="margin-left:auto" data-act="start" ${pr.length < 2 ? 'disabled' : ''}><i class="fas fa-shuffle"></i> Start (random order)</button></div>`;
-}
+  $('stepDots').innerHTML = PAGES.map((_, i) => 
+    `<button class="step-dot ${i === currentPage ? 'active' : ''}" data-page="${i}" ${!isGhost ? 'style="pointer-events:none;"' : ''}>${i + 1}</button>`
+  ).join('');
 
-function speakHTML(st) {
-  const T = state.turns[st.id], pr = present();
-  const order = T ? arr(T.order) : [];
-  const n = Math.min(st.topics.length, Math.max(2, order.length, pr.length));
-  const active = T && !T.done;
-  let panel = '';
-  if (!T) panel = startPanel(st, 'Ready to ask questions?');
-  else if (T.done) panel = `<div class="panel go"><i class="fas fa-flag-checkered ic"></i><div><strong>Everyone has been the interviewer. Well done!</strong><p>All the pictures were used.</p></div>${me.isGhost ? '<button type="button" class="btn soft" style="margin-left:auto" data-act="restart">Play again</button>' : ''}</div>`;
-  else {
-    const cur = order[T.idx], topic = st.topics[T.idx];
-    const canSkip = me.isGhost;
-    const skip = canSkip ? `<button type="button" class="btn soft" data-act="skip"><i class="fas fa-forward"></i> Next turn</button>` : '';
-    if (me.role === cur) panel = `<div class="panel go"><i class="fas fa-microphone ic"></i><div><strong>YOUR TURN — you are the interviewer!</strong><p>Look at “${esc(topic.n)}”. Ask your friends questions out loud. No reading from the screen.</p></div><span class="timer" id="timer">5:00</span>${skip}</div>`;
-    else panel = `<div class="panel ${me.isGhost ? 'ghost' : 'locked'}"><i class="fas fa-ear-listen ic"></i><div><strong>${esc(pname(cur))} is asking questions about “${esc(topic.n)}”</strong><p>${me.isGhost ? 'Teacher view: the students speak without the screen.' : 'Listen and answer out loud. Do not look for help on the screen.'}</p></div><span class="timer" id="timer">5:00</span>${skip}</div>`;
+  if (isGhost) {
+    $('prevBtn').disabled = currentPage === 0;
+    $('nextBtn').disabled = currentPage === PAGES.length - 1;
   }
-  const cards = st.topics.slice(0, n).map((t, i) => {
-    const cls = !T ? '' : (T.done || i < T.idx) ? 'done' : i === T.idx ? 'now' : '';
-    const asg = order[i] ? esc(pname(order[i])) : null;
-    const tag = cls === 'now' ? 'Asking now' : cls === 'done' ? '✓ Done' : 'Picture ' + (i + 1);
-    return `<div class="pic ${cls || (!T ? 'now' : '')}" style="--accent:${COLORS[i][0]};--tint:${COLORS[i][1]}">
-      <div class="pic-icon"><i class="fas ${t.i}"></i></div><span class="pic-tag">${tag}</span>
-      <h3>${esc(t.n)}</h3><p>${esc(t.d)}</p>
-      <div class="chips">${t.c.map(w => `<span class="chip">${esc(w)}</span>`).join('')}</div>
-      ${asg ? `<span class="who"><i class="fas fa-user"></i> ${asg}</span>` : ''}</div>`;
+
+  if (page.type === 'speak') {
+    renderSpeaking(page);
+  } else {
+    renderDictation(page);
+  }
+}
+
+function renderSpeaking(page) {
+  const tIdx = topicIndices[currentPage];
+  const topic = page.topics[tIdx];
+
+  const teacherControls = isGhost ? `
+    <div class="control-panel teacher">
+      <span><strong>Teacher Controls:</strong> Timer & Topics</span>
+      <button class="btn gold" id="startTimerBtn"><i class="fas fa-stopwatch"></i> Start 5-Min Timer</button>
+    </div>
+  ` : '';
+
+  $('sectionContainer').innerHTML = `
+    ${teacherControls}
+    <div class="section">
+      <div class="section-head">
+        <span class="sec-badge"><i class="fas fa-comments"></i> Speaking</span>
+        <span class="sec-title">${esc(page.title)}</span>
+        <span class="timer-display" id="timerDisplay" style="margin-left:auto;">5:00</span>
+      </div>
+      <div class="section-body topic-carousel">
+        <div class="topic-nav-controls">
+          <button class="btn soft" id="prevTopicBtn" ${tIdx === 0 || !isGhost ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Topic ${tIdx}</button>
+          <span class="topic-counter">Topic ${tIdx + 1} of ${page.topics.length}</span>
+          <button class="btn soft" id="nextTopicBtn" ${tIdx === page.topics.length - 1 || !isGhost ? 'disabled' : ''}>Topic ${tIdx + 2} <i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="pic-card" style="--accent:${topic.color[0]}; --tint:${topic.color[1]}">
+          <div class="pic-icon"><i class="fas ${topic.i}"></i></div>
+          <h3>${esc(topic.n)}</h3>
+          <p>${esc(topic.d)}</p>
+          <div class="chips">
+            ${topic.c.map(keyword => `<span class="chip">${esc(keyword)}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  if (isGhost) {
+    $('prevTopicBtn').addEventListener('click', () => { if (topicIndices[currentPage] > 0) { topicIndices[currentPage]--; syncState(); render(); } });
+    $('nextTopicBtn').addEventListener('click', () => { if (topicIndices[currentPage] < page.topics.length - 1) { topicIndices[currentPage]++; syncState(); render(); } });
+    $('startTimerBtn').addEventListener('click', () => {
+      timerEndsAt = Date.now() + 5 * 60 * 1000;
+      if (fbOk) db.ref('rooms/' + ROOM).update({ timerEndsAt });
+      startTimerCountdown();
+    });
+  }
+}
+
+function renderDictation(page) {
+  // Play button & Audio Player ONLY shown for Andre Prof (isGhost)
+  const audioBlock = isGhost ? `
+    <div class="audio-box">
+      <label><i class="fas fa-lock"></i> Teacher Audio Player (${page.audioTitle})</label>
+      <audio controls src="${page.audio}"></audio>
+    </div>
+  ` : '';
+
+  const qHtml = page.questions.map((q, idx) => {
+    const qKey = `${currentPage}_${idx}`;
+    const ansState = userAnswers[qKey];
+    const isSolved = ansState && ansState.correct;
+
+    return `
+      <div class="q-card ${isSolved ? 'solved' : ''}">
+        <div class="q-head">
+          <span class="q-num">${idx + 1}</span>
+          <p class="q-text">${esc(q.q)}</p>
+        </div>
+        <div class="options">
+          ${q.opts.map((opt, oIdx) => {
+            let cls = '';
+            if (ansState && ansState.choice === oIdx) {
+              cls = ansState.correct ? 'correct' : 'wrong';
+            }
+            return `
+              <button class="opt ${cls}" data-q="${qKey}" data-opt="${oIdx}" ${isSolved || isGhost ? 'disabled' : ''}>
+                <span class="l">${['A','B','C'][oIdx]}</span>
+                <span>${esc(opt)}</span>
+              </button>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
   }).join('');
-  return `${head(st, false)}<div class="section-body">${panel}
-    ${active || !T ? '' : ''}<div class="pics" data-n="${n}">${cards}</div>
-    <p class="join-hint" style="border:0;padding-top:12px">Each turn lasts 5 minutes. When time is up, the next person gets the next picture. A third person adds a third picture.</p></div>`;
+
+  $('sectionContainer').innerHTML = `
+    <div class="section">
+      <div class="section-head l">
+        <span class="sec-badge listen"><i class="fas fa-headphones"></i> Listening Dictation</span>
+        <span class="sec-title">${esc(page.title)}</span>
+      </div>
+      <div class="section-body">
+        ${audioBlock}
+        <p style="font-size:14px; color:#55708b; margin-bottom:18px; font-weight:600;">
+          ${isGhost ? 'Listen to the audio above and guide the student.' : 'Listen carefully to the passage and answer the questions:'}
+        </p>
+        ${qHtml}
+      </div>
+    </div>
+  `;
 }
 
-function dictHTML(st) {
-  const T = state.turns[st.id];
-  if (!T) return `${head(st, true)}<div class="section-body">${startPanel(st, 'Ready for the dictation?')}</div>`;
-  const order = arr(T.order);
-  const bar = `<div class="order">${order.map((r, i) => `<span class="${T.done || i < T.idx ? 'done' : i === T.idx ? 'now' : ''}">${T.done || i < T.idx ? '✓ ' : ''}Reader ${i + 1}: ${esc(pname(r))}</span>`).join('')}</div>`;
-  if (T.done) return `${head(st, true)}<div class="section-body">${bar}<div class="panel go"><i class="fas fa-champagne-glasses ic"></i><div><strong>Great teamwork! 🎉</strong><p>Everyone has read a text.</p></div>${me.isGhost ? '<button type="button" class="btn soft" style="margin-left:auto" data-act="restart">Play again</button>' : ''}</div></div>`;
-  const reader = order[T.idx], text = st.texts[T.idx], isReader = me.role === reader;
-  const answerers = present().filter(r => r !== reader);
-  const solved = dictSolved(st, T);
-  let panel;
-  if (isReader) panel = `<div class="panel go"><i class="fas fa-book-open-reader ic"></i><div><strong>YOUR TURN — read the text aloud!</strong><p>Read slowly and clearly. Only you can see this text. Your friends will answer the questions.</p></div></div>`;
-  else if (me.isGhost) panel = `<div class="panel ghost"><i class="fas fa-eye ic"></i><div><strong>Teacher view — ${esc(pname(reader))} is reading</strong><p>You can see the current text and the questions.</p></div></div>`;
-  else panel = `<div class="panel go"><i class="fas fa-ear-listen ic"></i><div><strong>${esc(pname(reader))} is reading. Listen and answer!</strong><p>${answerers.length > 1 ? 'You answer only your own questions. ' : 'You answer all 4 questions. '}First try = 3 pts · second = 2 pts · third = 1 pt.</p></div></div>`;
-  const textBlock = (isReader || me.isGhost) ? `<div class="textcard"><small>${isReader ? 'Your text — read it aloud' : 'Current reader’s text'}</small><p>${esc(text.t)}</p></div>` : '';
-  let qs = '';
-  if (!isReader) {
-    qs = `<div class="progress-bar">${answerers.map(r => {
-      const mine = [1, 2, 3, 4].filter(n => ownerOf(n, reader) === r);
-      let d = 0, p = 0; mine.forEach(n => { const a = state.answers[qkey(st.id, T.idx, n)]; if (a && a.correct) { d++; p += a.points || 0; } });
-      return `<span class="prog-item"><span class="me-dot ${r}">${esc(initials(pname(r)))}</span>${esc(pname(r))} <span class="prog-count ${d === mine.length ? 'done' : ''}">${d}/${mine.length}</span>${p ? `<span class="prog-pts">${p} pts</span>` : ''}</span>`;
-    }).join('') || 'Waiting for friends…'}</div>
-    <div class="q-columns" data-n="${answerers.length || 1}">${answerers.map(r => `<div class="q-col"><div class="q-col-head"><span class="player-tag ${r}">Player ${r}</span>${[1, 2, 3, 4].filter(n => ownerOf(n, reader) === r).length} questions${r === me.role ? '<span class="you-badge">You</span>' : ''}</div>
-      ${[1, 2, 3, 4].filter(n => ownerOf(n, reader) === r).map(n => qCard(st, T, text, n, r)).join('')}</div>`).join('')}</div>`;
+$('sectionContainer').addEventListener('click', e => {
+  const optBtn = e.target.closest('.opt');
+  if (!optBtn || optBtn.disabled || isGhost) return;
+
+  const [pIdx, qIdx] = optBtn.dataset.q.split('_').map(Number);
+  const selectedOpt = Number(optBtn.dataset.opt);
+  const qData = PAGES[pIdx].questions[qIdx];
+  const isCorrect = selectedOpt === qData.ans;
+
+  if (isCorrect) {
+    userAnswers[optBtn.dataset.q] = { choice: selectedOpt, correct: true };
+    score += 10;
+    $('scoreDisplay').textContent = score;
+    toast('🎉 Correct! +10 points');
+  } else {
+    userAnswers[optBtn.dataset.q] = { choice: selectedOpt, correct: false };
+    toast('❌ Try again!');
   }
-  const banner = solved ? `<div class="teamwork"><i class="fas fa-champagne-glasses"></i><div><strong>All answers are correct! 🎉</strong><span>The next reader is coming up…</span></div></div>` : '';
-  return `${head(st, true)}<div class="section-body">${bar}${panel}${textBlock}${qs}${banner}</div>`;
-}
+  render();
+});
 
-function qCard(st, T, text, n, owner) {
-  const q = text.q[n - 1], key = qkey(st.id, T.idx, n), a = state.answers[key];
-  const ok = !!(a && a.correct), wrong = !!(a && !a.correct);
-  const mine = owner === me.role && !me.isGhost, can = mine && !ok;
-  const L = ['a', 'b', 'c'];
-  const fb = ok ? `<div class="feedback ok">✅ ${esc(pname(a.who))} got it right · +${a.points} pts</div>` : wrong ? `<div class="feedback live">👀 ${esc(pname(a.who))} tried (${L[a.choice]}) — next try worth ${pts(a.attempts + 1)} pt${pts(a.attempts + 1) > 1 ? 's' : ''}</div>` : '';
-  return `<div class="q-card ${ok ? 'solved' : ''} ${mine ? '' : 'not-yours'}"><div class="q-head"><span class="q-num">${n}</span><p class="q-text">${esc(q[0])}</p></div>
-    <div class="options">${q[1].map((o, i) => `<button class="opt ${ok && a.choice === i ? 'correct' : ''} ${wrong && a.choice === i ? 'wrong' : ''}" type="button" data-q="${key}" data-n="${n}" data-c="${i}" ${can ? '' : 'disabled'}><span class="l">${L[i]}</span><span>${esc(o)}</span></button>`).join('')}</div>${fb}</div>`;
-}
-
-/* ---------------- EVENTS ---------------- */
-$('sections').addEventListener('click', e => {
-  const st = STEPS[step];
-  const act = e.target.closest('[data-act]');
-  if (act) {
-    const a = act.dataset.act, T = state.turns[st.id];
-    if (a === 'start' && me.isGhost) startRound(st);
-    if (a === 'skip' && T && me.isGhost) advance(st.id, T.idx);
-    if (a === 'restart' && me.isGhost) {
-      const u = { ['turns/' + st.id]: null };
-      Object.keys(state.answers).forEach(k => { if (k.indexOf(st.id + '_') === 0) u['answers/' + k] = null; });
-      multi(u);
-    }
-    return;
+$('sendStudentBtn').addEventListener('click', () => {
+  if (isGhost && fbOk) {
+    db.ref('rooms/' + ROOM).update({ currentPage });
+    toast('📤 Student guided to Page ' + (currentPage + 1));
   }
-  const opt = e.target.closest('.opt');
-  if (!opt || opt.disabled || me.isGhost) return;
-  const T = state.turns[st.id]; if (!T || T.done) return;
-  const reader = arr(T.order)[T.idx], n = Number(opt.dataset.n);
-  if (ownerOf(n, reader) !== me.role) return toast('This is another player’s question.', 'gold');
-  const key = opt.dataset.q, c = Number(opt.dataset.c), q = st.texts[T.idx].q[n - 1];
-  const prev = state.answers[key]; if (prev && prev.correct) return;
-  const attempts = ((prev && prev.attempts) || 0) + 1, correct = c === q[2];
-  const data = { choice: c, correct, who: me.role, attempts, points: correct ? pts(attempts) : 0 };
-  setPath('answers/' + key, data);
-  if (correct) toast('🏆 +' + data.points + ' pts! ' + (attempts === 1 ? 'Perfect first try!' : 'Nice recovery!'), 'success');
 });
-function go(i) { if (i < 0 || i >= STEPS.length) return; step = i; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-$('prevStep').addEventListener('click', () => go(step - 1));
-$('nextStep').addEventListener('click', () => go(step + 1));
-$('stepDots').addEventListener('click', e => { const d = e.target.closest('.step-dot'); if (d) go(Number(d.dataset.step)); });
-$('guideBtn').addEventListener('click', () => {
-  if (!me.isGhost) return;
-  const g = { step, pushId: CLIENT_ID + '_' + Date.now() };
-  if (fbOk) db.ref('rooms/' + ROOM + '/lastGuide').set(g).then(() => toast('📤 Class guided to: ' + STEPS[step].title, 'gold'));
-  else toast('📤 (local mode) Guided to: ' + STEPS[step].title, 'gold');
-});
-$('resetBtn').addEventListener('click', () => {
-  if (!me.isGhost || !confirm('Reset all rounds, answers and points?')) return;
-  solvedSeen = {}; scheduled = {};
-  multi({ turns: null, answers: null, lastGuide: null }); toast('🧹 Everything was reset', 'success');
-});
-$('leaveBtn').addEventListener('click', () => {
-  if (!confirm('Are you sure you want to leave the room?')) return;
-  if (fbOk && me.role && me.role !== 'ghost') { try { db.ref('rooms/' + ROOM + '/players/' + me.role).remove(); } catch (e) {} }
-  setTimeout(() => location.reload(), 250);
+
+$('prevBtn').addEventListener('click', () => { if (isGhost && currentPage > 0) { currentPage--; syncState(); render(); } });
+$('nextBtn').addEventListener('click', () => { if (isGhost && currentPage < PAGES.length - 1) { currentPage++; syncState(); render(); } });
+$('stepDots').addEventListener('click', e => {
+  const dot = e.target.closest('.step-dot');
+  if (dot && isGhost) { currentPage = Number(dot.dataset.page); syncState(); render(); }
 });
 
 initFirebase();
