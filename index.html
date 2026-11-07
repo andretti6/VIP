@@ -1,960 +1,1888 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Workplace Scenarios — Mystery Cards</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Two Futures · 4 Debates + 2 Listening Tasks</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
 <style>
-  :root{
-    --bg1:#0f172a;
-    --bg2:#1e293b;
-    --ink:#0f172a;
-    --muted:#475569;
-    --radius:18px;
-  }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  *{box-sizing:border-box;}
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #eef3fa;
+        background-image:
+            radial-gradient(circle at 10% 4%, rgba(29, 78, 216, 0.09), transparent 40%),
+            radial-gradient(circle at 90% 96%, rgba(15, 118, 110, 0.09), transparent 40%);
+        background-attachment: fixed;
+        color: #13202d;
+        min-height: 100vh;
+        padding: 24px 18px 48px;
+    }
 
-  body{
-    margin:0;
-    min-height:100vh;
-    padding:40px 18px 70px;
-    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
-    color:var(--ink);
-    background:linear-gradient(160deg,var(--bg1),var(--bg2));
-  }
+    .app { max-width: 1180px; margin: 0 auto; }
+    .hidden { display: none !important; }
 
-  header{
-    max-width:1000px;
-    margin:0 auto 26px;
-    text-align:center;
-    color:#e2e8f0;
-  }
-  header h1{
-    margin:0 0 10px;
-    font-size:clamp(1.5rem,4vw,2.2rem);
-    letter-spacing:-.02em;
-  }
-  header p{
-    margin:0;
-    color:#94a3b8;
-    font-size:.98rem;
-    line-height:1.5;
-  }
+    /* ---------- JOIN SCREEN ---------- */
+    .join-screen {
+        max-width: 480px; margin: 60px auto 0;
+        background: #ffffff; border-radius: 28px;
+        border: 1px solid #e6eef6;
+        box-shadow: 0 24px 60px rgba(20, 45, 80, 0.14);
+        padding: 32px 30px 28px;
+        animation: popIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+    }
+    @keyframes popIn {
+        from { opacity: 0; transform: translateY(18px) scale(0.95); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .join-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+    .join-logo {
+        width: 54px; height: 54px; border-radius: 17px;
+        background: linear-gradient(135deg, #1d4ed8, #0f766e);
+        color: #fff; display: flex; align-items: center; justify-content: center;
+        font-size: 22px; box-shadow: 0 10px 24px rgba(29, 78, 216, 0.28);
+        flex-shrink: 0;
+    }
+    .join-brand h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.2; }
+    .join-brand h1 span { color: #1d4ed8; }
+    .join-brand p { font-size: 12.5px; color: #6b8299; font-weight: 500; margin-top: 3px; }
 
-  .toolbar{
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    flex-wrap:wrap;
-    margin:20px 0 0;
-  }
-  .toolbar button{
-    border:1px solid rgba(226,232,240,.25);
-    background:rgba(226,232,240,.08);
-    color:#e2e8f0;
-    padding:9px 18px;
-    border-radius:999px;
-    font-size:.85rem;
-    cursor:pointer;
-    transition:.2s;
-    font-weight:500;
-  }
-  .toolbar button:hover{background:rgba(226,232,240,.18);}
-  #resetBtn{border-color:rgba(248,113,113,.5);color:#fecaca;}
-  #resetBtn:hover{background:rgba(248,113,113,.15);}
+    .room-info {
+        background: #f7fafd; border: 1.5px solid #e2ecf5;
+        border-radius: 13px; padding: 12px 15px;
+        display: flex; align-items: center; gap: 10px;
+        margin-bottom: 16px; font-size: 12.5px; font-weight: 600;
+        color: #4a6580;
+    }
+    .room-info i { color: #1d4ed8; font-size: 14px; }
+    .room-info b { color: #13202d; letter-spacing: 1px; font-weight: 800; }
 
-  /* ============ CARD GRID ============ */
-  .grid{
-    max-width:1000px;
-    margin:32px auto 0;
-    display:grid;
-    gap:18px;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  }
+    .field { margin-bottom: 14px; }
+    .field label {
+        display: block; font-size: 10.5px; font-weight: 800;
+        letter-spacing: 0.8px; text-transform: uppercase;
+        color: #7d92a8; margin-bottom: 7px;
+    }
+    .field input {
+        width: 100%; padding: 13px 15px; border-radius: 13px;
+        border: 1.5px solid #dbe7f1; background: #f7fafd;
+        font-family: inherit; font-size: 15px; font-weight: 600;
+        color: #13202d; outline: none; transition: all 0.15s;
+    }
+    .field input::placeholder { color: #a8bacb; font-weight: 500; }
+    .field input:focus { border-color: #1d4ed8; background: #fff; box-shadow: 0 0 0 4px #eaf1ff; }
 
-  .card{
-    position:relative;
-    min-height:260px;
-    border:0;
-    padding:0;
-    background:none;
-    font:inherit;
-    text-align:left;
-    cursor:pointer;
-    border-radius:var(--radius);
-    transition:transform .25s ease, box-shadow .25s ease;
-  }
-  .card:hover{transform:translateY(-4px);}
-  .card:focus-visible{outline:3px solid #38bdf8;outline-offset:4px;}
+    .join-btn {
+        width: 100%; border: none; border-radius: 40px;
+        background: linear-gradient(135deg, #1d4ed8, #16389b);
+        color: #fff; padding: 15px 24px;
+        font-family: inherit; font-size: 15.5px; font-weight: 800;
+        cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+        box-shadow: 0 10px 24px rgba(29, 78, 216, 0.32);
+        transition: all 0.2s;
+    }
+    .join-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(29, 78, 216, 0.4); }
+    .join-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-  .front{
-    position:relative;
-    width:100%;
-    height:100%;
-    min-height:260px;
-    border-radius:var(--radius);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    background:linear-gradient(135deg,var(--c1),var(--c2));
-    box-shadow:0 12px 28px rgba(2,6,23,.32);
-    overflow:hidden;
-  }
-  .front::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:radial-gradient(circle at 78% 15%,rgba(255,255,255,.35),transparent 55%);
-    pointer-events:none;
-  }
+    .join-error {
+        background: #fdeaea; color: #8f2f2f;
+        border: 1.5px solid #f6d5d5; border-radius: 12px;
+        padding: 11px 14px; font-size: 13px; font-weight: 600;
+        display: flex; align-items: flex-start; gap: 9px;
+        margin-top: 14px; line-height: 1.45;
+    }
+    .join-error i { margin-top: 2px; flex-shrink: 0; }
 
-  .number{
-    position:absolute;
-    top:12px;
-    left:12px;
-    min-width:34px;
-    height:34px;
-    padding:0 9px;
-    border-radius:999px;
-    background:rgba(255,255,255,.22);
-    border:1px solid rgba(255,255,255,.5);
-    display:grid;
-    place-items:center;
-    font-weight:800;
-    font-size:1rem;
-    backdrop-filter:blur(4px);
-    z-index:2;
-  }
+    .join-hint {
+        font-size: 12px; line-height: 1.55; color: #8098ad;
+        margin-top: 16px; padding-top: 16px;
+        border-top: 1px dashed #e2ecf5; text-align: center; font-weight: 500;
+    }
 
-  .check-box{
-    position:absolute;
-    top:14px;
-    right:14px;
-    width:28px;
-    height:28px;
-    border-radius:8px;
-    border:2px solid rgba(255,255,255,.7);
-    background:rgba(255,255,255,.2);
-    color:#fff;
-    font-size:1rem;
-    font-weight:700;
-    display:grid;
-    place-items:center;
-    cursor:pointer;
-    transition:all .2s ease;
-    user-select:none;
-    z-index:3;
-  }
-  .check-box:hover{background:rgba(255,255,255,.4);}
-  .card.done .check-box{background:#22c55e;border-color:#22c55e;}
+    /* ---------- TOP BAR ---------- */
+    .topbar {
+        display: flex; justify-content: space-between; align-items: center;
+        gap: 10px; flex-wrap: wrap;
+        background: #ffffff; border: 1px solid #e6eef6; border-radius: 20px;
+        padding: 12px 16px;
+        box-shadow: 0 10px 26px rgba(20, 45, 80, 0.08);
+        margin-bottom: 12px;
+        position: sticky; top: 10px; z-index: 100;
+    }
+    .room-chip {
+        display: flex; align-items: center; gap: 9px;
+        background: #f2f7fc; border-radius: 40px; padding: 8px 15px;
+        font-size: 13px; font-weight: 700; color: #4a6580;
+    }
+    .room-chip i { color: #1d4ed8; font-size: 13px; }
+    .room-chip b { color: #13202d; letter-spacing: 0.5px; }
+    .me-chip {
+        display: flex; align-items: center; gap: 9px;
+        border-radius: 40px; padding: 6px 14px 6px 8px;
+        font-size: 13px; font-weight: 700;
+    }
+    .me-chip.A { background: #eaf1ff; color: #1d4ed8; }
+    .me-chip.B { background: #e3f5f2; color: #0f766e; }
+    .me-chip.C { background: #fff4e0; color: #b45309; }
+    .me-chip.ghost { background: #f1ebff; color: #7c3aed; }
+    .me-dot {
+        width: 26px; height: 26px; border-radius: 50%;
+        color: #fff; display: flex; align-items: center; justify-content: center;
+        font-size: 11px; font-weight: 800;
+    }
+    .me-chip.A .me-dot { background: #1d4ed8; }
+    .me-chip.B .me-dot { background: #0f766e; }
+    .me-chip.C .me-dot { background: #b45309; }
+    .me-chip.ghost .me-dot { background: #7c3aed; font-size: 14px; }
+    .leave-btn {
+        border: none; background: transparent; color: #8098ad;
+        border-radius: 30px; padding: 8px 14px;
+        font-family: inherit; font-size: 12px; font-weight: 700;
+        cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+        transition: all 0.15s;
+    }
+    .leave-btn:hover { background: #fdeaea; color: #a13d3d; }
 
-  .question-mark{
-    font-size:clamp(3.2rem,10vw,4.6rem);
-    font-weight:800;
-    line-height:1;
-    text-shadow:0 6px 18px rgba(0,0,0,.25);
-    animation:breathe 3.4s ease-in-out infinite;
-  }
-  @keyframes breathe{
-    0%,100%{transform:scale(1);}
-    50%{transform:scale(1.07);}
-  }
-  .hint{
-    position:absolute;
-    bottom:14px;
-    font-size:.74rem;
-    letter-spacing:.09em;
-    text-transform:uppercase;
-    opacity:.85;
-  }
+    .reset-answers-btn {
+        border: 1.5px solid #f0c88a;
+        background: #fff4e0;
+        color: #a0690c;
+        border-radius: 30px;
+        padding: 7px 14px;
+        font-family: inherit; font-size: 12px; font-weight: 800;
+        cursor: pointer;
+        display: inline-flex; align-items: center; gap: 6px;
+        transition: all 0.15s;
+    }
+    .reset-answers-btn:hover {
+        background: #ffe9c9;
+        border-color: #e0a860;
+        color: #7a4a00;
+        transform: translateY(-1px);
+    }
 
-  .card.done .front{filter:grayscale(.45) brightness(.9);}
-  .card.done .front::before{
-    content:"✅";
-    position:absolute;
-    bottom:12px;
-    right:14px;
-    font-size:1.4rem;
-    z-index:2;
-    filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));
-  }
+    /* ---------- LOCATION BANNER ---------- */
+    .location-banner {
+        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+        background: linear-gradient(135deg, #1d4ed8 0%, #16389b 100%);
+        color: #fff;
+        border-radius: 16px;
+        padding: 14px 20px;
+        margin-bottom: 22px;
+        box-shadow: 0 12px 28px rgba(29, 78, 216, 0.28);
+    }
+    .loc-info {
+        display: flex; align-items: center; gap: 10px;
+        font-size: 14.5px; font-weight: 700;
+        flex: 1; min-width: 0;
+    }
+    .loc-info i { font-size: 17px; color: #ffd166; flex-shrink: 0; }
+    .loc-step-num {
+        background: rgba(255, 255, 255, 0.18);
+        padding: 3px 10px; border-radius: 30px;
+        font-size: 11.5px; font-weight: 800; letter-spacing: 0.4px;
+        flex-shrink: 0;
+    }
+    .loc-step-title {
+        font-weight: 800; letter-spacing: -0.2px;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .loc-team-score {
+        display: flex; align-items: center; gap: 8px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1.5px solid rgba(255, 255, 255, 0.28);
+        border-radius: 30px; padding: 7px 16px;
+        font-size: 13px; font-weight: 800;
+        flex-shrink: 0;
+    }
+    .loc-team-score i { color: #ffd166; }
+    .loc-team-score b { font-size: 16px; letter-spacing: 0.5px; }
+    .loc-guide-btn {
+        border: none; border-radius: 30px;
+        background: #ffd166; color: #7a4a00;
+        padding: 9px 18px;
+        font-family: inherit; font-size: 12.5px; font-weight: 800;
+        cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.15s;
+        flex-shrink: 0;
+    }
+    .loc-guide-btn:hover { background: #ffdf8a; transform: translateY(-1px); }
 
-  .card:nth-child(1){--c1:#6366f1;--c2:#0ea5e9;}
-  .card:nth-child(2){--c1:#ec4899;--c2:#f97316;}
-  .card:nth-child(3){--c1:#0f766e;--c2:#22c55e;}
-  .card:nth-child(4){--c1:#b45309;--c2:#facc15;}
-  .card:nth-child(5){--c1:#7c3aed;--c2:#a855f7;}
+    /* ---------- SECTIONS ---------- */
+    .section {
+        display: none; background: #ffffff;
+        border: 1px solid #e6eef6; border-radius: 26px;
+        box-shadow: 0 16px 38px rgba(20, 45, 80, 0.09);
+        overflow: hidden;
+    }
+    .section.active-step { display: block; animation: fadeSwap 0.4s ease-out; }
+    @keyframes fadeSwap {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .section-head {
+        padding: 20px 26px 16px;
+        display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+        border-bottom: 1px solid #eaf1f8;
+    }
+    .sec-badge {
+        display: inline-flex; align-items: center; gap: 7px;
+        background: #eaf1ff; color: #1d4ed8;
+        padding: 5px 14px; border-radius: 30px;
+        font-size: 11px; font-weight: 800; letter-spacing: 0.7px;
+        text-transform: uppercase; white-space: nowrap;
+    }
+    .sec-badge.listen { background: #f1ebff; color: #7c3aed; }
+    .sec-title {
+        font-size: 21px; font-weight: 800; letter-spacing: -0.3px;
+        color: #13202d; line-height: 1.25;
+    }
+    .sec-num {
+        margin-left: auto; font-size: 12px; font-weight: 800;
+        color: #8098ad; background: #f2f7fc; border-radius: 40px;
+        padding: 6px 15px; white-space: nowrap;
+    }
+    .section-body { padding: 22px 26px 24px; }
 
-  /* ============ MODAL ============ */
-  .modal-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(15,23,42,.78);
-    backdrop-filter:blur(7px);
-    -webkit-backdrop-filter:blur(7px);
-    display:none;
-    align-items:flex-start;
-    justify-content:center;
-    padding:30px 16px 50px;
-    z-index:100;
-    overflow-y:auto;
-  }
-  .modal-overlay.open{display:flex;}
+    /* ---------- THEME — arena ---------- */
+    .arena {
+        display: grid; grid-template-columns: 1fr auto 1fr;
+        gap: 14px; align-items: stretch; margin-bottom: 20px;
+    }
+    .side {
+        background: var(--tint); border: 2px solid transparent;
+        border-radius: 18px; padding: 18px 16px;
+        display: flex; flex-direction: column; align-items: center;
+        text-align: center; gap: 10px;
+        transition: all 0.2s;
+    }
+    .side:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .side-portrait {
+        width: 96px; height: 96px; border-radius: 50%;
+        overflow: hidden; border: 4px solid #ffffff;
+        box-shadow: 0 8px 20px rgba(20, 45, 80, 0.14);
+        background: #ffffff; flex-shrink: 0;
+    }
+    .side-portrait svg { width: 100%; height: 100%; display: block; }
+    .side-icon-circle {
+        width: 96px; height: 96px; border-radius: 50%;
+        background: #ffffff; display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 8px 20px rgba(20, 45, 80, 0.14);
+        color: var(--accent); font-size: 40px; flex-shrink: 0;
+    }
+    .side-label {
+        font-size: 10px; font-weight: 800; letter-spacing: 1px;
+        text-transform: uppercase; color: var(--accent);
+        background: #ffffff; padding: 4px 12px; border-radius: 30px;
+    }
+    .side-name {
+        font-size: 16px; font-weight: 800; color: #13202d;
+        line-height: 1.2; letter-spacing: -0.2px;
+    }
+    .side-desc {
+        font-size: 11.5px; font-weight: 500; color: #5a7189;
+        line-height: 1.45; max-width: 220px;
+    }
+    .vs-circle {
+        align-self: center; width: 46px; height: 46px; border-radius: 50%;
+        background: #ffffff; border: 2px solid #e2ecf5;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 800; color: #6b8299;
+        letter-spacing: 0.5px; flex-shrink: 0;
+        box-shadow: 0 8px 20px rgba(20, 45, 80, 0.1);
+    }
 
-  .modal{
-    background:#fff;
-    border-radius:22px;
-    max-width:1020px;
-    width:100%;
-    margin:auto;
-    overflow:hidden;
-    box-shadow:0 30px 80px rgba(0,0,0,.55);
-    animation:pop .38s cubic-bezier(.2,.9,.3,1.15);
-    position:relative;
-  }
-  @keyframes pop{
-    from{transform:scale(.94) translateY(14px);opacity:0;}
-    to{transform:scale(1) translateY(0);opacity:1;}
-  }
+    .theme-q {
+        background: #f7fafd; border-radius: 15px;
+        padding: 16px 20px; margin-bottom: 16px;
+        display: flex; align-items: flex-start; gap: 12px;
+        border-left: 4px solid #1d4ed8;
+    }
+    .theme-q i { color: #1d4ed8; font-size: 17px; margin-top: 2px; flex-shrink: 0; }
+    .theme-q p {
+        font-size: 16.5px; font-weight: 700; color: #13202d;
+        line-height: 1.45; letter-spacing: -0.2px;
+    }
 
-  .modal-head{
-    position:relative;
-    padding:22px 26px;
-    color:#fff;
-    background:linear-gradient(135deg,var(--mc1),var(--mc2));
-    overflow:hidden;
-  }
-  .modal-head::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:radial-gradient(circle at 85% 10%,rgba(255,255,255,.3),transparent 55%);
-    pointer-events:none;
-  }
-  .modal-head .num{
-    display:inline-grid;
-    place-items:center;
-    min-width:30px;
-    height:30px;
-    padding:0 8px;
-    border-radius:999px;
-    background:rgba(255,255,255,.25);
-    border:1px solid rgba(255,255,255,.5);
-    font-weight:800;
-    font-size:.85rem;
-    margin-right:10px;
-    vertical-align:middle;
-  }
-  .modal-head h2{
-    margin:0;
-    font-size:clamp(1.15rem,2.6vw,1.5rem);
-    display:inline-block;
-    vertical-align:middle;
-    letter-spacing:-.01em;
-  }
-  .modal-head .sub{
-    margin:8px 0 0;
-    font-size:.9rem;
-    opacity:.92;
-    line-height:1.5;
-    max-width:820px;
-    position:relative;
-    z-index:1;
-  }
-  .close-btn{
-    position:absolute;
-    top:16px;
-    right:16px;
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    border:1px solid rgba(255,255,255,.5);
-    background:rgba(255,255,255,.2);
-    color:#fff;
-    font-size:1.2rem;
-    font-weight:700;
-    cursor:pointer;
-    display:grid;
-    place-items:center;
-    transition:.2s;
-    z-index:5;
-  }
-  .close-btn:hover{background:rgba(255,255,255,.4);transform:rotate(90deg);}
+    .chips-label {
+        font-size: 10.5px; font-weight: 800; letter-spacing: 0.9px;
+        text-transform: uppercase; color: #98aec2; margin-bottom: 8px;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .chip {
+        background: #f4f8fd; border: 1.5px solid #dbe7f1; color: #33526e;
+        font-size: 13px; font-weight: 700; padding: 7px 15px;
+        border-radius: 40px; transition: all 0.15s;
+    }
+    .chip:hover {
+        background: #eaf1ff; border-color: #1d4ed8; color: #1d4ed8;
+        transform: translateY(-2px);
+    }
 
-  .modal-body{
-    padding:22px 26px 28px;
-  }
+    .proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pc-box {
+        border-radius: 15px; padding: 13px 16px;
+        display: flex; align-items: flex-start; gap: 10px;
+        font-size: 13.5px; font-weight: 600; line-height: 1.45;
+    }
+    .pc-box i { font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+    .pc-box.pros { background: #eafaf1; border: 1.5px solid #c6ebd8; color: #14603c; }
+    .pc-box.pros i { color: #16a34a; }
+    .pc-box.cons { background: #fdf0f0; border: 1.5px solid #f6d5d5; color: #8f2f2f; }
+    .pc-box.cons i { color: #dc2626; }
 
-  .section-title{
-    font-size:.7rem;
-    font-weight:800;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:#94a3b8;
-    margin:0 0 10px;
-  }
+    /* ---------- LISTENING ---------- */
+    .listening-section .section-head {
+        background: linear-gradient(135deg, #f1ebff 0%, #eaf1ff 100%);
+    }
+    .listening-section .sec-badge.listen { background: #ffffff; color: #7c3aed; }
+    .listening-section.listen2 .section-head {
+        background: linear-gradient(135deg, #e3f5f2 0%, #eafaf1 100%);
+    }
+    .listening-section.listen2 .sec-badge.listen { background: #ffffff; color: #0f766e; }
 
-  /* ---- Stats grid ---- */
-  .stats{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-    gap:9px;
-    margin-bottom:24px;
-  }
-  .stat{
-    background:#f8fafc;
-    border:1px solid #e2e8f0;
-    border-radius:12px;
-    padding:9px 12px;
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-  }
-  .stat .lbl{
-    font-size:.66rem;
-    text-transform:uppercase;
-    letter-spacing:.06em;
-    color:#94a3b8;
-    font-weight:700;
-  }
-  .stat .val{
-    font-size:.92rem;
-    font-weight:800;
-    color:var(--ink);
-    line-height:1.2;
-  }
+    /* ---------- AUTH STATE PANELS ---------- */
+    .auth-panel {
+        border-radius: 15px; padding: 16px 20px;
+        margin-bottom: 16px;
+        display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    }
+    .auth-panel.locked {
+        background: #f7fafd; border: 1.5px dashed #c5d8eb;
+        color: #55708b;
+    }
+    .auth-panel.locked i.icon { color: #8098ad; font-size: 20px; flex-shrink: 0; }
+    .auth-panel.locked strong { display: block; color: #13202d; font-size: 14px; margin-bottom: 2px; }
+    .auth-panel.locked p { font-size: 12.5px; font-weight: 500; }
 
-  /* ---- Charts grid ---- */
-  .charts{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:14px;
-    margin-bottom:24px;
-  }
-  .chart-card{
-    background:#f8fafc;
-    border:1px solid #e2e8f0;
-    border-radius:16px;
-    padding:12px 14px 14px;
-  }
-  .chart-card h4{
-    margin:0 0 10px;
-    font-size:.72rem;
-    font-weight:800;
-    letter-spacing:.05em;
-    text-transform:uppercase;
-    color:#64748b;
-  }
+    .auth-panel.go {
+        background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);
+        color: #fff;
+        box-shadow: 0 12px 28px rgba(22, 163, 74, 0.28);
+        animation: goBounce 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.15) both,
+                   goPulse 2s ease-in-out 0.6s infinite;
+    }
+    @keyframes goBounce {
+        0%   { opacity: 0; transform: scale(0.6); }
+        60%  { opacity: 1; transform: scale(1.05); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes goPulse {
+        0%, 100% { box-shadow: 0 12px 28px rgba(22, 163, 74, 0.28), 0 0 0 0 rgba(22, 163, 74, 0.5); }
+        50%      { box-shadow: 0 12px 28px rgba(22, 163, 74, 0.28), 0 0 0 14px rgba(22, 163, 74, 0); }
+    }
+    .auth-panel.go .go-icon {
+        font-size: 28px; flex-shrink: 0;
+        animation: goWiggle 1.6s ease-in-out infinite;
+    }
+    @keyframes goWiggle {
+        0%, 100% { transform: rotate(0deg); }
+        25%      { transform: rotate(-12deg); }
+        75%      { transform: rotate(12deg); }
+    }
+    .auth-panel.go strong { display: block; font-size: 17px; font-weight: 800; margin-bottom: 2px; letter-spacing: -0.2px; }
+    .auth-panel.go p { font-size: 12.5px; opacity: 0.9; font-weight: 500; }
 
-  .donut-wrap{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    flex-wrap:wrap;
-    justify-content:center;
-  }
-  .legend{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    font-size:.78rem;
-    color:var(--muted);
-  }
-  .lg-item{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    white-space:nowrap;
-  }
-  .lg-item i{
-    width:11px;
-    height:11px;
-    border-radius:3px;
-    display:inline-block;
-    flex:0 0 auto;
-  }
-  .lg-item b{color:var(--ink);margin-left:2px;}
+    .auth-panel.ghost {
+        background: #f1ebff; border: 1.5px solid #d6c7f5;
+        color: #5b21b6;
+    }
+    .auth-panel.ghost i.icon { color: #7c3aed; font-size: 20px; flex-shrink: 0; }
+    .auth-panel.ghost strong { display: block; color: #4c1d95; font-size: 14px; margin-bottom: 2px; }
+    .auth-panel.ghost p { font-size: 12.5px; font-weight: 500; opacity: 0.85; }
+    .auth-btn {
+        margin-left: auto;
+        border: none; border-radius: 40px;
+        padding: 10px 20px;
+        font-family: inherit; font-size: 13px; font-weight: 800;
+        cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+        transition: all 0.15s;
+        flex-shrink: 0;
+    }
+    .auth-btn.authorize {
+        background: #7c3aed; color: #fff;
+        box-shadow: 0 6px 16px rgba(124, 58, 237, 0.28);
+    }
+    .auth-btn.authorize:hover { background: #5b21b6; transform: translateY(-2px); box-shadow: 0 10px 22px rgba(124, 58, 237, 0.36); }
+    .auth-btn.revoke {
+        background: #fff; color: #a13d3d;
+        border: 1.5px solid #f6d5d5;
+    }
+    .auth-btn.revoke:hover { background: #fdeaea; }
 
-  /* ---- Two column bottom ---- */
-  .bottom-cols{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-  }
-  @media (max-width:640px){
-    .bottom-cols{grid-template-columns:1fr;}
-  }
+    /* ---------- AUDIO (ghost only) ---------- */
+    .audio-row {
+        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+        background: #f7fafd; border: 1px solid #eaf1f8;
+        border-radius: 15px; padding: 12px 15px; margin-bottom: 14px;
+    }
+    .audio-row > i { color: #7c3aed; font-size: 18px; flex-shrink: 0; }
+    .audio-row audio { flex: 1; min-width: 240px; height: 40px; }
+    .audio-teacher-only {
+        display: flex; align-items: center; gap: 12px;
+        background: #f1ebff; border-radius: 15px;
+        padding: 14px 18px; margin-bottom: 14px;
+        color: #5b21b6; font-size: 13px; font-weight: 600;
+    }
+    .audio-teacher-only i { font-size: 18px; flex-shrink: 0; }
+    .audio-teacher-only strong { color: #4c1d95; }
 
-  .panel{
-    background:#f8fafc;
-    border:1px solid #e2e8f0;
-    border-radius:16px;
-    padding:14px 16px;
-  }
-  .panel h3{
-    margin:0 0 10px;
-    font-size:.72rem;
-    font-weight:800;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:var(--mc1);
-  }
+    .listen-intro {
+        font-size: 13.5px; line-height: 1.55; color: #4a6580;
+        font-weight: 500; margin-bottom: 16px;
+    }
+    .progress-bar {
+        display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+        padding: 12px 16px; border-radius: 14px;
+        background: #f7fafd; border: 1px solid #eaf1f8;
+        margin-bottom: 18px;
+    }
+    .prog-item {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-size: 12.5px; font-weight: 700; color: #55708b;
+        background: #ffffff; border-radius: 30px;
+        padding: 5px 13px 5px 5px; border: 1px solid #e2ecf5;
+    }
+    .prog-avatar {
+        width: 24px; height: 24px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 10.5px; font-weight: 800; color: #fff;
+    }
+    .prog-avatar.A { background: #1d4ed8; }
+    .prog-avatar.B { background: #0f766e; }
+    .prog-avatar.C { background: #b45309; }
+    .prog-count { color: #1d4ed8; font-weight: 800; }
+    .prog-count.done { color: #16a34a; }
+    .prog-pts {
+        background: #fef3c7; color: #92400e;
+        padding: 2px 8px; border-radius: 20px;
+        font-size: 11px; font-weight: 800;
+    }
+    .prog-divider { color: #c5d8eb; font-weight: 800; font-size: 11px; margin: 0 2px; }
+    .prog-name { color: #8098ad; font-weight: 700; font-size: 11.5px; }
 
-  .mission{
-    list-style:none;
-    padding:0;
-    margin:0;
-  }
-  .mission li{
-    position:relative;
-    padding-left:17px;
-    margin-bottom:6px;
-    font-size:.86rem;
-    line-height:1.45;
-    color:#334155;
-  }
-  .mission li::before{
-    content:"→";
-    position:absolute;
-    left:0;
-    color:var(--mc1);
-    font-weight:800;
-  }
+    .q-columns { display: grid; gap: 14px; }
+    .q-columns[data-count="2"] { grid-template-columns: 1fr 1fr; }
+    .q-columns[data-count="3"] { grid-template-columns: 1fr 1fr 1fr; }
 
-  .cues{
-    list-style:none;
-    padding:0;
-    margin:0;
-  }
-  .cues li{
-    border-left:3px solid var(--mc2);
-    padding:3px 0 3px 10px;
-    margin-bottom:7px;
-    font-size:.84rem;
-    font-style:italic;
-    line-height:1.4;
-    color:#334155;
-  }
+    .q-col { display: flex; flex-direction: column; gap: 12px; }
+    .q-col-head {
+        display: flex; align-items: center; gap: 9px; padding: 0 4px 2px;
+        font-size: 12px; font-weight: 800; letter-spacing: 0.4px;
+        text-transform: uppercase; color: #4a6580; flex-wrap: wrap;
+    }
+    .player-tag {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 4px 12px; border-radius: 30px;
+        font-size: 11px; font-weight: 800; letter-spacing: 0.4px;
+        text-transform: uppercase;
+    }
+    .player-tag.A { background: #eaf1ff; color: #1d4ed8; }
+    .player-tag.B { background: #e3f5f2; color: #0f766e; }
+    .player-tag.C { background: #fff4e0; color: #b45309; }
+    .q-col-head .you-badge {
+        margin-left: auto; font-size: 10px; font-weight: 800;
+        letter-spacing: 0.6px; text-transform: uppercase;
+        color: #ffffff; background: #16a34a;
+        padding: 3px 10px; border-radius: 30px;
+    }
 
-  @media (max-width:520px){
-    .modal-head{padding:18px 18px;}
-    .modal-body{padding:18px 16px 22px;}
-    .close-btn{top:12px;right:12px;width:32px;height:32px;}
-  }
+    .q-card {
+        background: #ffffff;
+        border: 1.5px solid #e2ecf5; border-radius: 15px;
+        padding: 14px 15px; transition: all 0.2s; position: relative;
+    }
+    .q-card.not-yours {
+        background: #fafbfd;
+        border-style: dashed;
+    }
+    .q-card.not-yours .q-num-badge { opacity: 0.65; }
+    .q-card.solved {
+        border-color: #16a34a;
+        background: linear-gradient(180deg, #f3fdf7 0%, #eafaf1 100%);
+    }
+    .q-card.solved::before {
+        content: '✓'; position: absolute;
+        top: 10px; right: 12px;
+        width: 22px; height: 22px; border-radius: 50%;
+        background: #16a34a; color: #fff;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 800;
+    }
+    .q-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .q-head .owner-label {
+        display: none;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        color: #8098ad;
+        background: #eef3f9;
+        padding: 3px 9px;
+        border-radius: 20px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+    .q-num-badge {
+        width: 26px; height: 26px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 1px;
+        background: #eaf1ff; color: #1d4ed8;
+    }
+    .q-col.B .q-num-badge { background: #e3f5f2; color: #0f766e; }
+    .q-col.C .q-num-badge { background: #fff4e0; color: #b45309; }
+    .q-text {
+        flex: 1; font-size: 13.5px; font-weight: 700; color: #1c3350;
+        line-height: 1.42; min-width: 180px;
+    }
+    .options { display: flex; flex-direction: column; gap: 7px; }
+    .opt {
+        width: 100%; text-align: left;
+        border: 1.5px solid #dbe7f1; background: #fbfdff;
+        border-radius: 11px; padding: 10px 12px;
+        display: flex; align-items: flex-start; gap: 10px;
+        font-family: inherit; font-size: 13px; font-weight: 600;
+        color: #33526e; line-height: 1.4;
+        cursor: pointer; transition: all 0.15s; position: relative;
+    }
+    .opt .opt-letter {
+        width: 22px; height: 22px; border-radius: 6px;
+        background: #eef3f9; color: #4a6580;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 11.5px; font-weight: 800; flex-shrink: 0;
+        transition: all 0.15s;
+    }
+    .opt:hover:not(:disabled) { border-color: #1d4ed8; background: #f4f9ff; transform: translateX(2px); }
+    .q-col.B .opt:hover:not(:disabled) { border-color: #0f766e; background: #f0faf7; }
+    .q-col.C .opt:hover:not(:disabled) { border-color: #b45309; background: #fffaf0; }
+    .opt.correct { background: #eafaf1; border-color: #16a34a; color: #14603c; }
+    .opt.correct .opt-letter { background: #16a34a; color: #fff; }
+    .opt.correct::after { content: '\2713'; margin-left: auto; color: #16a34a; font-weight: 800; font-size: 15px; }
+    .opt.wrong {
+        background: #fdeaea; border-color: #dc2626; color: #8f2f2f;
+        animation: shake 0.55s ease-in-out;
+    }
+    .opt.wrong .opt-letter { background: #dc2626; color: #fff; }
+    .opt.wrong::after { content: '\2717'; margin-left: auto; color: #dc2626; font-weight: 800; font-size: 15px; }
+    .opt:disabled { cursor: default; }
+    .opt:disabled:not(.correct):not(.wrong) { opacity: 0.65; }
+    @keyframes shake {
+        10%, 90% { transform: translateX(-2px); }
+        20%, 80% { transform: translateX(3px); }
+        30%, 50%, 70% { transform: translateX(-5px); }
+        40%, 60% { transform: translateX(5px); }
+    }
+    .feedback {
+        margin-top: 9px; font-size: 12.5px; font-weight: 700;
+        line-height: 1.4; padding: 8px 12px; border-radius: 9px;
+        display: none;
+    }
+    .feedback.success {
+        display: block; background: #eafaf1; color: #14603c;
+        border-left: 3px solid #16a34a;
+    }
+    .feedback.live {
+        display: block; background: #fff4e0; color: #92400e;
+        border-left: 3px solid #f59e0b;
+    }
+    .teamwork-banner {
+        margin-top: 16px;
+        background: linear-gradient(135deg, #16a34a, #0d9488);
+        border-radius: 16px; padding: 16px 20px; color: #fff;
+        display: none; align-items: center; gap: 14px;
+        box-shadow: 0 12px 28px rgba(13, 148, 136, 0.28);
+        animation: popIn 0.5s ease-out;
+    }
+    .teamwork-banner.show { display: flex; }
+    .teamwork-banner i { font-size: 26px; flex-shrink: 0; }
+    .teamwork-banner strong { display: block; font-size: 15px; margin-bottom: 2px; }
+    .teamwork-banner span { font-size: 12.5px; opacity: 0.95; font-weight: 500; }
+
+    /* ---------- STEP NAV ---------- */
+    .step-nav {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 14px; flex-wrap: wrap;
+        background: #ffffff; border: 1px solid #e6eef6; border-radius: 20px;
+        padding: 12px 16px;
+        box-shadow: 0 10px 26px rgba(20, 45, 80, 0.08);
+        margin-top: 22px;
+        position: sticky; bottom: 14px; z-index: 100;
+    }
+    .step-nav-btn {
+        border: none; border-radius: 40px; padding: 11px 22px;
+        font-family: inherit; font-size: 14px; font-weight: 700;
+        cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+        transition: all 0.18s; background: #eef3f9; color: #3d5a75;
+    }
+    .step-nav-btn:hover:not(:disabled) { background: #dbe7f1; }
+    .step-nav-btn.primary {
+        background: linear-gradient(135deg, #1d4ed8, #16389b);
+        color: #fff; box-shadow: 0 8px 20px rgba(29, 78, 216, 0.3);
+    }
+    .step-nav-btn.primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(29, 78, 216, 0.38); }
+    .step-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; box-shadow: none; }
+    .step-dots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+    .step-dot {
+        width: 26px; height: 26px; border-radius: 50%;
+        border: 2px solid #dbe7f1; background: #ffffff;
+        color: #6b8299; font-size: 10.5px; font-weight: 800;
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
+        transition: all 0.18s; padding: 0; font-family: inherit;
+    }
+    .step-dot:hover { border-color: #1d4ed8; color: #1d4ed8; }
+    .step-dot.active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; width: 32px; border-radius: 15px; }
+
+    /* ---------- TOAST ---------- */
+    .toast {
+        position: fixed; bottom: 88px; left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: #1d4ed8; color: #fff;
+        padding: 12px 22px; border-radius: 40px;
+        font-family: inherit; font-size: 13.5px; font-weight: 700;
+        box-shadow: 0 12px 30px rgba(29, 78, 216, 0.35);
+        opacity: 0; transition: all 0.3s; z-index: 1000;
+        pointer-events: none; max-width: 90vw;
+        text-align: center;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.success { background: #16a34a; }
+    .toast.gold { background: linear-gradient(135deg, #d97706, #b45309); }
+
+    .footer-note {
+        margin-top: 24px; font-size: 12px; line-height: 1.6;
+        color: #8098ad; text-align: center; font-weight: 500;
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 900px) {
+        .q-columns[data-count] { grid-template-columns: 1fr; }
+        .arena { grid-template-columns: 1fr; }
+        .vs-circle { margin: -6px auto; }
+        .side { flex-direction: row; text-align: left; align-items: center; }
+        .side > div:last-child { display: flex; flex-direction: column; align-items: flex-start; }
+        .side-desc { max-width: none; }
+    }
+    @media (max-width: 640px) {
+        body { padding: 14px 10px 100px; }
+        .join-screen { padding: 26px 20px 22px; margin-top: 20px; }
+        .section-head { padding: 16px 18px 14px; }
+        .section-body { padding: 18px 16px 20px; }
+        .sec-title { font-size: 17.5px; }
+        .theme-q p { font-size: 15px; }
+        .proscons { grid-template-columns: 1fr; }
+        .topbar { padding: 10px 12px; position: static; }
+        .room-chip, .me-chip { font-size: 12px; }
+        .audio-row { padding: 10px 12px; }
+        .audio-row audio { min-width: 0; width: 100%; }
+        .side { flex-direction: column; text-align: center; align-items: center; }
+        .side > div:last-child { align-items: center; }
+        .side-icon-circle, .side-portrait { width: 76px; height: 76px; }
+        .side-icon-circle { font-size: 32px; }
+        .step-nav { padding: 10px 12px; }
+        .step-nav-btn { padding: 9px 16px; font-size: 12.5px; }
+        .step-dot { width: 24px; height: 24px; font-size: 10px; }
+        .step-dot.active { width: 28px; }
+        .progress-bar { flex-direction: column; align-items: stretch; }
+        .prog-item { justify-content: center; }
+        .location-banner { padding: 12px 16px; }
+        .loc-info { font-size: 12.5px; }
+        .loc-team-score { font-size: 12px; padding: 6px 13px; }
+        .loc-guide-btn { width: 100%; justify-content: center; }
+        .auth-panel { padding: 13px 16px; }
+        .auth-panel.go strong { font-size: 15px; }
+        .auth-btn { margin-left: 0; width: 100%; justify-content: center; margin-top: 8px; }
+    }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Workplace Scenarios — Mystery Cards</h1>
-  <p>Pick a number and say it out loud. Tap the card to open the full situation with charts, your mission, and useful phrases.</p>
-  <div class="toolbar">
-    <button id="soundToggle" aria-pressed="true">🔊 Sound on</button>
-    <button id="resetBtn">🔄 Reset game</button>
-  </div>
-</header>
+<!-- ============================================================
+     JOIN SCREEN
+     ============================================================ -->
+<div class="join-screen" id="joinScreen">
+    <div class="join-brand">
+        <div class="join-logo"><i class="fas fa-comments"></i></div>
+        <div>
+            <h1>Two Futures <span>· Team Debate</span></h1>
+            <p>4 debates · 2 listening tasks · answer together</p>
+        </div>
+    </div>
 
-<main class="grid" id="grid"></main>
+    <div class="room-info">
+        <i class="fas fa-users"></i>
+        <span>You are joining room <b id="roomNameDisplay">TWOFUTURES</b></span>
+    </div>
 
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"></div>
+    <div class="field">
+        <label for="nameInput">Your name</label>
+        <input id="nameInput" type="text" maxlength="24" placeholder="Type your name here" autocomplete="off" />
+    </div>
+
+    <button type="button" class="join-btn" id="joinBtn">
+        <i class="fas fa-arrow-right-to-bracket"></i> Join the room
+    </button>
+
+    <div class="join-error hidden" id="joinError">
+        <i class="fas fa-circle-exclamation"></i>
+        <span id="joinErrorText"></span>
+    </div>
+
+    <p class="join-hint">
+        Everyone on this page is in the same room. The system will assign you Player A, B, or C automatically.
+    </p>
 </div>
 
+<!-- ============================================================
+     MAIN APP
+     ============================================================ -->
+<div class="app hidden" id="mainApp">
+
+    <div class="topbar">
+        <div class="room-chip">
+            <i class="fas fa-users"></i>
+            <span>Room</span>
+            <b id="roomCodeDisplay">—</b>
+        </div>
+        <div class="me-chip A" id="meChip">
+            <span class="me-dot" id="meInitial">?</span>
+            <b id="meName">—</b>
+            <span id="meRole">Player A</span>
+        </div>
+        <button type="button" class="reset-answers-btn hidden" id="resetAnswersBtn">
+            <i class="fas fa-eraser"></i> Reset answers
+        </button>
+        <button class="leave-btn" id="leaveBtn">
+            <i class="fas fa-right-from-bracket"></i> Leave
+        </button>
+    </div>
+
+    <div class="location-banner">
+        <div class="loc-info">
+            <i class="fas fa-location-dot"></i>
+            <span class="loc-step-num" id="locStepNum">1 / 6</span>
+            <span class="loc-step-title" id="locStepTitle">—</span>
+        </div>
+        <div class="loc-team-score">
+            <i class="fas fa-trophy"></i>
+            <span>Team</span>
+            <b id="teamScoreVal">0</b>
+            <span>pts</span>
+        </div>
+        <button type="button" class="loc-guide-btn hidden" id="guideBtn">
+            <i class="fas fa-paper-plane"></i> Send class here
+        </button>
+    </div>
+
+    <div id="sections"></div>
+
+    <nav class="step-nav">
+        <button class="step-nav-btn" id="prevStep">
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <div class="step-dots" id="stepDots"></div>
+        <button class="step-nav-btn primary" id="nextStep">
+            Next <i class="fas fa-arrow-right"></i>
+        </button>
+    </nav>
+
+    <p class="footer-note">
+        The portraits are original drawings, not photographs. All situations here are imaginary
+        and are used only to practise discussion and argument in English.
+    </p>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <script>
-/* =========================================================
-   SVG CHART BUILDERS
-   ========================================================= */
-let _uid = 0;
+(function () {
+    'use strict';
 
-function areaChart(values, color){
-  const w=200,h=100,n=values.length,step=w/(n-1);
-  const id='grad'+(++_uid);
-  const c=values.map((v,i)=>[+(i*step).toFixed(1), +(h-v).toFixed(1)]);
-  let d=`M${c[0][0]},${c[0][1]}`;
-  for(let i=1;i<n;i++) d+=` L${c[i][0]},${c[i][1]}`;
-  d+=` L${w},${h} L0,${h} Z`;
+    /* ================================================================
+       CONSTANTS
+       ================================================================ */
+    const FIREBASE_URL = 'https://english-meetings-f08e4-default-rtdb.firebaseio.com';
+    const FIXED_ROOM = 'TWOFUTURES';
+    const GHOST_NAMES = ['andre prof', 'prof andre', 'andre professor', 'professor andre', 'prof. andre', 'andre prof.'];
+    const CLIENT_ID = 'c_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+    const STORAGE_KEY = 'two-futures-debate-v3';
+    const ROLES = ['A', 'B', 'C'];
 
-  const grids=[25,50,75].map(y=>`<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="#e2e8f0" stroke-width=".6"/>`).join('');
-
-  return `<svg viewBox="0 0 200 100" preserveAspectRatio="none" style="width:100%;height:120px;display:block">
-    <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${color}" stop-opacity=".95"/>
-      <stop offset="100%" stop-color="${color}" stop-opacity=".28"/>
-    </linearGradient></defs>
-    ${grids}
-    <path d="${d}" fill="url(#${id})"/>
-    <path d="${d}" fill="none" stroke="${color}" stroke-width="1.4" opacity=".65"/>
-  </svg>`;
+  const OWNER_2P = { 1: 'A', 2: 'B', 3: 'A', 4: 'B', 5: 'A', 6: 'B' };
+const OWNER_3P = { 1: 'A', 2: 'B', 3: 'C', 4: 'A', 5: 'B', 6: 'C' };
+function getMode(presentRoles) {
+    if (presentRoles.length >= 3) return 'three';
+    if (presentRoles.length === 1) return 'one';
+    return 'two';
 }
-
-function barChart(values, colors){
-  const w=200,h=100,n=values.length,gap=6;
-  const bw=(w-gap*(n+1))/n;
-  const max=Math.max(...values,1);
-  const grids=[25,50,75].map(y=>`<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="#e2e8f0" stroke-width=".6"/>`).join('');
-  let out='';
-  values.forEach((v,i)=>{
-    const bh=Math.max((v/max)*88, 2);
-    const x=gap+i*(bw+gap);
-    out+=`<rect x="${x.toFixed(1)}" y="${(h-bh).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" rx="3" fill="${colors[i%colors.length]}"/>`;
-  });
-  return `<svg viewBox="0 0 200 100" preserveAspectRatio="none" style="width:100%;height:120px;display:block">${grids}${out}</svg>`;
-}
-
-function lineDots(values, lineColor, dotColor){
-  const w=200,h=100,n=values.length,step=w/(n-1);
-  const pts=values.map((v,i)=>`${(i*step).toFixed(1)},${(h-v).toFixed(1)}`).join(' ');
-  let dots='';
-  values.forEach((v,i)=>{
-    dots+=`<circle cx="${(i*step).toFixed(1)}" cy="${(h-v).toFixed(1)}" r="3.2" fill="${dotColor}"/>`;
-  });
-  const grids=[25,50,75].map(y=>`<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="#e2e8f0" stroke-width=".6"/>`).join('');
-  return `<svg viewBox="0 0 200 100" preserveAspectRatio="none" style="width:100%;height:120px;display:block">
-    ${grids}
-    <polyline points="${pts}" fill="none" stroke="${lineColor}" stroke-width="2" stroke-linejoin="round"/>
-    ${dots}
-  </svg>`;
-}
-
-function donutChart(segs, colors, labels){
-  const r=36, cx=50, cy=50, C=2*Math.PI*r;
-  let off=0, circles='';
-  segs.forEach((p,i)=>{
-    const dash=(p/100)*C;
-    circles+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${colors[i]}" stroke-width="13" stroke-dasharray="${dash.toFixed(1)} ${(C-dash).toFixed(1)}" stroke-dashoffset="${(-off).toFixed(1)}"/>`;
-    off+=dash;
-  });
-  const legend=segs.map((p,i)=>`<span class="lg-item"><i style="background:${colors[i]}"></i>${labels[i]} <b>${p}%</b></span>`).join('');
-  return `<div class="donut-wrap">
-    <svg viewBox="0 0 100 100" style="width:130px;height:130px;flex:0 0 auto">
-      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#eef2f7" stroke-width="13"/>
-      <g transform="rotate(-90 ${cx} ${cy})">${circles}</g>
-    </svg>
-    <div class="legend">${legend}</div>
-  </div>`;
-}
-
-function gaugeChart(pct, color){
-  const r=36, cx=50, cy=50, C=2*Math.PI*r;
-  const dash=(pct/100)*C;
-  return `<div class="donut-wrap">
-    <svg viewBox="0 0 100 100" style="width:130px;height:130px;flex:0 0 auto">
-      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#eef2f7" stroke-width="13"/>
-      <g transform="rotate(-90 ${cx} ${cy})">
-        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="13"
-          stroke-dasharray="${dash.toFixed(1)} ${(C-dash).toFixed(1)}" stroke-linecap="round"/>
-      </g>
-      <text x="50" y="47" text-anchor="middle" font-size="17" font-weight="800" fill="#0f172a" font-family="Segoe UI,Arial">${pct}%</text>
-      <text x="50" y="61" text-anchor="middle" font-size="7" font-weight="700" fill="#94a3b8" font-family="Segoe UI,Arial" letter-spacing="1">DONE</text>
-    </svg>
-  </div>`;
-}
-
-/* =========================================================
-   SCENARIO DATA
-   ========================================================= */
-const scenarios = [
-  /* ---------------- 1. PERFORMANCE REVIEW ---------------- */
-  {
-    id:1,
-    icon:'📊',
-    theme:'Performance Review',
-    c1:'#6366f1', c2:'#0ea5e9',
-    scenario:'You work at <strong>Nordwind</strong>, a software company. You are a junior marketing specialist. Your manager, <strong>Sofia</strong>, gives you your yearly review. She says your results are good, but your reports are often late. Your job is to talk with her, understand the feedback, and agree on a plan.',
-    stats:[
-      ['Employee','You'],
-      ['Role','Junior Marketing Specialist'],
-      ['Time in company','14 months'],
-      ['Reports on time','7 of 12'],
-      ['Average delay','2 days'],
-      ['Campaign results','112% of goal'],
-      ['Team feedback','4.2 / 5'],
-      ['Rating this year','3 / 5'],
-      ['Salary raise','Not decided yet']
-    ],
-    charts:[
-      { title:'Campaign results index — 12 months', svg: areaChart([62,68,60,74,80,76,88,92,86,96,104,112], '#14b8a6') },
-      { title:'Why the rating is 3/5', svg: barChart([45,30,25], ['#f97316','#ef4444','#6366f1']) },
-      { title:'Overall rating', svg: donutChart([60,40], ['#6366f1','#e2e8f0'], ['Score','Missing']) },
-      { title:'Reports sent on time (per quarter)', svg: lineDots([75,50,60,85], '#ef4444', '#38bdf8') }
-    ],
-    mission:[
-      'Listen to the feedback. Do not argue.',
-      'Ask for one clear example.',
-      'Say what you will change.',
-      'Agree on 2 goals and a follow-up date.'
-    ],
-    cues:[
-      '"Thank you for the feedback. Can you give me an example?"',
-      '"I understand. My reports were late 5 times."',
-      '"What do you need from me in the next 3 months?"',
-      '"I will send a short update every Friday."',
-      '"Can we meet again in 60 days to check my progress?"'
-    ]
-  },
-
-  /* ---------------- 2. CUSTOMER COMPLAINT ---------------- */
-  {
-    id:2,
-    icon:'📦',
-    theme:'Handling a Customer Complaint',
-    c1:'#ec4899', c2:'#f97316',
-    scenario:'You work at <strong>FreshBox</strong>. FreshBox sells meal-kit delivery. Your customer is <strong>Anna</strong>. She is angry because her box came 17 hours late and two of her three meals were spoiled. Your job is to talk with Anna and negotiate a solution together.',
-    stats:[
-      ['Customer','Anna'],
-      ['Customer for','2 years'],
-      ['Total orders','24'],
-      ['This order','#A-1042'],
-      ['Product','3 dinner meals'],
-      ['Price','$45'],
-      ['Promised delivery','Tue 6 PM'],
-      ['Actual delivery','Wed 11 AM'],
-      ['Late by','17 hours'],
-      ['Spoiled meals','2 of 3'],
-      ['Refund request','Full refund $45']
-    ],
-    charts:[
-      { title:'Why Anna is angry', svg: donutChart([50,30,20], ['#ec4899','#f97316','#facc15'], ['Late delivery','Spoiled food','No updates']) },
-      { title:'Delivery delay by month (hours)', svg: barChart([0,2,0,5,0,17], ['#94a3b8','#94a3b8','#94a3b8','#94a3b8','#94a3b8','#ef4444']) },
-      { title:'Anna\'s orders over 24 months', svg: areaChart([20,28,35,42,50,58,65,72,80,88,95,100], '#f97316') },
-      { title:'Order status', svg: donutChart([33,67], ['#22c55e','#e2e8f0'], ['Good meals','Spoiled']) }
-    ],
-    mission:[
-      'Listen first. Do not interrupt.',
-      'Apologize once, clearly.',
-      'Check the facts in the system.',
-      'Offer a fair solution and ask if it works.',
-      'Keep Anna as a customer.'
-    ],
-    cues:[
-      '"I understand why you are upset. I am sorry."',
-      '"Let me check your order right now."',
-      '"I see the box was 17 hours late."',
-      '"I can offer a full refund and a $10 credit. Does that work for you?"',
-      '"What would feel fair to you?"',
-      '"Thank you for your patience. I will fix this now."'
-    ]
-  },
-
-  /* ---------------- 3. GLOBAL TEAM PITCH ---------------- */
-  {
-    id:3,
-    icon:'🌍',
-    theme:'Present a Project Idea to the Global Team',
-    c1:'#0f766e', c2:'#22c55e',
-    scenario:'You work at <strong>Lumina</strong>, a retail company. You have an idea to cut packaging waste. The global team meets online. People from 6 countries are on the call. You have <strong>5 minutes</strong> to present your idea and answer questions.',
-    stats:[
-      ['Audience','14 people'],
-      ['Countries on call','6'],
-      ['Time zones','4'],
-      ['Your speaking time','5 minutes'],
-      ['Current packaging cost','$2.1M / year'],
-      ['Packaging waste','380 tons / year'],
-      ['Cost of your idea','$180,000'],
-      ['Expected savings','$600,000 / year'],
-      ['Local team support','8 of 10'],
-      ['Budget owner','Global Operations']
-    ],
-    charts:[
-      { title:'Cost vs savings ($ thousands)', svg: barChart([180,600], ['#ef4444','#22c55e']) },
-      { title:'Packaging waste over 6 years (tons)', svg: areaChart([380,360,320,270,210,150], '#22c55e') },
-      { title:'Investment vs return', svg: donutChart([23,77], ['#ef4444','#22c55e'], ['Investment','Savings']) },
-      { title:'Local team support', svg: gaugeChart(80, '#0f766e') }
-    ],
-    mission:[
-      'Present the idea in 5 minutes. Keep it simple.',
-      'Give clear numbers, not long stories.',
-      'Ask for a small pilot, not a big budget.',
-      'Answer 2 questions calmly.'
-    ],
-    cues:[
-      '"I have one idea. It takes 5 minutes."',
-      '"Today we spend $2.1 million on packaging."',
-      '"My idea can save $600,000 a year."',
-      '"I am not asking for the full budget. I am asking for a 3-month pilot."',
-      '"Does anyone have questions?"',
-      '"Could you repeat that, please? The line was not clear."'
-    ]
-  },
-
-  /* ---------------- 4. NEGOTIATING PRIORITIES ---------------- */
-  {
-    id:4,
-    icon:'⚖️',
-    theme:'Negotiating Priorities and Resources',
-    c1:'#b45309', c2:'#facc15',
-    scenario:'You are a project lead at <strong>Vertex</strong>. You have 3 projects and only 2 people. Your manager, <strong>Daniel</strong>, asks you to add a 4th project this month. Your job is to talk with him and agree on what to do first.',
-    stats:[
-      ['Team','2 people'],
-      ['Hours this month','320'],
-      ['Hours needed (4 projects)','520'],
-      ['Gap','200 hours'],
-      ['Project A — client X','$90k · 10 days'],
-      ['Project B — internal','$0 · 30 days'],
-      ['Project C — client Y','$40k · 45 days'],
-      ['Project D — new','$120k · 20 days'],
-      ['Penalty if A is late','$15,000']
-    ],
-    charts:[
-      { title:'Capacity vs demand (hours)', svg: barChart([320,520], ['#22c55e','#ef4444']) },
-      { title:'Project value ($ thousands)', svg: barChart([90,0,40,120], ['#f97316','#94a3b8','#facc15','#6366f1']) },
-      { title:'Where the hours go', svg: donutChart([15,30,35,20], ['#f97316','#94a3b8','#facc15','#6366f1'], ['A','B','C','D']) },
-      { title:'Team workload pressure', svg: lineDots([40,55,70,85,100,120], '#b45309', '#facc15') }
-    ],
-    mission:[
-      'Do not say "yes" to everything.',
-      'Show the numbers on paper.',
-      'Ask Daniel to choose the priorities.',
-      'Offer 2 or 3 real options.',
-      'Get the decision in writing.'
-    ],
-    cues:[
-      '"I want to help. Let me show you the numbers."',
-      '"We have 320 hours and we need 520."',
-      '"I cannot do all four well. Which two matter most?"',
-      '"Option 1: we move project B. Option 2: we bring in a freelancer."',
-      '"If we add project D, project A will be late. The penalty is $15,000."',
-      '"Can you confirm the priority by email?"'
-    ]
-  },
-
-  /* ---------------- 5. MISSED DEADLINE ---------------- */
-  {
-    id:5,
-    icon:'⏰',
-    theme:'Missed Deadline',
-    c1:'#7c3aed', c2:'#a855f7',
-    scenario:'You are a designer at <strong>Bluepeak</strong>. You promised to send the final design files to the client on Friday. It is now Monday morning and you have not sent them. The client, <strong>Marco</strong>, is waiting. Your job is to tell him, explain, and fix the plan.',
-    stats:[
-      ['Project','Website redesign'],
-      ['Promised','Friday 5 PM'],
-      ['Now','Monday 9 AM'],
-      ['Late by','3 days'],
-      ['Work done','80%'],
-      ['Time still needed','2 days'],
-      ['New date possible','Wednesday 12 PM'],
-      ['Client launch date','In 20 days'],
-      ['Contract penalty','$0 (first delay)'],
-      ['Last client email','"Where are the files?"']
-    ],
-    charts:[
-      { title:'Progress % over 6 days', svg: lineDots([10,25,45,60,70,80], '#ef4444', '#a855f7') },
-      { title:'Why it is late', svg: donutChart([55,30,15], ['#7c3aed','#f97316','#facc15'], ['Team sick','Late feedback','My planning']) },
-      { title:'Work complete', svg: gaugeChart(80, '#7c3aed') },
-      { title:'Days remaining vs days needed', svg: barChart([20,2], ['#22c55e','#ef4444']) }
-    ],
-    mission:[
-      'Tell the client early. Do not hide the problem.',
-      'Say sorry in one sentence, then stop.',
-      'Give one clear new date.',
-      'Offer something small to rebuild trust.'
-    ],
-    cues:[
-      '"I am sorry. We are 3 days late."',
-      '"Here is what happened: two people were sick and feedback came late."',
-      '"The work is 80% done."',
-      '"I can send the files on Wednesday at 12 PM."',
-      '"This will not affect your launch date."',
-      '"I will send you a short update every day until it is done."'
-    ]
-  }
-];
-
-/* =========================================================
-   RENDER CARDS
-   ========================================================= */
-const grid = document.getElementById('grid');
-
-scenarios.forEach((s, i)=>{
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.setAttribute('role','button');
-  card.setAttribute('tabindex','0');
-  card.setAttribute('aria-label', `Mystery card ${s.id}, tap to open the situation`);
-  card.dataset.id = s.id;
-  card.innerHTML = `
-    <div class="front">
-      <span class="number">${s.id}</span>
-      <span class="check-box" data-check role="checkbox" aria-checked="false" tabindex="0" title="Mark as done">☐</span>
-      <span class="question-mark">?</span>
-      <span class="hint">Tap to reveal</span>
-    </div>
-  `;
-  grid.appendChild(card);
-});
-
-/* =========================================================
-   MODAL LOGIC
-   ========================================================= */
-const overlay = document.getElementById('modalOverlay');
-const modal = document.getElementById('modal');
-let lastFocused = null;
-
-function openModal(id){
-  const s = scenarios.find(x => x.id === id);
-  if(!s) return;
-
-  const statHTML = s.stats.map(([k,v]) =>
-    `<div class="stat"><span class="lbl">${k}</span><span class="val">${v}</span></div>`
-  ).join('');
-
-  const chartHTML = s.charts.map(c =>
-    `<div class="chart-card"><h4>${c.title}</h4>${c.svg}</div>`
-  ).join('');
-
-  const missionHTML = s.mission.map(m => `<li>${m}</li>`).join('');
-  const cuesHTML = s.cues.map(c => `<li>${c}</li>`).join('');
-
-  modal.style.setProperty('--mc1', s.c1);
-  modal.style.setProperty('--mc2', s.c2);
-
-  modal.innerHTML = `
-    <button class="close-btn" id="closeBtn" aria-label="Close">✕</button>
-    <div class="modal-head">
-      <span class="num">${s.id}</span>
-      <h2 id="modalTitle">${s.icon} ${s.theme}</h2>
-      <p class="sub">${s.scenario}</p>
-    </div>
-    <div class="modal-body">
-      <p class="section-title">Facts</p>
-      <div class="stats">${statHTML}</div>
-
-      <p class="section-title">Charts — read the data</p>
-      <div class="charts">${chartHTML}</div>
-
-      <div class="bottom-cols">
-        <div class="panel">
-          <h3>Your mission</h3>
-          <ul class="mission">${missionHTML}</ul>
-        </div>
-        <div class="panel">
-          <h3>Language cues</h3>
-          <ul class="cues">${cuesHTML}</ul>
-        </div>
-      </div>
-    </div>
-  `;
-
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  lastFocused = document.activeElement;
-  setTimeout(()=>document.getElementById('closeBtn').focus(), 50);
-
-  document.getElementById('closeBtn').addEventListener('click', closeModal);
-}
-
-function closeModal(){
-  overlay.classList.remove('open');
-  document.body.style.overflow = '';
-  if(lastFocused) lastFocused.focus();
-}
-
-overlay.addEventListener('click', e => {
-  if(e.target === overlay) closeModal();
-});
-
-document.addEventListener('keydown', e => {
-  if(e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
-});
-
-/* =========================================================
-   SOUND
-   ========================================================= */
-let audioCtx = null;
-let soundOn = true;
-
-function playTone(isOpen){
-  if(!soundOn) return;
-  try{
-    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if(audioCtx.state === 'suspended') audioCtx.resume();
-
-    const now = audioCtx.currentTime;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(isOpen ? 620 : 420, now);
-    osc.frequency.exponentialRampToValueAtTime(isOpen ? 1020 : 290, now + 0.1);
-
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.12, now + 0.012);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
-
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start(now);
-    osc.stop(now + 0.2);
-  }catch(e){ /* optional */ }
-}
-
-/* =========================================================
-   CARD INTERACTIONS
-   ========================================================= */
-const cards = document.querySelectorAll('.card');
-
-cards.forEach(card => {
-  card.addEventListener('click', e => {
-    if(e.target.closest('[data-check]')) return;
-    playTone(true);
-    openModal(Number(card.dataset.id));
-  });
-
-  card.addEventListener('keydown', e => {
-    if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
-      if(e.target.closest('[data-check]')) return;
-      e.preventDefault();
-      playTone(true);
-      openModal(Number(card.dataset.id));
+function ownerOfQ(n, mode) {
+    if (mode === 'three') return OWNER_3P[n];
+    if (mode === 'one') {
+        const present = presentRolesOf(state);
+        return present[0] || 'A';
     }
-  });
-});
-
-/* Check boxes */
-document.querySelectorAll('[data-check]').forEach(box => {
-  box.addEventListener('click', e => {
-    e.stopPropagation();
-    const card = box.closest('.card');
-    const isDone = card.classList.toggle('done');
-    box.textContent = isDone ? '✓' : '☐';
-    box.setAttribute('aria-checked', isDone ? 'true' : 'false');
-    playTone(isDone);
-  });
-
-  box.addEventListener('keydown', e => {
-    if(e.key === 'Enter' || e.key === ' '){
-      e.preventDefault();
-      e.stopPropagation();
-      box.click();
+    return OWNER_2P[n];
+}
+function rolesForMode(mode) {
+    if (mode === 'three') return ['A', 'B', 'C'];
+    if (mode === 'one') {
+        const present = presentRolesOf(state);
+        return present.length ? [present[0]] : ['A'];
     }
-  });
-});
+    return ['A', 'B'];
+}
 
-/* =========================================================
-   RESET & SOUND TOGGLE
-   ========================================================= */
-document.getElementById('resetBtn').addEventListener('click', () => {
-  cards.forEach(card => {
-    card.classList.remove('done');
-    const box = card.querySelector('[data-check]');
-    box.textContent = '☐';
-    box.setAttribute('aria-checked','false');
-  });
-  closeModal();
-  playTone(false);
-});
+    /* ================================================================
+       PORTRAITS
+       ================================================================ */
+    const PORTRAITS = {
+        bolsonaro: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a candidate">
+            <circle cx="60" cy="60" r="60" fill="#eaf1ff"/>
+            <path d="M30 120 Q30 82 60 82 Q90 82 90 120 Z" fill="#1e3a8a"/>
+            <path d="M52 90 L60 110 L68 90 L64 86 L56 86 Z" fill="#f8fafc"/>
+            <ellipse cx="60" cy="52" rx="23" ry="26" fill="#f0c19c"/>
+            <path d="M37 52 Q37 22 60 22 Q83 22 83 52 Q78 32 60 34 Q45 35 37 52 Z" fill="#2b2118"/>
+            <circle cx="51" cy="54" r="2.5" fill="#2b2118"/>
+            <circle cx="69" cy="54" r="2.5" fill="#2b2118"/>
+            <path d="M54 66 Q60 70 66 66" stroke="#b06a4a" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>`,
+        lula: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a candidate">
+            <circle cx="60" cy="60" r="60" fill="#e3f5f2"/>
+            <path d="M30 120 Q30 82 60 82 Q90 82 90 120 Z" fill="#0f766e"/>
+            <path d="M52 90 L60 110 L68 90 L64 86 L56 86 Z" fill="#f8fafc"/>
+            <ellipse cx="60" cy="52" rx="23" ry="26" fill="#e0a97f"/>
+            <path d="M37 48 Q37 22 60 22 Q83 22 83 48 Q78 32 60 34 Q45 35 37 48 Z" fill="#c3c9d1"/>
+            <circle cx="51" cy="54" r="7" fill="none" stroke="#3b3229" stroke-width="1.8"/>
+            <circle cx="69" cy="54" r="7" fill="none" stroke="#3b3229" stroke-width="1.8"/>
+            <line x1="58" y1="54" x2="62" y2="54" stroke="#3b3229" stroke-width="1.8"/>
+            <circle cx="51" cy="54" r="2" fill="#2b2118"/>
+            <circle cx="69" cy="54" r="2" fill="#2b2118"/>
+            <path d="M54 68 Q60 72 66 68" stroke="#a85c3c" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>`
+    };
 
-const toggle = document.getElementById('soundToggle');
-toggle.addEventListener('click', e => {
-  e.stopPropagation();
-  soundOn = !soundOn;
-  toggle.textContent = soundOn ? '🔊 Sound on' : '🔇 Sound off';
-  toggle.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
-  if(soundOn) playTone(true);
-});
+    /* ================================================================
+       DATA — themes
+       ================================================================ */
+    const THEMES = [
+        {
+            id: 'theme1',
+            title: 'Lula vs Bolsonaro',
+            question: 'If Brazil chooses this path, what changes for ordinary people?',
+            sideA: { label: 'Option A', name: 'Flávio Bolsonaro', desc: 'Hypothetical scenario: what could this path mean for Brazil?', color: '#1d4ed8', tint: '#eaf1ff', portrait: 'bolsonaro' },
+            sideB: { label: 'Option B', name: 'Lula', desc: 'Hypothetical scenario: what could this path mean for Brazil?', color: '#0f766e', tint: '#e3f5f2', portrait: 'lula' },
+            chips: ['economy', 'taxes', 'jobs', 'democracy', 'health', 'the future'],
+            prosPrompt: 'Possible good consequences — what could go well?',
+            consPrompt: 'Possible bad consequences — what could go wrong?'
+        },
+        {
+            id: 'theme2',
+            title: 'City life vs Country life',
+            question: 'Is it better to live in a big city or in the countryside?',
+            sideA: { label: 'Option A', name: 'Life in the city', desc: 'Fast, busy, full of jobs and options — but expensive.', color: '#1d4ed8', tint: '#eaf1ff', icon: 'fa-city' },
+            sideB: { label: 'Option B', name: 'Life in the country', desc: 'Quiet, cheaper, close to nature — but fewer opportunities.', color: '#0f766e', tint: '#e3f5f2', icon: 'fa-tree' },
+            chips: ['cost of living', 'transport', 'safety', 'quiet', 'jobs', 'community'],
+            prosPrompt: 'Why city life could be better — what are the good points?',
+            consPrompt: 'Why country life could be better — what are the good points?'
+        },
+        {
+            id: 'theme3',
+            title: 'Home office vs Office',
+            question: 'Should companies let everyone work from home every day?',
+            sideA: { label: 'Option A', name: 'Work from home', desc: 'No commute, more family time, but you need discipline.', color: '#1d4ed8', tint: '#eaf1ff', icon: 'fa-house-laptop' },
+            sideB: { label: 'Option B', name: 'Work in the office', desc: 'Teamwork, clear hours, but the traffic and the trip.', color: '#0f766e', tint: '#e3f5f2', icon: 'fa-building' },
+            chips: ['productivity', 'teamwork', 'commute', 'family', 'technology', 'trust'],
+            prosPrompt: 'Good points for working from home — what could go well?',
+            consPrompt: 'Good points for working in the office — what could go well?'
+        },
+        {
+            id: 'theme4',
+            title: 'More money vs More free time',
+            question: 'Would you prefer more money or more free time?',
+            sideA: { label: 'Option A', name: 'More money', desc: 'Better salary, more comfort — but longer hours.', color: '#1d4ed8', tint: '#eaf1ff', icon: 'fa-coins' },
+            sideB: { label: 'Option B', name: 'More free time', desc: 'Fewer hours, less stress — but a smaller salary.', color: '#0f766e', tint: '#e3f5f2', icon: 'fa-umbrella-beach' },
+            chips: ['salary', 'overtime', 'health', 'weekends', 'stress', 'happiness'],
+            prosPrompt: 'Why more money could be better — what are the good points?',
+            consPrompt: 'Why more free time could be better — what are the good points?'
+        }
+    ];
+
+    const LISTENINGS = [
+        {
+            id: 'listening1', variant: 'listen1',
+            title: 'Listening 1 · The company\'s plan',
+            audio: 'https://files.catbox.moe/0geg7a.mp3',
+            intro: 'Listen to Marina Costa, the HR manager at TransLog. Then choose the correct answer.',
+            questions: [
+                { id: 'l1q1', num: 1, text: 'What is the new plan at TransLog?',
+                  options: [
+                      { k: 'a', text: 'Office staff work four days a week, Monday to Thursday, for six months' },
+                      { k: 'b', text: 'All employees work from home three days a week' },
+                      { k: 'c', text: 'The company closes every Friday for one year' }
+                  ], correct: 'a', explain: 'four days a week, Monday to Thursday, and the test lasts six months' },
+                { id: 'l1q2', num: 2, text: 'How many employees does TransLog have?',
+                  options: [
+                      { k: 'a', text: 'Eighty' }, { k: 'b', text: 'One hundred and eighty' }, { k: 'c', text: 'One thousand eight hundred' }
+                  ], correct: 'b', explain: 'she says: “We have one hundred and eighty employees”' },
+                { id: 'l1q3', num: 3, text: 'How many hours a week will people work?',
+                  options: [
+                      { k: 'a', text: 'Forty hours — the salary goes up' },
+                      { k: 'b', text: 'Thirty hours — the salary goes down' },
+                      { k: 'c', text: 'Thirty-six hours — the salary stays the same' }
+                  ], correct: 'c', explain: 'nine hours a day, four days a week — thirty-six hours, and the salary stays the same' },
+                { id: 'l1q4', num: 4, text: 'Why is the company starting this test?',
+                  options: [
+                      { k: 'a', text: 'To save money on salaries' },
+                      { k: 'b', text: 'To have happier and healthier people' },
+                      { k: 'c', text: 'To close one office' }
+                  ], correct: 'b', explain: 'because they want happier and healthier people' },
+                { id: 'l1q5', num: 5, text: 'What three things will the company measure?',
+                  options: [
+                      { k: 'a', text: 'Sick days, speed of answering clients, and how many people leave' },
+                      { k: 'b', text: 'Sales, profit and number of new customers' },
+                      { k: 'c', text: 'Working hours, salary and lunch time' }
+                  ], correct: 'a', explain: 'sick days, how fast they answer clients, and how many people leave' },
+                { id: 'l1q6', num: 6, text: 'What happens if the numbers are good?',
+                  options: [
+                      { k: 'a', text: 'They go back to five days' },
+                      { k: 'b', text: 'The four-day week becomes permanent in January' },
+                      { k: 'c', text: 'They open a new office' }
+                  ], correct: 'b', explain: 'the four-day week becomes permanent in January' }
+            ]
+        },
+        {
+            id: 'listening2', variant: 'listen2',
+            title: 'Listening 2 · The employee\'s view',
+            audio: 'https://files.catbox.moe/bu6x2e.mp3',
+            intro: 'Listen to Rafael Lima, an employee at TransLog. Then choose the correct answer.',
+            questions: [
+                { id: 'l2q1', num: 1, text: 'What does Rafael do at TransLog?',
+                  options: [
+                      { k: 'a', text: 'He is the HR manager' }, { k: 'b', text: 'He works in customer service' }, { k: 'c', text: 'He is a driver' }
+                  ], correct: 'b', explain: 'he says: “I work in customer service at TransLog”' },
+                { id: 'l2q2', num: 2, text: 'What is the best change for Rafael?',
+                  options: [
+                      { k: 'a', text: 'He earns more money' }, { k: 'b', text: 'He has a free Friday every week' }, { k: 'c', text: 'He has a new office' }
+                  ], correct: 'b', explain: 'now he has a free Friday every week' },
+                { id: 'l2q3', num: 3, text: 'What time does Rafael start and finish, Monday to Thursday?',
+                  options: [
+                      { k: 'a', text: 'Eight in the morning to four in the afternoon' },
+                      { k: 'b', text: 'Seven in the morning to five in the afternoon' },
+                      { k: 'c', text: 'Nine in the morning to six in the evening' }
+                  ], correct: 'b', explain: 'from seven in the morning to five in the afternoon' },
+                { id: 'l2q4', num: 4, text: 'How does Rafael feel now?',
+                  options: [
+                      { k: 'a', text: 'Calmer, and he sleeps better' }, { k: 'b', text: 'More tired and stressed' }, { k: 'c', text: 'Worried about his job' }
+                  ], correct: 'a', explain: 'he says: “I feel calmer, and I sleep better”' },
+                { id: 'l2q5', num: 5, text: 'What does Rafael do on his free Friday?',
+                  options: [
+                      { k: 'a', text: 'He visits friends' },
+                      { k: 'b', text: 'He takes his mother to the doctor and studies English' },
+                      { k: 'c', text: 'He works a second job' }
+                  ], correct: 'b', explain: 'he takes his mother to the doctor, and he studies English' },
+                { id: 'l2q6', num: 6, text: 'What would Rafael prefer for the future?',
+                  options: [
+                      { k: 'a', text: 'Go back to five full days' },
+                      { k: 'b', text: 'Five shorter days, and more flexibility for parents' },
+                      { k: 'c', text: 'Work from home every day' }
+                  ], correct: 'b', explain: 'he prefers five shorter days, and more flexibility for parents' }
+            ]
+        }
+    ];
+
+    const ITEMS = [
+        { type: 'theme', data: THEMES[0] },
+        { type: 'listening', data: LISTENINGS[0] },
+        { type: 'theme', data: THEMES[1] },
+        { type: 'listening', data: LISTENINGS[1] },
+        { type: 'theme', data: THEMES[2] },
+        { type: 'theme', data: THEMES[3] }
+    ];
+
+    const ALL_QUESTIONS = {};
+    LISTENINGS.forEach(l => l.questions.forEach(q => { ALL_QUESTIONS[q.id] = q; }));
+
+    function stepLabel(item) {
+        if (item.type === 'theme') return 'Debate · ' + item.data.title;
+        return item.data.title;
+    }
+
+    /* ================================================================
+       STATE
+       ================================================================ */
+    let me = { role: null, name: '', room: FIXED_ROOM, isGhost: false };
+    let state = { players: {}, answers: {}, auth: {}, lastGuide: null };
+    let currentStep = 0;
+    let sectionsEls = [];
+    let lastRolesStr = '';
+    let lastKnownSolved = {};
+    let lastSeenGuidePushId = null;
+    let lastAuthSnapshot = {};
+    let db = null;
+    let firebaseOk = false;
+    let roomRef = null;
+
+    /* ================================================================
+       HELPERS
+       ================================================================ */
+    function $(sel, root) { return (root || document).querySelector(sel); }
+    function $$(sel, root) { return Array.from((root || document).querySelectorAll(sel)); }
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, ch => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[ch]));
+    }
+    function initials(name) {
+        if (!name) return '?';
+        return name.trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    }
+    function toast(msg, kind) {
+        const el = document.createElement('div');
+        el.className = 'toast' + (kind ? ' ' + kind : '');
+        el.textContent = msg;
+        document.body.appendChild(el);
+        requestAnimationFrame(() => el.classList.add('show'));
+        setTimeout(() => {
+            el.classList.remove('show');
+            setTimeout(() => el.remove(), 300);
+        }, 3000);
+    }
+    function presentRolesOf(s) { return ROLES.filter(r => s.players && s.players[r]); }
+    function isGhostName(name) {
+        const n = String(name || '').toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+        return GHOST_NAMES.indexOf(n) !== -1;
+    }
+    function pointsForAttempt(attempts) {
+        if (attempts === 1) return 3;
+        if (attempts === 2) return 2;
+        return 1;
+    }
+
+    /* ================================================================
+       FIREBASE
+       ================================================================ */
+    function initFirebase() {
+        if (typeof firebase === 'undefined' || !firebase.initializeApp) return;
+        try {
+            firebase.initializeApp({ databaseURL: FIREBASE_URL });
+            db = firebase.database();
+            firebaseOk = true;
+        } catch (e) { console.warn('Firebase init failed:', e); }
+    }
+
+    /* ================================================================
+       JOIN SCREEN
+       ================================================================ */
+    const joinScreen = document.getElementById('joinScreen');
+    const mainApp = document.getElementById('mainApp');
+    const nameInput = document.getElementById('nameInput');
+    const joinBtn = document.getElementById('joinBtn');
+    const joinError = document.getElementById('joinError');
+    const joinErrorText = document.getElementById('joinErrorText');
+
+    document.getElementById('roomNameDisplay').textContent = FIXED_ROOM;
+
+    (function prefill() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            try {
+                const s = JSON.parse(saved);
+                if (s.name) nameInput.value = s.name;
+            } catch (e) {}
+        }
+    })();
+
+    function showJoinError(msg) { joinErrorText.textContent = msg; joinError.classList.remove('hidden'); }
+    function hideJoinError() { joinError.classList.add('hidden'); }
+
+    joinBtn.addEventListener('click', async () => {
+        const name = (nameInput.value || '').trim();
+        hideJoinError();
+        if (!name) { showJoinError('Please write your name.'); return; }
+
+        me.name = name;
+        me.room = FIXED_ROOM;
+        me.isGhost = isGhostName(name);
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ name })); } catch (e) {}
+
+        joinBtn.disabled = true;
+        joinBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining…';
+
+        try {
+            if (me.isGhost) {
+                me.role = 'ghost';
+                finalizeJoin();
+            } else {
+                await claimSlot();
+                finalizeJoin();
+            }
+        } catch (err) {
+            console.warn(err);
+            showJoinError(err.message || 'Could not join. Try again.');
+            joinBtn.disabled = false;
+            joinBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Join the room';
+        }
+    });
+
+    function claimSlot() {
+        return new Promise((resolve, reject) => {
+            if (!firebaseOk) {
+                me.role = 'A';
+                state.players = { A: { name: me.name } };
+                resolve();
+                return;
+            }
+            const playersRef = db.ref('rooms/' + me.room + '/players');
+            playersRef.transaction(current => {
+                current = current || {};
+                for (const role of ROLES) {
+                    if (current[role] && current[role].clientId === CLIENT_ID) return current;
+                }
+                for (const role of ROLES) {
+                    if (!current[role]) {
+                        current[role] = { name: me.name, clientId: CLIENT_ID, ts: Date.now() };
+                        return current;
+                    }
+                }
+                return;
+            }, (err, committed, snapshot) => {
+                if (err) { reject(new Error('Connection error. Please try again.')); return; }
+                if (!committed) { reject(new Error('Room is full (3 players max).')); return; }
+                const finalPlayers = snapshot.val() || {};
+                let myRole = null;
+                for (const role of ROLES) {
+                    if (finalPlayers[role] && finalPlayers[role].clientId === CLIENT_ID) {
+                        myRole = role;
+                        break;
+                    }
+                }
+                if (!myRole) { reject(new Error('Could not claim a slot. Try again.')); return; }
+                me.role = myRole;
+                try {
+                    db.ref('rooms/' + me.room + '/players/' + myRole).onDisconnect().remove();
+                } catch (e) {}
+                resolve();
+            });
+        });
+    }
+
+    function finalizeJoin() {
+        joinScreen.classList.add('hidden');
+        mainApp.classList.remove('hidden');
+
+        document.getElementById('roomCodeDisplay').textContent = me.room;
+        document.getElementById('meName').textContent = me.name;
+        document.getElementById('meInitial').textContent = me.isGhost ? '👻' : initials(me.name);
+        document.getElementById('meRole').textContent = me.isGhost ? 'Ghost mode' : 'Player ' + me.role;
+        document.getElementById('meChip').className = 'me-chip ' + (me.isGhost ? 'ghost' : me.role);
+
+        if (me.isGhost) {
+            document.getElementById('guideBtn').classList.remove('hidden');
+            document.getElementById('resetAnswersBtn').classList.remove('hidden');
+        }
+
+        renderSections();
+        updateStepNav();
+        updateLocationBanner();
+        connectRealtime();
+    }
+
+    /* ================================================================
+       REALTIME
+       ================================================================ */
+    function connectRealtime() {
+        if (!firebaseOk) {
+            applyState(state, { skipToast: true });
+            return;
+        }
+        try {
+            roomRef = db.ref('rooms/' + me.room);
+            roomRef.on('value', snap => {
+                const val = snap.val() || {};
+                state.players = val.players || {};
+                state.answers = val.answers || {};
+                state.auth = val.auth || {};
+                state.lastGuide = val.lastGuide || null;
+                applyState(state);
+            }, err => {
+                console.warn('Room read failed:', err);
+                firebaseOk = false;
+                applyState(state, { skipToast: true });
+            });
+        } catch (e) {
+            console.warn('Room subscribe failed:', e);
+            firebaseOk = false;
+            applyState(state, { skipToast: true });
+        }
+    }
+
+    /* ================================================================
+       RENDER SECTIONS
+       ================================================================ */
+    function renderSections() {
+        const holder = document.getElementById('sections');
+        holder.innerHTML = '';
+        sectionsEls = [];
+        ITEMS.forEach((item, i) => {
+            const el = item.type === 'theme'
+                ? renderTheme(item.data, i + 1, ITEMS.length)
+                : renderListening(item.data, i + 1, ITEMS.length);
+            el.dataset.step = i;
+            if (i === 0) el.classList.add('active-step');
+            holder.appendChild(el);
+            sectionsEls.push(el);
+        });
+    }
+
+    function renderTheme(theme, num, total) {
+        const sec = document.createElement('section');
+        sec.className = 'section theme-section';
+        sec.dataset.themeId = theme.id;
+
+        const aVisual = theme.sideA.portrait
+            ? `<div class="side-portrait">${PORTRAITS[theme.sideA.portrait]}</div>`
+            : `<div class="side-icon-circle"><i class="fas ${theme.sideA.icon}"></i></div>`;
+        const bVisual = theme.sideB.portrait
+            ? `<div class="side-portrait">${PORTRAITS[theme.sideB.portrait]}</div>`
+            : `<div class="side-icon-circle"><i class="fas ${theme.sideB.icon}"></i></div>`;
+
+        sec.innerHTML = `
+            <div class="section-head">
+                <span class="sec-badge"><i class="fas fa-comments"></i> Debate</span>
+                <span class="sec-title">${escapeHtml(theme.title)}</span>
+                <span class="sec-num">${num} / ${total}</span>
+            </div>
+            <div class="section-body">
+                <div class="arena">
+                    <div class="side" style="--accent:${theme.sideA.color}; --tint:${theme.sideA.tint};">
+                        ${aVisual}
+                        <div>
+                            <span class="side-label">${escapeHtml(theme.sideA.label)}</span>
+                            <h3 class="side-name">${escapeHtml(theme.sideA.name)}</h3>
+                            <p class="side-desc">${escapeHtml(theme.sideA.desc)}</p>
+                        </div>
+                    </div>
+                    <div class="vs-circle">VS</div>
+                    <div class="side" style="--accent:${theme.sideB.color}; --tint:${theme.sideB.tint};">
+                        ${bVisual}
+                        <div>
+                            <span class="side-label">${escapeHtml(theme.sideB.label)}</span>
+                            <h3 class="side-name">${escapeHtml(theme.sideB.name)}</h3>
+                            <p class="side-desc">${escapeHtml(theme.sideB.desc)}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theme-q">
+                    <i class="fas fa-question"></i>
+                    <p>${escapeHtml(theme.question)}</p>
+                </div>
+
+                <p class="chips-label">Words you can use</p>
+                <div class="chips">
+                    ${theme.chips.map(w => `<span class="chip">${escapeHtml(w)}</span>`).join('')}
+                </div>
+
+                <div class="proscons">
+                    <div class="pc-box pros">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>${escapeHtml(theme.prosPrompt)}</span>
+                    </div>
+                    <div class="pc-box cons">
+                        <i class="fas fa-thumbs-down"></i>
+                        <span>${escapeHtml(theme.consPrompt)}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        return sec;
+    }
+
+    function renderListening(listen, num, total) {
+        const sec = document.createElement('section');
+        sec.className = 'section listening-section ' + listen.variant;
+        sec.dataset.listeningId = listen.id;
+        sec.innerHTML = `
+            <div class="section-head">
+                <span class="sec-badge listen"><i class="fas fa-headphones"></i> Listening</span>
+                <span class="sec-title">${escapeHtml(listen.title)}</span>
+                <span class="sec-num">${num} / ${total}</span>
+            </div>
+            <div class="section-body">
+                <div data-auth-panel></div>
+                <div data-audio-row></div>
+                <p class="listen-intro">${escapeHtml(listen.intro)}</p>
+                <div class="progress-bar" data-progress></div>
+                <div class="q-columns" data-cols></div>
+                <div class="teamwork-banner" data-teamwork>
+                    <i class="fas fa-champagne-glasses"></i>
+                    <div>
+                        <strong>Great teamwork! 🎉</strong>
+                        <span>All the questions are answered.</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        return sec;
+    }
+
+    /* ================================================================
+       AUTH PANEL
+       ================================================================ */
+    function renderAuthPanel(listen, authorized) {
+        if (me.isGhost) {
+            if (authorized) {
+                return `
+                    <div class="auth-panel ghost">
+                        <i class="fas fa-unlock icon"></i>
+                        <div>
+                            <strong>Answers are open</strong>
+                            <p>Students can answer now — but only their own questions. Lock again if you need to.</p>
+                        </div>
+                        <button type="button" class="auth-btn revoke" data-revoke-auth="${listen.id}">
+                            <i class="fas fa-lock"></i> Lock again
+                        </button>
+                    </div>
+                `;
+            }
+            return `
+                <div class="auth-panel ghost">
+                    <i class="fas fa-shield-halved icon"></i>
+                    <div>
+                        <strong>Answers are locked</strong>
+                        <p>Play the audio first, then authorize students to answer.</p>
+                    </div>
+                    <button type="button" class="auth-btn authorize" data-authorize="${listen.id}">
+                        <i class="fas fa-unlock"></i> Authorize answers
+                    </button>
+                </div>
+            `;
+        }
+        if (authorized) {
+            return `
+                <div class="auth-panel go">
+                    <div class="go-icon">🎮</div>
+                    <div>
+                        <strong>GO! Answer the questions now!</strong>
+                        <p>You can only answer <b>your own</b> questions. First try = 3 pts · Second try = 2 pts · Third try = 1 pt.</p>
+                    </div>
+                </div>
+            `;
+        }
+        return `
+            <div class="auth-panel locked">
+                <i class="fas fa-lock icon"></i>
+                <div>
+                    <strong>Wait for your teacher</strong>
+                    <p>The questions will open after the audio finishes on the Zoom screen.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderAudioRow(listen) {
+        if (me.isGhost) {
+            return `
+                <div class="audio-row">
+                    <i class="fas fa-headphones"></i>
+                    <audio controls preload="none" src="${listen.audio}"></audio>
+                </div>
+            `;
+        }
+        return `
+            <div class="audio-teacher-only">
+                <i class="fas fa-tv"></i>
+                <div>
+                    <strong>Listen on the Zoom screen.</strong>
+                    <span style="display:block;font-weight:500;opacity:0.85;margin-top:2px;">Your teacher is playing the audio. Concentrate and take notes.</span>
+                </div>
+            </div>
+        `;
+    }
+
+    /* ================================================================
+       LISTENING COLUMNS
+       ================================================================ */
+    function refreshListeningColumns(listen, mode) {
+        const sec = document.querySelector(`[data-listening-id="${listen.id}"]`);
+        if (!sec) return;
+        const cols = sec.querySelector('[data-cols]');
+        if (!cols) return;
+        const list = rolesForMode(mode);
+        cols.dataset.count = list.length;
+        cols.innerHTML = list.map(role => {
+            const qs = listen.questions.filter(q => ownerOfQ(q.num, mode) === role);
+            return `
+                <div class="q-col ${role}">
+                    <div class="q-col-head ${role}">
+                        <span class="player-tag ${role}"><i class="fas fa-user"></i> Player ${role}</span>
+                        <span>${qs.length} question${qs.length !== 1 ? 's' : ''}</span>
+                        <span class="you-badge" data-you-badge="${role}" style="display:none;">You</span>
+                    </div>
+                    ${qs.map(q => renderQuestion(q)).join('')}
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderQuestion(q) {
+        return `
+            <div class="q-card" data-qid="${q.id}">
+                <div class="q-head">
+                    <span class="q-num-badge">${q.num}</span>
+                    <p class="q-text">${escapeHtml(q.text)}</p>
+                    <span class="owner-label" data-owner-label></span>
+                </div>
+                <div class="options">
+                    ${q.options.map(o => `
+                        <button class="opt" type="button" data-choice="${o.k}" disabled>
+                            <span class="opt-letter">${o.k}</span>
+                            <span class="opt-body">${escapeHtml(o.text)}</span>
+                        </button>
+                    `).join('')}
+                </div>
+                <div class="feedback" data-feedback></div>
+                <div data-points></div>
+            </div>
+        `;
+    }
+
+    /* ================================================================
+       APPLY STATE
+       ================================================================ */
+    function applyState(s, opts) {
+        opts = opts || {};
+        const presentRoles = presentRolesOf(s);
+        const mode = getMode(presentRoles);
+        const rolesStr = presentRoles.join(',') + '|' + mode;
+
+        // If answers were wiped (e.g. teacher reset), clear local tracking
+        if (Object.keys(s.answers || {}).length === 0) {
+            lastKnownSolved = {};
+        }
+
+        if (rolesStr !== lastRolesStr) {
+            LISTENINGS.forEach(l => refreshListeningColumns(l, mode));
+            lastRolesStr = rolesStr;
+        }
+
+        $$('[data-you-badge]').forEach(el => {
+            el.style.display = (!me.isGhost && el.dataset.youBadge === me.role) ? 'inline-flex' : 'none';
+        });
+
+        updateTeamScore(s);
+
+        // Guide push
+        if (s.lastGuide && s.lastGuide.pushId && s.lastGuide.pushId !== lastSeenGuidePushId) {
+            if (!me.isGhost) {
+                const stepIdx = Number(s.lastGuide.step);
+                if (!isNaN(stepIdx) && stepIdx >= 0 && stepIdx < ITEMS.length) {
+                    navigateTo(stepIdx, { fromGuide: true });
+                    toast('📍 Teacher: "Go to ' + stepLabel(ITEMS[stepIdx]) + '"', 'gold');
+                }
+            }
+            lastSeenGuidePushId = s.lastGuide.pushId;
+        }
+
+        // Always update listening state (panel, audio, questions, progress)
+        LISTENINGS.forEach(listen => {
+            const sec = document.querySelector(`[data-listening-id="${listen.id}"]`);
+            if (!sec) return;
+            const auth = !!s.auth[listen.id];
+            updateListeningState(sec, listen, mode, s, auth);
+
+            if (!me.isGhost && auth && !lastAuthSnapshot[listen.id]) {
+                if (!sec.classList.contains('active-step')) {
+                    toast('🎮 ' + listen.title + ' is now open!', 'success');
+                }
+            }
+            lastAuthSnapshot[listen.id] = auth;
+        });
+
+        // Toasts for other players' correct answers
+        if (!opts.skipToast && !me.isGhost) {
+            Object.keys(s.answers || {}).forEach(qid => {
+                const ans = s.answers[qid];
+                if (!ans || !ans.correct) return;
+                if (lastKnownSolved[qid]) return;
+                lastKnownSolved[qid] = true;
+                if (ans.who === me.role) return;
+                const player = s.players[ans.who];
+                if (!player) return;
+                const q = ALL_QUESTIONS[qid];
+                if (!q) return;
+                toast('✅ ' + player.name + ' got Question ' + q.num + ' right (+' + (ans.points || 0) + ' pts)', 'success');
+            });
+        }
+    }
+
+    function updateListeningState(sec, listen, mode, s, auth) {
+        // Auth panel
+        const panel = sec.querySelector('[data-auth-panel]');
+        if (panel) {
+            const newHtml = renderAuthPanel(listen, auth);
+            if (panel.innerHTML.trim() !== newHtml.trim()) {
+                panel.innerHTML = newHtml;
+            }
+        }
+        // Audio row
+        const audioRow = sec.querySelector('[data-audio-row]');
+        if (audioRow) {
+            const newHtml = renderAudioRow(listen);
+            if (audioRow.innerHTML.trim() !== newHtml.trim()) {
+                audioRow.innerHTML = newHtml;
+            }
+        }
+
+        listen.questions.forEach(q => {
+            const card = sec.querySelector(`[data-qid="${q.id}"]`);
+            if (!card) return;
+            const ans = s.answers[q.id];
+            const solved = !!(ans && ans.correct);
+            const isWrongAttempt = !!(ans && !ans.correct);
+            const owner = ownerOfQ(q.num, mode);
+            const isMine = owner === me.role && !me.isGhost;
+            const iCanClick = isMine && !solved && auth;
+
+            card.classList.toggle('solved', solved);
+
+            // Owner label + not-yours styling
+            const ownerLabel = card.querySelector('[data-owner-label]');
+            if (ownerLabel) {
+                if (isMine) {
+                    ownerLabel.style.display = 'none';
+                } else {
+                    ownerLabel.textContent = 'Player ' + owner + "'s";
+                    ownerLabel.style.display = 'inline-flex';
+                }
+            }
+            card.classList.toggle('not-yours', !isMine && !me.isGhost);
+
+            card.querySelectorAll('.opt').forEach(opt => {
+                const isChosen = ans && opt.dataset.choice === ans.choice;
+                opt.classList.toggle('correct', solved && isChosen);
+                opt.classList.toggle('wrong', isWrongAttempt && isChosen);
+                opt.disabled = !iCanClick;
+            });
+
+            const fb = card.querySelector('[data-feedback]');
+            const whoName = (s.players[ans && ans.who] && s.players[ans.who].name) || (ans ? ('Player ' + ans.who) : '');
+
+            if (solved) {
+                fb.className = 'feedback success';
+                fb.textContent = '✅ ' + whoName + ' got it right · ' + q.explain;
+            } else if (isWrongAttempt) {
+                fb.className = 'feedback live';
+                fb.textContent = '👀 ' + whoName + ' tried (' + ans.choice + ') — still thinking';
+            } else {
+                fb.className = 'feedback';
+                fb.textContent = '';
+            }
+
+            const pointsEl = card.querySelector('[data-points]');
+            if (pointsEl) {
+                if (solved && ans.points) {
+                    pointsEl.innerHTML = `<span class="points-badge">🏆 +${ans.points} pts</span>`;
+                } else if (isWrongAttempt && ans.attempts) {
+                    const nextPoints = pointsForAttempt(ans.attempts + 1);
+                    pointsEl.innerHTML = `<span class="points-badge">Next try worth ${nextPoints} pt${nextPoints !== 1 ? 's' : ''}</span>`;
+                } else {
+                    pointsEl.innerHTML = '';
+                }
+            }
+        });
+
+        updateProgressBar(sec, listen, mode, s);
+        updateTeamwork(sec, listen, s);
+    }
+
+    function updateProgressBar(sec, listen, mode, s) {
+        const el = sec.querySelector('[data-progress]');
+        if (!el) return;
+        const visible = rolesForMode(mode);
+        const items = visible.map(role => {
+            const roleQs = listen.questions.filter(q => ownerOfQ(q.num, mode) === role);
+            let done = 0;
+            let pts = 0;
+            roleQs.forEach(q => {
+                const ans = s.answers[q.id];
+                if (ans && ans.correct) {
+                    done++;
+                    pts += (typeof ans.points === 'number') ? ans.points : 0;
+                }
+            });
+            const isPresent = !!(s.players[role]);
+            const name = (s.players[role] && s.players[role].name) || ('Player ' + role);
+            return `
+                <span class="prog-item" ${isPresent ? '' : 'style="opacity:.55;"'}>
+                    <span class="prog-avatar ${role}">${escapeHtml(initials(isPresent ? name : role))}</span>
+                    <span class="prog-name">${isPresent ? escapeHtml(name) : 'Waiting for Player ' + role}</span>
+                    <span class="prog-count ${done === roleQs.length ? 'done' : ''}">${done}/${roleQs.length}</span>
+                    ${pts > 0 ? `<span class="prog-pts">${pts} pts</span>` : ''}
+                </span>
+            `;
+        }).join('<span class="prog-divider">·</span>');
+        el.innerHTML = items;
+    }
+
+    function updateTeamScore(s) {
+        let total = 0;
+        LISTENINGS.forEach(l => l.questions.forEach(q => {
+            const ans = s.answers[q.id];
+            if (ans && ans.correct) {
+                total += (typeof ans.points === 'number') ? ans.points : 0;
+            }
+        }));
+        const el = document.getElementById('teamScoreVal');
+        if (el) el.textContent = total;
+    }
+
+    function updateTeamwork(sec, listen, s) {
+        const banner = sec.querySelector('[data-teamwork]');
+        if (!banner) return;
+        const allDone = listen.questions.every(q => s.answers[q.id] && s.answers[q.id].correct);
+        banner.classList.toggle('show', allDone);
+    }
+
+    /* ================================================================
+       CLICKS — auth, revoke, answers
+       ================================================================ */
+    document.getElementById('sections').addEventListener('click', (e) => {
+        const authBtn = e.target.closest('[data-authorize]');
+        if (authBtn) {
+            const listenId = authBtn.dataset.authorize;
+            if (firebaseOk) {
+                db.ref('rooms/' + me.room + '/auth/' + listenId).set(true)
+                    .then(() => toast('🔓 Answers are now open for students', 'success'))
+                    .catch(err => console.warn('Auth write failed:', err));
+            } else {
+                state.auth[listenId] = true;
+                applyState(state, { skipToast: true });
+            }
+            return;
+        }
+
+        const revokeBtn = e.target.closest('[data-revoke-auth]');
+        if (revokeBtn) {
+            if (!confirm('Lock the answers again? Students will not be able to answer until you open them again.')) return;
+            const listenId = revokeBtn.dataset.revokeAuth;
+            if (firebaseOk) {
+                db.ref('rooms/' + me.room + '/auth/' + listenId).set(false)
+                    .catch(err => console.warn('Revoke write failed:', err));
+            } else {
+                state.auth[listenId] = false;
+                applyState(state, { skipToast: true });
+            }
+            return;
+        }
+
+        const opt = e.target.closest('.opt');
+        if (opt && !opt.disabled) {
+            handleAnswer(opt);
+        }
+    });
+
+    /* ================================================================
+       ANSWER — with ownership + auth + scoring
+       ================================================================ */
+    function handleAnswer(opt) {
+        const card = opt.closest('.q-card');
+        if (!card) return;
+        const qid = card.dataset.qid;
+        const q = ALL_QUESTIONS[qid];
+        if (!q) return;
+
+        // Ghost cannot answer
+        if (me.isGhost) return;
+
+        // Owner check — only your questions
+        const presentRoles = presentRolesOf(state);
+        const mode = getMode(presentRoles);
+        const owner = ownerOfQ(q.num, mode);
+        if (owner !== me.role) {
+            toast('This is Player ' + owner + "'s question — you can only answer your own.", 'gold');
+            return;
+        }
+
+        // Already solved
+        if (state.answers[qid] && state.answers[qid].correct) return;
+
+        // Auth check
+        const listen = LISTENINGS.find(l => l.questions.some(x => x.id === qid));
+        if (!listen) return;
+        if (!state.auth || !state.auth[listen.id]) {
+            toast('⏳ Wait for your teacher to open the questions.', 'gold');
+            return;
+        }
+
+        const choice = opt.dataset.choice;
+        const isCorrect = choice === q.correct;
+        const prevAns = state.answers[qid];
+        const prevAttempts = (prevAns && typeof prevAns.attempts === 'number') ? prevAns.attempts : 0;
+        const newAttempts = prevAttempts + 1;
+        let points = 0;
+        if (isCorrect) points = pointsForAttempt(newAttempts);
+
+        const answerData = {
+            choice, correct: isCorrect, who: me.role,
+            attempts: newAttempts, points,
+            ts: firebase.database.ServerValue.TIMESTAMP
+        };
+
+        state.answers[qid] = { choice, correct: isCorrect, who: me.role, attempts: newAttempts, points };
+        applyState(state, { skipToast: true });
+
+        if (firebaseOk) {
+            db.ref('rooms/' + me.room + '/answers/' + qid).set(answerData)
+                .catch(err => console.warn('Answer write failed:', err));
+        }
+
+        if (isCorrect) {
+            toast('🏆 +' + points + ' pts! ' + (newAttempts === 1 ? 'Perfect first try!' : 'Nice recovery!'), 'success');
+        }
+    }
+
+    /* ================================================================
+       GUIDE BUTTON (ghost)
+       ================================================================ */
+    document.getElementById('guideBtn').addEventListener('click', () => {
+        if (!me.isGhost) return;
+        const pushId = CLIENT_ID + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+        if (firebaseOk) {
+            db.ref('rooms/' + me.room + '/lastGuide').set({
+                step: currentStep, pushId,
+                ts: firebase.database.ServerValue.TIMESTAMP
+            }).then(() => toast('📤 Class guided to: ' + stepLabel(ITEMS[currentStep]), 'gold'))
+              .catch(err => console.warn('Guide write failed:', err));
+        } else {
+            toast('📤 (local mode) Guided to: ' + stepLabel(ITEMS[currentStep]), 'gold');
+        }
+    });
+
+    /* ================================================================
+       RESET ANSWERS (ghost only)
+       ================================================================ */
+    document.getElementById('resetAnswersBtn').addEventListener('click', () => {
+        if (!me.isGhost) return;
+        if (!confirm('Reset all answers and lock the questions again?\n\nThis clears all points, attempts and correct answers. You will need to authorize students again for the next class.')) return;
+
+        if (firebaseOk) {
+            const updates = {};
+            updates['rooms/' + me.room + '/answers'] = null;
+            updates['rooms/' + me.room + '/auth/listening1'] = null;
+            updates['rooms/' + me.room + '/auth/listening2'] = null;
+            updates['rooms/' + me.room + '/lastGuide'] = null;
+            db.ref().update(updates)
+                .then(() => {
+                    lastKnownSolved = {};
+                    lastAuthSnapshot = {};
+                    lastSeenGuidePushId = null;
+                    state.answers = {};
+                    state.auth = {};
+                    state.lastGuide = null;
+                    applyState(state, { skipToast: true });
+                    toast('🧹 Answers cleared, questions locked', 'success');
+                })
+                .catch(err => {
+                    console.warn('Reset failed:', err);
+                    toast('Could not reset. Try again.', 'gold');
+                });
+        } else {
+            state.answers = {};
+            state.auth = {};
+            state.lastGuide = null;
+            lastKnownSolved = {};
+            lastAuthSnapshot = {};
+            lastSeenGuidePushId = null;
+            applyState(state, { skipToast: true });
+            toast('🧹 Answers cleared (local mode)', 'success');
+        }
+    });
+
+    /* ================================================================
+       STEP NAV
+       ================================================================ */
+    function navigateTo(step, opts) {
+        opts = opts || {};
+        if (step < 0 || step >= ITEMS.length) return;
+        $$('audio').forEach(a => { try { a.pause(); } catch (e) {} });
+        currentStep = step;
+        sectionsEls.forEach((el, i) => el.classList.toggle('active-step', i === step));
+        updateStepNav();
+        updateLocationBanner();
+        if (!opts.fromGuide) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    function updateStepNav() {
+        const dots = document.getElementById('stepDots');
+        dots.innerHTML = ITEMS.map((_, i) => {
+            const cls = i === currentStep ? 'step-dot active' : 'step-dot';
+            return `<button class="${cls}" data-step="${i}" type="button" aria-label="Step ${i + 1}">${i + 1}</button>`;
+        }).join('');
+        document.getElementById('prevStep').disabled = currentStep === 0;
+        document.getElementById('nextStep').disabled = currentStep === ITEMS.length - 1;
+    }
+
+    function updateLocationBanner() {
+        const item = ITEMS[currentStep];
+        const icon = item.type === 'listening' ? '🎧' : '💬';
+        document.getElementById('locStepNum').textContent = (currentStep + 1) + ' / ' + ITEMS.length;
+        document.getElementById('locStepTitle').textContent = icon + ' ' + stepLabel(item);
+    }
+
+    document.getElementById('prevStep').addEventListener('click', () => navigateTo(currentStep - 1));
+    document.getElementById('nextStep').addEventListener('click', () => navigateTo(currentStep + 1));
+    document.getElementById('stepDots').addEventListener('click', (e) => {
+        const dot = e.target.closest('.step-dot');
+        if (!dot) return;
+        navigateTo(parseInt(dot.dataset.step, 10));
+    });
+
+    /* ================================================================
+       LEAVE
+       ================================================================ */
+    document.getElementById('leaveBtn').addEventListener('click', () => {
+        if (!confirm('Are you sure you want to leave the room? Your player data and answers will be removed from the shared room.')) return;
+
+        if (firebaseOk && me.role && me.role !== 'ghost') {
+            try { removeMyData(); } catch (e) { console.warn(e); }
+        }
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+        if (roomRef) { try { roomRef.off(); } catch (e) {} }
+        setTimeout(() => location.reload(), 250);
+    });
+
+    function removeMyData() {
+        const root = 'rooms/' + me.room;
+        const role = me.role;
+        db.ref(root + '/players/' + role).remove();
+        db.ref(root + '/answers').once('value', snap => {
+            const answers = snap.val() || {};
+            Object.keys(answers).forEach(qid => {
+                if (answers[qid] && answers[qid].who === role) {
+                    db.ref(root + '/answers/' + qid).remove();
+                }
+            });
+        });
+    }
+
+    /* ================================================================
+       BOOT
+       ================================================================ */
+    initFirebase();
+})();
 </script>
 
 </body>
