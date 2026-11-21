@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Speaking Lab · Teacher Panel</title>
+<title>Speaking Lab · Student</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   :root{
@@ -12,38 +12,22 @@
     --accent:#7c5cff; --accent2:#22d3ee;
     --green:#22c55e; --yellow:#eab308; --red:#ef4444;
   }
+  html,body{height:100%;overflow:hidden}
   body{
     font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
     background:var(--bg); color:var(--text);
-    display:flex; justify-content:center; align-items:flex-start;
-    min-height:100vh; padding:20px;
+    display:flex; justify-content:center; align-items:center;
   }
   .app-container{
-    width:100%; max-width:900px;
-    display:flex; flex-direction:column; gap:16px;
+    width:100%; max-width:900px; height:100vh;
+    display:flex; flex-direction:column; padding:24px; gap:20px;
   }
-  
-  /* HEADER STATUS */
-  .header-status{
-    display:flex; justify-content:space-between; align-items:center;
-    background:var(--panel); border:1px solid var(--border);
-    border-radius:16px; padding:16px 24px;
-    box-shadow:0 10px 30px -10px rgba(0,0,0,0.5);
-  }
-  .status-indicator{
-    font-size:14px; font-weight:800; letter-spacing:1px; text-transform:uppercase;
-    color:var(--accent2);
-  }
-  .status-details{
-    display:flex; gap:16px; font-size:14px; color:var(--muted);
-  }
-  .status-details span{ color:var(--text); font-weight:700; }
-
-  /* STUDENT VIEW REPLICA */
   .image-container{
-    position:relative; width:100%; height:280px;
+    position:relative; width:100%; flex:1;
     border-radius:20px; overflow:hidden;
     background:var(--panel); border:1px solid var(--border);
+    min-height:250px;
+    box-shadow:0 20px 50px -20px rgba(0,0,0,0.8);
   }
   .image-container img{
     width:100%; height:100%; object-fit:cover; display:block;
@@ -54,118 +38,82 @@
     background:linear-gradient(180deg, transparent 40%, rgba(7,9,15,0.95) 100%);
   }
   .section-badge{
-    position:absolute; top:16px; left:16px;
+    position:absolute; top:20px; left:20px;
     background:rgba(7,9,15,.8); backdrop-filter:blur(8px);
     border:1px solid var(--border); padding:6px 16px; border-radius:100px;
     font-size:12px; font-weight:800; letter-spacing:2px; text-transform:uppercase;
     color:var(--accent2);
   }
-
   .question-container{
     background:var(--panel); border:1px solid var(--border);
-    border-radius:20px; padding:24px; min-height:110px;
+    border-radius:20px; padding:30px;
+    position:relative; min-height:140px;
     display:flex; align-items:center;
   }
   .question-text{
-    font-size:clamp(18px, 2.5vw, 24px); font-weight:600; line-height:1.4;
+    font-size:clamp(20px, 3vw, 26px); font-weight:600; line-height:1.4;
     transition: opacity 0.5s, transform 0.5s, filter 0.5s;
   }
-  .question-text.locked { opacity: 0; transform: translateY(20px); filter: blur(8px); }
-  .question-text.unlocked { opacity: 1; transform: translateY(0); filter: blur(0); }
-
+  .question-text.locked {
+    opacity: 0; transform: translateY(20px); filter: blur(8px);
+  }
+  .question-text.unlocked {
+    opacity: 1; transform: translateY(0); filter: blur(0);
+  }
   .timer-container{
     background:var(--panel); border:1px solid var(--border);
-    border-radius:20px; padding:16px 24px;
-    display:flex; align-items:center; gap:16px;
+    border-radius:20px; padding:20px 30px;
+    display:flex; align-items:center; gap:20px;
   }
   .timer-phase{
     font-size:12px; font-weight:800; letter-spacing:2px; text-transform:uppercase;
-    color:var(--muted); width:60px;
+    color:var(--muted); width:80px;
   }
   .timer-time{
-    font-size:28px; font-weight:800; font-variant-numeric:tabular-nums;
-    width:80px; text-align:right;
+    font-size:36px; font-weight:800; font-variant-numeric:tabular-nums;
+    width:100px; text-align:right;
   }
   .timer-bar{
-    flex:1; height:10px; background:var(--panel2);
+    flex:1; height:12px; background:var(--panel2);
     border-radius:100px; overflow:hidden; position:relative;
   }
   .timer-fill{
     position:absolute; top:0; left:0; bottom:0;
     transition: width 0.1s linear, background 0.3s;
     border-radius:100px;
+    background:var(--green);
   }
   .phase-think { color:var(--yellow) !important; }
   .phase-talk { color:var(--green) !important; }
   .phase-done { color:var(--red) !important; }
-  
   .fill-think { background:linear-gradient(90deg,var(--yellow),#facc15); }
   .fill-talk { background:linear-gradient(90deg,var(--green),#4ade80); }
   .fill-warn { background:linear-gradient(90deg,#f59e0b,var(--red)); }
   .fill-danger { background:linear-gradient(90deg,var(--red),#dc2626); }
-
-  /* CONTROLS */
-  .controls-panel{
-    display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
-    background:var(--panel); padding:16px; border-radius:20px;
-    border:1px solid var(--border);
+  @media(max-width:600px){
+    .timer-container{flex-wrap:wrap; justify-content:center;}
+    .timer-bar{width:100%; order:3;}
+    .question-container{padding:20px; min-height:100px;}
   }
-  .btn {
-    padding:12px 20px; border-radius:12px; border:none;
-    font-family:inherit; font-size:14px; font-weight:700; cursor:pointer;
-    transition:transform 0.1s, filter 0.15s; display:flex; align-items:center; gap:8px;
-    flex:1; justify-content:center; min-width:120px;
-  }
-  .btn:active { transform:scale(0.97); }
-  .btn-primary { background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#fff; }
-  .btn-secondary { background:var(--panel2); color:var(--text); border:1px solid var(--border); }
-  .btn-danger { background:rgba(239,68,68,0.15); color:var(--red); border:1px solid rgba(239,68,68,0.3); }
-  .btn:hover { filter:brightness(1.1); }
-  .btn:disabled { opacity:0.4; cursor:not-allowed; }
 </style>
 </head>
 <body>
-
-<div class="app-container">
-  
-  <!-- Status Bar -->
-  <div class="header-status">
-    <div class="status-indicator">Teacher Control</div>
-    <div class="status-details">
-      <div>Section: <span id="statSection">1</span> / 3</div>
-      <div>Question: <span id="statQuestion">1</span> / 9</div>
-      <div>Status: <span id="statStatus" style="color:var(--yellow)">Idle</span></div>
-    </div>
-  </div>
-
-  <!-- Visual Replica -->
+<div class="app-container" id="studentApp">
   <div class="image-container">
-    <img id="teacherImage" src="" alt="Section Image" style="opacity:0;">
+    <img id="studentImage" src="" alt="Section Image" style="opacity:0;">
     <div class="image-overlay"></div>
-    <div class="section-badge" id="teacherBadge">Loading...</div>
+    <div class="section-badge" id="studentBadge">Waiting…</div>
   </div>
-
   <div class="question-container">
-    <div class="question-text locked" id="teacherQuestion">Loading...</div>
+    <div class="question-text locked" id="studentQuestion">Loading…</div>
   </div>
-
   <div class="timer-container">
-    <div class="timer-phase" id="teacherPhase">Wait</div>
-    <div class="timer-time" id="teacherTime">3:20</div>
+    <div class="timer-phase" id="studentPhase">Wait</div>
+    <div class="timer-time" id="studentTime">3:20</div>
     <div class="timer-bar">
-      <div class="timer-fill" id="teacherFill" style="width:100%"></div>
+      <div class="timer-fill" id="studentFill" style="width:100%"></div>
     </div>
   </div>
-
-  <!-- Control Buttons -->
-  <div class="controls-panel">
-    <button class="btn btn-secondary" id="prevBtn">◀ Previous</button>
-    <button class="btn btn-primary" id="playBtn">▶ Start / Resume</button>
-    <button class="btn btn-secondary" id="nextBtn">Next ▶</button>
-    <button class="btn btn-danger" id="resetBtn">↺ Reset All</button>
-    <button class="btn btn-secondary" id="voiceBtn">🔊 Voice ON</button>
-  </div>
-
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -179,9 +127,9 @@
     databaseURL: "https://english-meetings-f08e4-default-rtdb.firebaseio.com"
   });
   const db = firebase.database();
-  const ROOM_ID = 'speakingLab'; // Must match student.html
+  const ROOM_ID = 'speakingLab'; // must match teacher.html
 
-  // ---- DATA ----
+  // ---- DATA (must match teacher.html) ----
   const SECTIONS = [
     {
       badge: "Section 1 · Psychology",
@@ -230,41 +178,24 @@
     }
   ];
 
-  const TOTAL_SECONDS = 200; 
+  const TOTAL_SECONDS = 200; // 3:20
   const THINK_SECONDS = 20;
-  const Q_PER_SECTION = 9;
-
-  // ---- STATE ----
-  let currentSec = 0;
-  let currentQ = 0;
-  let timeLeft = TOTAL_SECONDS;
-  let isRunning = false;
-  let voiceOn = true;
-  let timerId = null;
-  let lastTick = null;
-  let isFinished = false;
-  let lastQText = '';
-
-  const stateRef = db.ref('rooms/' + ROOM_ID + '/state');
 
   // ---- DOM ----
   const $ = id => document.getElementById(id);
   const els = {
-    statSec: $('statSection'),
-    statQ: $('statQuestion'),
-    statStatus: $('statStatus'),
-    image: $('teacherImage'),
-    badge: $('teacherBadge'),
-    qText: $('teacherQuestion'),
-    phase: $('teacherPhase'),
-    time: $('teacherTime'),
-    fill: $('teacherFill'),
-    play: $('playBtn'),
-    prev: $('prevBtn'),
-    next: $('nextBtn'),
-    reset: $('resetBtn'),
-    voice: $('voiceBtn')
+    image: $('studentImage'),
+    badge: $('studentBadge'),
+    qText: $('studentQuestion'),
+    phase: $('studentPhase'),
+    time: $('studentTime'),
+    fill: $('studentFill')
   };
+
+  let voiceOn = true;
+  let lastQText = '';
+  let lastSection = -1;
+  let lastQ = -1;
 
   // ---- UTILS ----
   function fmt(s) {
@@ -272,18 +203,37 @@
     return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
   }
 
-  // ---- UPDATE UI (Teacher sees exactly what student sees) ----
-  function updateUI(flash = false) {
-    const sec = SECTIONS[currentSec];
-    const qText = sec.questions[currentQ];
+  // ---- VOICE ----
+  function speak(text) {
+    if (!voiceOn || !('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.95;
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find(v => /en[-_]US/i.test(v.lang) && /google|samantha|aria/i.test(v.name))
+        || voices.find(v => /en[-_]US/i.test(v.lang))
+        || voices.find(v => /en/i.test(v.lang));
+      if (preferred) u.voice = preferred;
+      window.speechSynthesis.speak(u);
+    } catch(e) {}
+  }
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
 
-    // Update Top Bar Status
-    els.statSec.textContent = currentSec + 1;
-    els.statQ.textContent = currentQ + 1;
-    els.statStatus.textContent = isFinished ? 'Finished' : (isRunning ? 'Running' : 'Paused');
-    els.statStatus.style.color = isFinished ? 'var(--red)' : (isRunning ? 'var(--green)' : 'var(--yellow)');
+  // ---- RENDER ----
+  function render(state) {
+    if (!state) return;
+    const { currentSection, currentQuestion, timeLeft, isRunning, voiceOn: v } = state;
+    voiceOn = v !== false;
 
-    // Update Image
+    const sec = SECTIONS[currentSection];
+    if (!sec) return;
+
+    // Image & badge
     els.badge.textContent = sec.badge;
     if (els.image.dataset.src !== sec.image) {
       els.image.style.opacity = '0';
@@ -294,7 +244,8 @@
       }, 200);
     }
 
-    // Update Question Text
+    // Question text with locker effect
+    const qText = sec.questions[currentQuestion];
     if (qText !== lastQText) {
       els.qText.classList.remove('unlocked');
       els.qText.classList.add('locked');
@@ -302,35 +253,34 @@
         els.qText.textContent = qText;
         els.qText.classList.remove('locked');
         els.qText.classList.add('unlocked');
+        speak(qText);
         lastQText = qText;
-      }, flash ? 500 : 0);
+      }, 500);
     }
 
-    // Update Timer
-    const t = Math.max(0, timeLeft);
+    // Timer
+    const t = Math.max(0, timeLeft || 0);
     let phase = 'Wait';
     let cls = '';
+    let timeStr = fmt(TOTAL_SECONDS);
 
-    if (isFinished) {
-      phase = 'Done'; cls = 'done';
-    } else if (isRunning && t > 0) {
+    if (isRunning && t > 0) {
       if (t > TOTAL_SECONDS - THINK_SECONDS) {
         phase = 'Think'; cls = 'think';
-        els.time.textContent = Math.ceil(t - (TOTAL_SECONDS - THINK_SECONDS)) + 's';
+        timeStr = Math.ceil(t - (TOTAL_SECONDS - THINK_SECONDS)) + 's';
       } else {
         phase = 'Talk'; cls = 'talk';
-        els.time.textContent = fmt(t);
+        timeStr = fmt(t);
       }
     } else if (t <= 0) {
-      phase = 'Done'; cls = 'done';
-      els.time.textContent = '0:00';
+      phase = 'Done'; cls = 'done'; timeStr = '0:00';
     } else {
-      phase = 'Paused'; cls = '';
-      els.time.textContent = fmt(t);
+      phase = 'Paused'; cls = ''; timeStr = fmt(t);
     }
 
     els.phase.textContent = phase;
     els.phase.className = 'timer-phase phase-' + cls;
+    els.time.textContent = timeStr;
     els.time.className = 'timer-time phase-' + cls;
     els.fill.style.width = ((t / TOTAL_SECONDS) * 100) + '%';
 
@@ -339,162 +289,16 @@
     else if (t <= 30) fillCls = 'fill-warn';
     else if (t > TOTAL_SECONDS - THINK_SECONDS) fillCls = 'fill-think';
     els.fill.className = 'timer-fill ' + fillCls;
+
+    lastSection = currentSection;
+    lastQ = currentQuestion;
   }
 
-  // ---- PUBLISH TO FIREBASE ----
-  function publish() {
-    stateRef.set({
-      currentSection: currentSec,
-      currentQuestion: currentQ,
-      timeLeft: timeLeft,
-      isRunning: isRunning,
-      voiceOn: voiceOn
-    });
-  }
-
-  // ---- LOCAL TIMER LOGIC ----
-  function tick() {
-    if (!isRunning) return;
-    const now = Date.now();
-    if (lastTick === null) { lastTick = now; return; }
-    const delta = (now - lastTick) / 1000;
-    lastTick = now;
-
-    timeLeft -= delta;
-
-    if (timeLeft <= 0) {
-      timeLeft = 0;
-      stopTimer();
-      publish();
-      setTimeout(() => advance(true), 600);
-      return;
-    }
-    
-    updateUI(false);
-    if (Math.floor(timeLeft * 10) % 10 === 0) { // Publish roughly every 1s
-      publish();
-    }
-  }
-
-  function startTimer() {
-    if (isRunning || isFinished) return;
-    isRunning = true;
-    lastTick = null;
-    timerId = setInterval(tick, 100);
-    els.play.textContent = '⏸ Pause';
-    updateUI();
-    publish();
-  }
-
-  function stopTimer() {
-    isRunning = false;
-    if (timerId) { clearInterval(timerId); timerId = null; }
-    els.play.textContent = '▶ Resume';
-    updateUI();
-    publish();
-  }
-
-  // ---- FLOW ----
-  function advance(auto = false) {
-    if (isFinished) return;
-    stopTimer();
-
-    if (currentQ >= Q_PER_SECTION - 1) {
-      if (currentSec >= SECTIONS.length - 1) {
-        finishAll();
-        return;
-      }
-      currentSec++;
-      currentQ = 0;
-    } else {
-      currentQ++;
-    }
-
-    timeLeft = TOTAL_SECONDS;
-    isRunning = true;
-    
-    updateUI(true);
-    startTimer();
-  }
-
-  function goBack() {
-    if (isFinished) return;
-    stopTimer();
-
-    if (currentQ === 0) {
-      if (currentSec > 0) {
-        currentSec--;
-        currentQ = Q_PER_SECTION - 1;
-      }
-    } else {
-      currentQ--;
-    }
-
-    timeLeft = TOTAL_SECONDS;
-    isRunning = true;
-    
-    updateUI(true);
-    startTimer();
-  }
-
-  function finishAll() {
-    stopTimer();
-    isFinished = true;
-    els.play.disabled = true;
-    els.next.disabled = true;
-    updateUI();
-    publish();
-  }
-
-  function resetAll() {
-    stopTimer();
-    isFinished = false;
-    currentSec = 0;
-    currentQ = 0;
-    timeLeft = TOTAL_SECONDS;
-    isRunning = false;
-    els.play.disabled = false;
-    els.next.disabled = false;
-    els.play.textContent = '▶ Start';
-    updateUI(true);
-    publish();
-  }
-
-  // ---- EVENTS ----
-  els.play.onclick = () => { isRunning ? stopTimer() : startTimer(); };
-  els.next.onclick = () => advance(false);
-  els.prev.onclick = () => goBack();
-  els.reset.onclick = () => resetAll();
-  els.voice.onclick = () => {
-    voiceOn = !voiceOn;
-    els.voice.textContent = voiceOn ? '🔊 Voice ON' : '🔇 Voice OFF';
-    publish();
-  };
-
-  // Keyboard shortcuts
-  document.addEventListener('keydown', e => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    if (e.code === 'Space') { e.preventDefault(); els.play.click(); }
-    if (e.code === 'ArrowRight') { e.preventDefault(); els.next.click(); }
-    if (e.code === 'ArrowLeft') { e.preventDefault(); els.prev.click(); }
-  });
-
-  // ---- INIT ----
-  // Load from Firebase if it exists
-  stateRef.once('value').then(snap => {
-    const val = snap.val();
-    if (val) {
-      currentSec = val.currentSection ?? 0;
-      currentQ = val.currentQuestion ?? 0;
-      timeLeft = val.timeLeft ?? TOTAL_SECONDS;
-      isRunning = val.isRunning ?? false;
-      voiceOn = val.voiceOn !== false;
-      els.voice.textContent = voiceOn ? '🔊 Voice ON' : '🔇 Voice OFF';
-    } else {
-      publish(); // create initial state
-    }
-    updateUI(false);
-    if (isRunning) startTimer();
+  // ---- FIREBASE LISTENER ----
+  const stateRef = db.ref('rooms/' + ROOM_ID + '/state');
+  stateRef.on('value', snap => {
+    const state = snap.val();
+    render(state);
   });
 
 })();
