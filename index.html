@@ -1,1889 +1,503 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Two Futures · 4 Debates + 2 Listening Tasks</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Speaking Lab · Teacher Panel</title>
 <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#07090f; --panel:#121620; --panel2:#1a202e; --border:#2a3149;
+    --text:#eef1f8; --muted:#8b93ad;
+    --accent:#7c5cff; --accent2:#22d3ee;
+    --green:#22c55e; --yellow:#eab308; --red:#ef4444;
+  }
+  body{
+    font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--bg); color:var(--text);
+    display:flex; justify-content:center; align-items:flex-start;
+    min-height:100vh; padding:20px;
+  }
+  .app-container{
+    width:100%; max-width:900px;
+    display:flex; flex-direction:column; gap:16px;
+  }
+  
+  /* HEADER STATUS */
+  .header-status{
+    display:flex; justify-content:space-between; align-items:center;
+    background:var(--panel); border:1px solid var(--border);
+    border-radius:16px; padding:16px 24px;
+    box-shadow:0 10px 30px -10px rgba(0,0,0,0.5);
+  }
+  .status-indicator{
+    font-size:14px; font-weight:800; letter-spacing:1px; text-transform:uppercase;
+    color:var(--accent2);
+  }
+  .status-details{
+    display:flex; gap:16px; font-size:14px; color:var(--muted);
+  }
+  .status-details span{ color:var(--text); font-weight:700; }
 
-    body {
-        font-family: 'Inter', sans-serif;
-        background: #eef3fa;
-        background-image:
-            radial-gradient(circle at 10% 4%, rgba(29, 78, 216, 0.09), transparent 40%),
-            radial-gradient(circle at 90% 96%, rgba(15, 118, 110, 0.09), transparent 40%);
-        background-attachment: fixed;
-        color: #13202d;
-        min-height: 100vh;
-        padding: 24px 18px 48px;
-    }
+  /* STUDENT VIEW REPLICA */
+  .image-container{
+    position:relative; width:100%; height:280px;
+    border-radius:20px; overflow:hidden;
+    background:var(--panel); border:1px solid var(--border);
+  }
+  .image-container img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    transition:opacity 0.8s ease;
+  }
+  .image-overlay{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, transparent 40%, rgba(7,9,15,0.95) 100%);
+  }
+  .section-badge{
+    position:absolute; top:16px; left:16px;
+    background:rgba(7,9,15,.8); backdrop-filter:blur(8px);
+    border:1px solid var(--border); padding:6px 16px; border-radius:100px;
+    font-size:12px; font-weight:800; letter-spacing:2px; text-transform:uppercase;
+    color:var(--accent2);
+  }
 
-    .app { max-width: 1180px; margin: 0 auto; }
-    .hidden { display: none !important; }
+  .question-container{
+    background:var(--panel); border:1px solid var(--border);
+    border-radius:20px; padding:24px; min-height:110px;
+    display:flex; align-items:center;
+  }
+  .question-text{
+    font-size:clamp(18px, 2.5vw, 24px); font-weight:600; line-height:1.4;
+    transition: opacity 0.5s, transform 0.5s, filter 0.5s;
+  }
+  .question-text.locked { opacity: 0; transform: translateY(20px); filter: blur(8px); }
+  .question-text.unlocked { opacity: 1; transform: translateY(0); filter: blur(0); }
 
-    /* ---------- JOIN SCREEN ---------- */
-    .join-screen {
-        max-width: 480px; margin: 60px auto 0;
-        background: #ffffff; border-radius: 28px;
-        border: 1px solid #e6eef6;
-        box-shadow: 0 24px 60px rgba(20, 45, 80, 0.14);
-        padding: 32px 30px 28px;
-        animation: popIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.1);
-    }
-    @keyframes popIn {
-        from { opacity: 0; transform: translateY(18px) scale(0.95); }
-        to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .join-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
-    .join-logo {
-        width: 54px; height: 54px; border-radius: 17px;
-        background: linear-gradient(135deg, #1d4ed8, #0f766e);
-        color: #fff; display: flex; align-items: center; justify-content: center;
-        font-size: 22px; box-shadow: 0 10px 24px rgba(29, 78, 216, 0.28);
-        flex-shrink: 0;
-    }
-    .join-brand h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.2; }
-    .join-brand h1 span { color: #1d4ed8; }
-    .join-brand p { font-size: 12.5px; color: #6b8299; font-weight: 500; margin-top: 3px; }
+  .timer-container{
+    background:var(--panel); border:1px solid var(--border);
+    border-radius:20px; padding:16px 24px;
+    display:flex; align-items:center; gap:16px;
+  }
+  .timer-phase{
+    font-size:12px; font-weight:800; letter-spacing:2px; text-transform:uppercase;
+    color:var(--muted); width:60px;
+  }
+  .timer-time{
+    font-size:28px; font-weight:800; font-variant-numeric:tabular-nums;
+    width:80px; text-align:right;
+  }
+  .timer-bar{
+    flex:1; height:10px; background:var(--panel2);
+    border-radius:100px; overflow:hidden; position:relative;
+  }
+  .timer-fill{
+    position:absolute; top:0; left:0; bottom:0;
+    transition: width 0.1s linear, background 0.3s;
+    border-radius:100px;
+  }
+  .phase-think { color:var(--yellow) !important; }
+  .phase-talk { color:var(--green) !important; }
+  .phase-done { color:var(--red) !important; }
+  
+  .fill-think { background:linear-gradient(90deg,var(--yellow),#facc15); }
+  .fill-talk { background:linear-gradient(90deg,var(--green),#4ade80); }
+  .fill-warn { background:linear-gradient(90deg,#f59e0b,var(--red)); }
+  .fill-danger { background:linear-gradient(90deg,var(--red),#dc2626); }
 
-    .room-info {
-        background: #f7fafd; border: 1.5px solid #e2ecf5;
-        border-radius: 13px; padding: 12px 15px;
-        display: flex; align-items: center; gap: 10px;
-        margin-bottom: 16px; font-size: 12.5px; font-weight: 600;
-        color: #4a6580;
-    }
-    .room-info i { color: #1d4ed8; font-size: 14px; }
-    .room-info b { color: #13202d; letter-spacing: 1px; font-weight: 800; }
-
-    .field { margin-bottom: 14px; }
-    .field label {
-        display: block; font-size: 10.5px; font-weight: 800;
-        letter-spacing: 0.8px; text-transform: uppercase;
-        color: #7d92a8; margin-bottom: 7px;
-    }
-    .field input {
-        width: 100%; padding: 13px 15px; border-radius: 13px;
-        border: 1.5px solid #dbe7f1; background: #f7fafd;
-        font-family: inherit; font-size: 15px; font-weight: 600;
-        color: #13202d; outline: none; transition: all 0.15s;
-    }
-    .field input::placeholder { color: #a8bacb; font-weight: 500; }
-    .field input:focus { border-color: #1d4ed8; background: #fff; box-shadow: 0 0 0 4px #eaf1ff; }
-
-    .join-btn {
-        width: 100%; border: none; border-radius: 40px;
-        background: linear-gradient(135deg, #1d4ed8, #16389b);
-        color: #fff; padding: 15px 24px;
-        font-family: inherit; font-size: 15.5px; font-weight: 800;
-        cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-        box-shadow: 0 10px 24px rgba(29, 78, 216, 0.32);
-        transition: all 0.2s;
-    }
-    .join-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(29, 78, 216, 0.4); }
-    .join-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-    .join-error {
-        background: #fdeaea; color: #8f2f2f;
-        border: 1.5px solid #f6d5d5; border-radius: 12px;
-        padding: 11px 14px; font-size: 13px; font-weight: 600;
-        display: flex; align-items: flex-start; gap: 9px;
-        margin-top: 14px; line-height: 1.45;
-    }
-    .join-error i { margin-top: 2px; flex-shrink: 0; }
-
-    .join-hint {
-        font-size: 12px; line-height: 1.55; color: #8098ad;
-        margin-top: 16px; padding-top: 16px;
-        border-top: 1px dashed #e2ecf5; text-align: center; font-weight: 500;
-    }
-
-    /* ---------- TOP BAR ---------- */
-    .topbar {
-        display: flex; justify-content: space-between; align-items: center;
-        gap: 10px; flex-wrap: wrap;
-        background: #ffffff; border: 1px solid #e6eef6; border-radius: 20px;
-        padding: 12px 16px;
-        box-shadow: 0 10px 26px rgba(20, 45, 80, 0.08);
-        margin-bottom: 12px;
-        position: sticky; top: 10px; z-index: 100;
-    }
-    .room-chip {
-        display: flex; align-items: center; gap: 9px;
-        background: #f2f7fc; border-radius: 40px; padding: 8px 15px;
-        font-size: 13px; font-weight: 700; color: #4a6580;
-    }
-    .room-chip i { color: #1d4ed8; font-size: 13px; }
-    .room-chip b { color: #13202d; letter-spacing: 0.5px; }
-    .me-chip {
-        display: flex; align-items: center; gap: 9px;
-        border-radius: 40px; padding: 6px 14px 6px 8px;
-        font-size: 13px; font-weight: 700;
-    }
-    .me-chip.A { background: #eaf1ff; color: #1d4ed8; }
-    .me-chip.B { background: #e3f5f2; color: #0f766e; }
-    .me-chip.C { background: #fff4e0; color: #b45309; }
-    .me-chip.ghost { background: #f1ebff; color: #7c3aed; }
-    .me-dot {
-        width: 26px; height: 26px; border-radius: 50%;
-        color: #fff; display: flex; align-items: center; justify-content: center;
-        font-size: 11px; font-weight: 800;
-    }
-    .me-chip.A .me-dot { background: #1d4ed8; }
-    .me-chip.B .me-dot { background: #0f766e; }
-    .me-chip.C .me-dot { background: #b45309; }
-    .me-chip.ghost .me-dot { background: #7c3aed; font-size: 14px; }
-    .leave-btn {
-        border: none; background: transparent; color: #8098ad;
-        border-radius: 30px; padding: 8px 14px;
-        font-family: inherit; font-size: 12px; font-weight: 700;
-        cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
-        transition: all 0.15s;
-    }
-    .leave-btn:hover { background: #fdeaea; color: #a13d3d; }
-
-    .reset-answers-btn {
-        border: 1.5px solid #f0c88a;
-        background: #fff4e0;
-        color: #a0690c;
-        border-radius: 30px;
-        padding: 7px 14px;
-        font-family: inherit; font-size: 12px; font-weight: 800;
-        cursor: pointer;
-        display: inline-flex; align-items: center; gap: 6px;
-        transition: all 0.15s;
-    }
-    .reset-answers-btn:hover {
-        background: #ffe9c9;
-        border-color: #e0a860;
-        color: #7a4a00;
-        transform: translateY(-1px);
-    }
-
-    /* ---------- LOCATION BANNER ---------- */
-    .location-banner {
-        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-        background: linear-gradient(135deg, #1d4ed8 0%, #16389b 100%);
-        color: #fff;
-        border-radius: 16px;
-        padding: 14px 20px;
-        margin-bottom: 22px;
-        box-shadow: 0 12px 28px rgba(29, 78, 216, 0.28);
-    }
-    .loc-info {
-        display: flex; align-items: center; gap: 10px;
-        font-size: 14.5px; font-weight: 700;
-        flex: 1; min-width: 0;
-    }
-    .loc-info i { font-size: 17px; color: #ffd166; flex-shrink: 0; }
-    .loc-step-num {
-        background: rgba(255, 255, 255, 0.18);
-        padding: 3px 10px; border-radius: 30px;
-        font-size: 11.5px; font-weight: 800; letter-spacing: 0.4px;
-        flex-shrink: 0;
-    }
-    .loc-step-title {
-        font-weight: 800; letter-spacing: -0.2px;
-        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .loc-team-score {
-        display: flex; align-items: center; gap: 8px;
-        background: rgba(255, 255, 255, 0.16);
-        border: 1.5px solid rgba(255, 255, 255, 0.28);
-        border-radius: 30px; padding: 7px 16px;
-        font-size: 13px; font-weight: 800;
-        flex-shrink: 0;
-    }
-    .loc-team-score i { color: #ffd166; }
-    .loc-team-score b { font-size: 16px; letter-spacing: 0.5px; }
-    .loc-guide-btn {
-        border: none; border-radius: 30px;
-        background: #ffd166; color: #7a4a00;
-        padding: 9px 18px;
-        font-family: inherit; font-size: 12.5px; font-weight: 800;
-        cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        transition: all 0.15s;
-        flex-shrink: 0;
-    }
-    .loc-guide-btn:hover { background: #ffdf8a; transform: translateY(-1px); }
-
-    /* ---------- SECTIONS ---------- */
-    .section {
-        display: none; background: #ffffff;
-        border: 1px solid #e6eef6; border-radius: 26px;
-        box-shadow: 0 16px 38px rgba(20, 45, 80, 0.09);
-        overflow: hidden;
-    }
-    .section.active-step { display: block; animation: fadeSwap 0.4s ease-out; }
-    @keyframes fadeSwap {
-        from { opacity: 0; transform: translateY(10px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-    .section-head {
-        padding: 20px 26px 16px;
-        display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-        border-bottom: 1px solid #eaf1f8;
-    }
-    .sec-badge {
-        display: inline-flex; align-items: center; gap: 7px;
-        background: #eaf1ff; color: #1d4ed8;
-        padding: 5px 14px; border-radius: 30px;
-        font-size: 11px; font-weight: 800; letter-spacing: 0.7px;
-        text-transform: uppercase; white-space: nowrap;
-    }
-    .sec-badge.listen { background: #f1ebff; color: #7c3aed; }
-    .sec-title {
-        font-size: 21px; font-weight: 800; letter-spacing: -0.3px;
-        color: #13202d; line-height: 1.25;
-    }
-    .sec-num {
-        margin-left: auto; font-size: 12px; font-weight: 800;
-        color: #8098ad; background: #f2f7fc; border-radius: 40px;
-        padding: 6px 15px; white-space: nowrap;
-    }
-    .section-body { padding: 22px 26px 24px; }
-
-    /* ---------- THEME — arena ---------- */
-    .arena {
-        display: grid; grid-template-columns: 1fr auto 1fr;
-        gap: 14px; align-items: stretch; margin-bottom: 20px;
-    }
-    .side {
-        background: var(--tint); border: 2px solid transparent;
-        border-radius: 18px; padding: 18px 16px;
-        display: flex; flex-direction: column; align-items: center;
-        text-align: center; gap: 10px;
-        transition: all 0.2s;
-    }
-    .side:hover { border-color: var(--accent); transform: translateY(-3px); }
-    .side-portrait {
-        width: 96px; height: 96px; border-radius: 50%;
-        overflow: hidden; border: 4px solid #ffffff;
-        box-shadow: 0 8px 20px rgba(20, 45, 80, 0.14);
-        background: #ffffff; flex-shrink: 0;
-    }
-    .side-portrait svg { width: 100%; height: 100%; display: block; }
-    .side-icon-circle {
-        width: 96px; height: 96px; border-radius: 50%;
-        background: #ffffff; display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 8px 20px rgba(20, 45, 80, 0.14);
-        color: var(--accent); font-size: 40px; flex-shrink: 0;
-    }
-    .side-label {
-        font-size: 10px; font-weight: 800; letter-spacing: 1px;
-        text-transform: uppercase; color: var(--accent);
-        background: #ffffff; padding: 4px 12px; border-radius: 30px;
-    }
-    .side-name {
-        font-size: 16px; font-weight: 800; color: #13202d;
-        line-height: 1.2; letter-spacing: -0.2px;
-    }
-    .side-desc {
-        font-size: 11.5px; font-weight: 500; color: #5a7189;
-        line-height: 1.45; max-width: 220px;
-    }
-    .vs-circle {
-        align-self: center; width: 46px; height: 46px; border-radius: 50%;
-        background: #ffffff; border: 2px solid #e2ecf5;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 12px; font-weight: 800; color: #6b8299;
-        letter-spacing: 0.5px; flex-shrink: 0;
-        box-shadow: 0 8px 20px rgba(20, 45, 80, 0.1);
-    }
-
-    .theme-q {
-        background: #f7fafd; border-radius: 15px;
-        padding: 16px 20px; margin-bottom: 16px;
-        display: flex; align-items: flex-start; gap: 12px;
-        border-left: 4px solid #1d4ed8;
-    }
-    .theme-q i { color: #1d4ed8; font-size: 17px; margin-top: 2px; flex-shrink: 0; }
-    .theme-q p {
-        font-size: 16.5px; font-weight: 700; color: #13202d;
-        line-height: 1.45; letter-spacing: -0.2px;
-    }
-
-    .chips-label {
-        font-size: 10.5px; font-weight: 800; letter-spacing: 0.9px;
-        text-transform: uppercase; color: #98aec2; margin-bottom: 8px;
-    }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-    .chip {
-        background: #f4f8fd; border: 1.5px solid #dbe7f1; color: #33526e;
-        font-size: 13px; font-weight: 700; padding: 7px 15px;
-        border-radius: 40px; transition: all 0.15s;
-    }
-    .chip:hover {
-        background: #eaf1ff; border-color: #1d4ed8; color: #1d4ed8;
-        transform: translateY(-2px);
-    }
-
-    .proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .pc-box {
-        border-radius: 15px; padding: 13px 16px;
-        display: flex; align-items: flex-start; gap: 10px;
-        font-size: 13.5px; font-weight: 600; line-height: 1.45;
-    }
-    .pc-box i { font-size: 15px; margin-top: 1px; flex-shrink: 0; }
-    .pc-box.pros { background: #eafaf1; border: 1.5px solid #c6ebd8; color: #14603c; }
-    .pc-box.pros i { color: #16a34a; }
-    .pc-box.cons { background: #fdf0f0; border: 1.5px solid #f6d5d5; color: #8f2f2f; }
-    .pc-box.cons i { color: #dc2626; }
-
-    /* ---------- LISTENING ---------- */
-    .listening-section .section-head {
-        background: linear-gradient(135deg, #f1ebff 0%, #eaf1ff 100%);
-    }
-    .listening-section .sec-badge.listen { background: #ffffff; color: #7c3aed; }
-    .listening-section.listen2 .section-head {
-        background: linear-gradient(135deg, #e3f5f2 0%, #eafaf1 100%);
-    }
-    .listening-section.listen2 .sec-badge.listen { background: #ffffff; color: #0f766e; }
-
-    /* ---------- AUTH STATE PANELS ---------- */
-    .auth-panel {
-        border-radius: 15px; padding: 16px 20px;
-        margin-bottom: 16px;
-        display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-    }
-    .auth-panel.locked {
-        background: #f7fafd; border: 1.5px dashed #c5d8eb;
-        color: #55708b;
-    }
-    .auth-panel.locked i.icon { color: #8098ad; font-size: 20px; flex-shrink: 0; }
-    .auth-panel.locked strong { display: block; color: #13202d; font-size: 14px; margin-bottom: 2px; }
-    .auth-panel.locked p { font-size: 12.5px; font-weight: 500; }
-
-    .auth-panel.go {
-        background: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);
-        color: #fff;
-        box-shadow: 0 12px 28px rgba(22, 163, 74, 0.28);
-        animation: goBounce 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.15) both,
-                   goPulse 2s ease-in-out 0.6s infinite;
-    }
-    @keyframes goBounce {
-        0%   { opacity: 0; transform: scale(0.6); }
-        60%  { opacity: 1; transform: scale(1.05); }
-        100% { opacity: 1; transform: scale(1); }
-    }
-    @keyframes goPulse {
-        0%, 100% { box-shadow: 0 12px 28px rgba(22, 163, 74, 0.28), 0 0 0 0 rgba(22, 163, 74, 0.5); }
-        50%      { box-shadow: 0 12px 28px rgba(22, 163, 74, 0.28), 0 0 0 14px rgba(22, 163, 74, 0); }
-    }
-    .auth-panel.go .go-icon {
-        font-size: 28px; flex-shrink: 0;
-        animation: goWiggle 1.6s ease-in-out infinite;
-    }
-    @keyframes goWiggle {
-        0%, 100% { transform: rotate(0deg); }
-        25%      { transform: rotate(-12deg); }
-        75%      { transform: rotate(12deg); }
-    }
-    .auth-panel.go strong { display: block; font-size: 17px; font-weight: 800; margin-bottom: 2px; letter-spacing: -0.2px; }
-    .auth-panel.go p { font-size: 12.5px; opacity: 0.9; font-weight: 500; }
-
-    .auth-panel.ghost {
-        background: #f1ebff; border: 1.5px solid #d6c7f5;
-        color: #5b21b6;
-    }
-    .auth-panel.ghost i.icon { color: #7c3aed; font-size: 20px; flex-shrink: 0; }
-    .auth-panel.ghost strong { display: block; color: #4c1d95; font-size: 14px; margin-bottom: 2px; }
-    .auth-panel.ghost p { font-size: 12.5px; font-weight: 500; opacity: 0.85; }
-    .auth-btn {
-        margin-left: auto;
-        border: none; border-radius: 40px;
-        padding: 10px 20px;
-        font-family: inherit; font-size: 13px; font-weight: 800;
-        cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
-        transition: all 0.15s;
-        flex-shrink: 0;
-    }
-    .auth-btn.authorize {
-        background: #7c3aed; color: #fff;
-        box-shadow: 0 6px 16px rgba(124, 58, 237, 0.28);
-    }
-    .auth-btn.authorize:hover { background: #5b21b6; transform: translateY(-2px); box-shadow: 0 10px 22px rgba(124, 58, 237, 0.36); }
-    .auth-btn.revoke {
-        background: #fff; color: #a13d3d;
-        border: 1.5px solid #f6d5d5;
-    }
-    .auth-btn.revoke:hover { background: #fdeaea; }
-
-    /* ---------- AUDIO (ghost only) ---------- */
-    .audio-row {
-        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-        background: #f7fafd; border: 1px solid #eaf1f8;
-        border-radius: 15px; padding: 12px 15px; margin-bottom: 14px;
-    }
-    .audio-row > i { color: #7c3aed; font-size: 18px; flex-shrink: 0; }
-    .audio-row audio { flex: 1; min-width: 240px; height: 40px; }
-    .audio-teacher-only {
-        display: flex; align-items: center; gap: 12px;
-        background: #f1ebff; border-radius: 15px;
-        padding: 14px 18px; margin-bottom: 14px;
-        color: #5b21b6; font-size: 13px; font-weight: 600;
-    }
-    .audio-teacher-only i { font-size: 18px; flex-shrink: 0; }
-    .audio-teacher-only strong { color: #4c1d95; }
-
-    .listen-intro {
-        font-size: 13.5px; line-height: 1.55; color: #4a6580;
-        font-weight: 500; margin-bottom: 16px;
-    }
-    .progress-bar {
-        display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-        padding: 12px 16px; border-radius: 14px;
-        background: #f7fafd; border: 1px solid #eaf1f8;
-        margin-bottom: 18px;
-    }
-    .prog-item {
-        display: inline-flex; align-items: center; gap: 8px;
-        font-size: 12.5px; font-weight: 700; color: #55708b;
-        background: #ffffff; border-radius: 30px;
-        padding: 5px 13px 5px 5px; border: 1px solid #e2ecf5;
-    }
-    .prog-avatar {
-        width: 24px; height: 24px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 10.5px; font-weight: 800; color: #fff;
-    }
-    .prog-avatar.A { background: #1d4ed8; }
-    .prog-avatar.B { background: #0f766e; }
-    .prog-avatar.C { background: #b45309; }
-    .prog-count { color: #1d4ed8; font-weight: 800; }
-    .prog-count.done { color: #16a34a; }
-    .prog-pts {
-        background: #fef3c7; color: #92400e;
-        padding: 2px 8px; border-radius: 20px;
-        font-size: 11px; font-weight: 800;
-    }
-    .prog-divider { color: #c5d8eb; font-weight: 800; font-size: 11px; margin: 0 2px; }
-    .prog-name { color: #8098ad; font-weight: 700; font-size: 11.5px; }
-
-    .q-columns { display: grid; gap: 14px; }
-    .q-columns[data-count="2"] { grid-template-columns: 1fr 1fr; }
-    .q-columns[data-count="3"] { grid-template-columns: 1fr 1fr 1fr; }
-
-    .q-col { display: flex; flex-direction: column; gap: 12px; }
-    .q-col-head {
-        display: flex; align-items: center; gap: 9px; padding: 0 4px 2px;
-        font-size: 12px; font-weight: 800; letter-spacing: 0.4px;
-        text-transform: uppercase; color: #4a6580; flex-wrap: wrap;
-    }
-    .player-tag {
-        display: inline-flex; align-items: center; gap: 6px;
-        padding: 4px 12px; border-radius: 30px;
-        font-size: 11px; font-weight: 800; letter-spacing: 0.4px;
-        text-transform: uppercase;
-    }
-    .player-tag.A { background: #eaf1ff; color: #1d4ed8; }
-    .player-tag.B { background: #e3f5f2; color: #0f766e; }
-    .player-tag.C { background: #fff4e0; color: #b45309; }
-    .q-col-head .you-badge {
-        margin-left: auto; font-size: 10px; font-weight: 800;
-        letter-spacing: 0.6px; text-transform: uppercase;
-        color: #ffffff; background: #16a34a;
-        padding: 3px 10px; border-radius: 30px;
-    }
-
-    .q-card {
-        background: #ffffff;
-        border: 1.5px solid #e2ecf5; border-radius: 15px;
-        padding: 14px 15px; transition: all 0.2s; position: relative;
-    }
-    .q-card.not-yours {
-        background: #fafbfd;
-        border-style: dashed;
-    }
-    .q-card.not-yours .q-num-badge { opacity: 0.65; }
-    .q-card.solved {
-        border-color: #16a34a;
-        background: linear-gradient(180deg, #f3fdf7 0%, #eafaf1 100%);
-    }
-    .q-card.solved::before {
-        content: '✓'; position: absolute;
-        top: 10px; right: 12px;
-        width: 22px; height: 22px; border-radius: 50%;
-        background: #16a34a; color: #fff;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 12px; font-weight: 800;
-    }
-    .q-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-    .q-head .owner-label {
-        display: none;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 0.4px;
-        text-transform: uppercase;
-        color: #8098ad;
-        background: #eef3f9;
-        padding: 3px 9px;
-        border-radius: 20px;
-        white-space: nowrap;
-        flex-shrink: 0;
-        margin-left: auto;
-    }
-    .q-num-badge {
-        width: 26px; height: 26px; border-radius: 8px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 1px;
-        background: #eaf1ff; color: #1d4ed8;
-    }
-    .q-col.B .q-num-badge { background: #e3f5f2; color: #0f766e; }
-    .q-col.C .q-num-badge { background: #fff4e0; color: #b45309; }
-    .q-text {
-        flex: 1; font-size: 13.5px; font-weight: 700; color: #1c3350;
-        line-height: 1.42; min-width: 180px;
-    }
-    .options { display: flex; flex-direction: column; gap: 7px; }
-    .opt {
-        width: 100%; text-align: left;
-        border: 1.5px solid #dbe7f1; background: #fbfdff;
-        border-radius: 11px; padding: 10px 12px;
-        display: flex; align-items: flex-start; gap: 10px;
-        font-family: inherit; font-size: 13px; font-weight: 600;
-        color: #33526e; line-height: 1.4;
-        cursor: pointer; transition: all 0.15s; position: relative;
-    }
-    .opt .opt-letter {
-        width: 22px; height: 22px; border-radius: 6px;
-        background: #eef3f9; color: #4a6580;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 11.5px; font-weight: 800; flex-shrink: 0;
-        transition: all 0.15s;
-    }
-    .opt:hover:not(:disabled) { border-color: #1d4ed8; background: #f4f9ff; transform: translateX(2px); }
-    .q-col.B .opt:hover:not(:disabled) { border-color: #0f766e; background: #f0faf7; }
-    .q-col.C .opt:hover:not(:disabled) { border-color: #b45309; background: #fffaf0; }
-    .opt.correct { background: #eafaf1; border-color: #16a34a; color: #14603c; }
-    .opt.correct .opt-letter { background: #16a34a; color: #fff; }
-    .opt.correct::after { content: '\2713'; margin-left: auto; color: #16a34a; font-weight: 800; font-size: 15px; }
-    .opt.wrong {
-        background: #fdeaea; border-color: #dc2626; color: #8f2f2f;
-        animation: shake 0.55s ease-in-out;
-    }
-    .opt.wrong .opt-letter { background: #dc2626; color: #fff; }
-    .opt.wrong::after { content: '\2717'; margin-left: auto; color: #dc2626; font-weight: 800; font-size: 15px; }
-    .opt:disabled { cursor: default; }
-    .opt:disabled:not(.correct):not(.wrong) { opacity: 0.65; }
-    @keyframes shake {
-        10%, 90% { transform: translateX(-2px); }
-        20%, 80% { transform: translateX(3px); }
-        30%, 50%, 70% { transform: translateX(-5px); }
-        40%, 60% { transform: translateX(5px); }
-    }
-    .feedback {
-        margin-top: 9px; font-size: 12.5px; font-weight: 700;
-        line-height: 1.4; padding: 8px 12px; border-radius: 9px;
-        display: none;
-    }
-    .feedback.success {
-        display: block; background: #eafaf1; color: #14603c;
-        border-left: 3px solid #16a34a;
-    }
-    .feedback.live {
-        display: block; background: #fff4e0; color: #92400e;
-        border-left: 3px solid #f59e0b;
-    }
-    .teamwork-banner {
-        margin-top: 16px;
-        background: linear-gradient(135deg, #16a34a, #0d9488);
-        border-radius: 16px; padding: 16px 20px; color: #fff;
-        display: none; align-items: center; gap: 14px;
-        box-shadow: 0 12px 28px rgba(13, 148, 136, 0.28);
-        animation: popIn 0.5s ease-out;
-    }
-    .teamwork-banner.show { display: flex; }
-    .teamwork-banner i { font-size: 26px; flex-shrink: 0; }
-    .teamwork-banner strong { display: block; font-size: 15px; margin-bottom: 2px; }
-    .teamwork-banner span { font-size: 12.5px; opacity: 0.95; font-weight: 500; }
-
-    /* ---------- STEP NAV ---------- */
-    .step-nav {
-        display: flex; align-items: center; justify-content: space-between;
-        gap: 14px; flex-wrap: wrap;
-        background: #ffffff; border: 1px solid #e6eef6; border-radius: 20px;
-        padding: 12px 16px;
-        box-shadow: 0 10px 26px rgba(20, 45, 80, 0.08);
-        margin-top: 22px;
-        position: sticky; bottom: 14px; z-index: 100;
-    }
-    .step-nav-btn {
-        border: none; border-radius: 40px; padding: 11px 22px;
-        font-family: inherit; font-size: 14px; font-weight: 700;
-        cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
-        transition: all 0.18s; background: #eef3f9; color: #3d5a75;
-    }
-    .step-nav-btn:hover:not(:disabled) { background: #dbe7f1; }
-    .step-nav-btn.primary {
-        background: linear-gradient(135deg, #1d4ed8, #16389b);
-        color: #fff; box-shadow: 0 8px 20px rgba(29, 78, 216, 0.3);
-    }
-    .step-nav-btn.primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(29, 78, 216, 0.38); }
-    .step-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; box-shadow: none; }
-    .step-dots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
-    .step-dot {
-        width: 26px; height: 26px; border-radius: 50%;
-        border: 2px solid #dbe7f1; background: #ffffff;
-        color: #6b8299; font-size: 10.5px; font-weight: 800;
-        cursor: pointer; display: flex; align-items: center; justify-content: center;
-        transition: all 0.18s; padding: 0; font-family: inherit;
-    }
-    .step-dot:hover { border-color: #1d4ed8; color: #1d4ed8; }
-    .step-dot.active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; width: 32px; border-radius: 15px; }
-
-    /* ---------- TOAST ---------- */
-    .toast {
-        position: fixed; bottom: 88px; left: 50%;
-        transform: translateX(-50%) translateY(20px);
-        background: #1d4ed8; color: #fff;
-        padding: 12px 22px; border-radius: 40px;
-        font-family: inherit; font-size: 13.5px; font-weight: 700;
-        box-shadow: 0 12px 30px rgba(29, 78, 216, 0.35);
-        opacity: 0; transition: all 0.3s; z-index: 1000;
-        pointer-events: none; max-width: 90vw;
-        text-align: center;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .toast.success { background: #16a34a; }
-    .toast.gold { background: linear-gradient(135deg, #d97706, #b45309); }
-
-    .footer-note {
-        margin-top: 24px; font-size: 12px; line-height: 1.6;
-        color: #8098ad; text-align: center; font-weight: 500;
-    }
-
-    /* ---------- RESPONSIVE ---------- */
-    @media (max-width: 900px) {
-        .q-columns[data-count] { grid-template-columns: 1fr; }
-        .arena { grid-template-columns: 1fr; }
-        .vs-circle { margin: -6px auto; }
-        .side { flex-direction: row; text-align: left; align-items: center; }
-        .side > div:last-child { display: flex; flex-direction: column; align-items: flex-start; }
-        .side-desc { max-width: none; }
-    }
-    @media (max-width: 640px) {
-        body { padding: 14px 10px 100px; }
-        .join-screen { padding: 26px 20px 22px; margin-top: 20px; }
-        .section-head { padding: 16px 18px 14px; }
-        .section-body { padding: 18px 16px 20px; }
-        .sec-title { font-size: 17.5px; }
-        .theme-q p { font-size: 15px; }
-        .proscons { grid-template-columns: 1fr; }
-        .topbar { padding: 10px 12px; position: static; }
-        .room-chip, .me-chip { font-size: 12px; }
-        .audio-row { padding: 10px 12px; }
-        .audio-row audio { min-width: 0; width: 100%; }
-        .side { flex-direction: column; text-align: center; align-items: center; }
-        .side > div:last-child { align-items: center; }
-        .side-icon-circle, .side-portrait { width: 76px; height: 76px; }
-        .side-icon-circle { font-size: 32px; }
-        .step-nav { padding: 10px 12px; }
-        .step-nav-btn { padding: 9px 16px; font-size: 12.5px; }
-        .step-dot { width: 24px; height: 24px; font-size: 10px; }
-        .step-dot.active { width: 28px; }
-        .progress-bar { flex-direction: column; align-items: stretch; }
-        .prog-item { justify-content: center; }
-        .location-banner { padding: 12px 16px; }
-        .loc-info { font-size: 12.5px; }
-        .loc-team-score { font-size: 12px; padding: 6px 13px; }
-        .loc-guide-btn { width: 100%; justify-content: center; }
-        .auth-panel { padding: 13px 16px; }
-        .auth-panel.go strong { font-size: 15px; }
-        .auth-btn { margin-left: 0; width: 100%; justify-content: center; margin-top: 8px; }
-    }
+  /* CONTROLS */
+  .controls-panel{
+    display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
+    background:var(--panel); padding:16px; border-radius:20px;
+    border:1px solid var(--border);
+  }
+  .btn {
+    padding:12px 20px; border-radius:12px; border:none;
+    font-family:inherit; font-size:14px; font-weight:700; cursor:pointer;
+    transition:transform 0.1s, filter 0.15s; display:flex; align-items:center; gap:8px;
+    flex:1; justify-content:center; min-width:120px;
+  }
+  .btn:active { transform:scale(0.97); }
+  .btn-primary { background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#fff; }
+  .btn-secondary { background:var(--panel2); color:var(--text); border:1px solid var(--border); }
+  .btn-danger { background:rgba(239,68,68,0.15); color:var(--red); border:1px solid rgba(239,68,68,0.3); }
+  .btn:hover { filter:brightness(1.1); }
+  .btn:disabled { opacity:0.4; cursor:not-allowed; }
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     JOIN SCREEN
-     ============================================================ -->
-<div class="join-screen" id="joinScreen">
-    <div class="join-brand">
-        <div class="join-logo"><i class="fas fa-comments"></i></div>
-        <div>
-            <h1>Two Futures <span>· Team Debate</span></h1>
-            <p>4 debates · 2 listening tasks · answer together</p>
-        </div>
+<div class="app-container">
+  
+  <!-- Status Bar -->
+  <div class="header-status">
+    <div class="status-indicator">Teacher Control</div>
+    <div class="status-details">
+      <div>Section: <span id="statSection">1</span> / 3</div>
+      <div>Question: <span id="statQuestion">1</span> / 9</div>
+      <div>Status: <span id="statStatus" style="color:var(--yellow)">Idle</span></div>
     </div>
+  </div>
 
-    <div class="room-info">
-        <i class="fas fa-users"></i>
-        <span>You are joining room <b id="roomNameDisplay">TWOFUTURES</b></span>
+  <!-- Visual Replica -->
+  <div class="image-container">
+    <img id="teacherImage" src="" alt="Section Image" style="opacity:0;">
+    <div class="image-overlay"></div>
+    <div class="section-badge" id="teacherBadge">Loading...</div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-text locked" id="teacherQuestion">Loading...</div>
+  </div>
+
+  <div class="timer-container">
+    <div class="timer-phase" id="teacherPhase">Wait</div>
+    <div class="timer-time" id="teacherTime">3:20</div>
+    <div class="timer-bar">
+      <div class="timer-fill" id="teacherFill" style="width:100%"></div>
     </div>
+  </div>
 
-    <div class="field">
-        <label for="nameInput">Your name</label>
-        <input id="nameInput" type="text" maxlength="24" placeholder="Type your name here" autocomplete="off" />
-    </div>
+  <!-- Control Buttons -->
+  <div class="controls-panel">
+    <button class="btn btn-secondary" id="prevBtn">◀ Previous</button>
+    <button class="btn btn-primary" id="playBtn">▶ Start / Resume</button>
+    <button class="btn btn-secondary" id="nextBtn">Next ▶</button>
+    <button class="btn btn-danger" id="resetBtn">↺ Reset All</button>
+    <button class="btn btn-secondary" id="voiceBtn">🔊 Voice ON</button>
+  </div>
 
-    <button type="button" class="join-btn" id="joinBtn">
-        <i class="fas fa-arrow-right-to-bracket"></i> Join the room
-    </button>
-
-    <div class="join-error hidden" id="joinError">
-        <i class="fas fa-circle-exclamation"></i>
-        <span id="joinErrorText"></span>
-    </div>
-
-    <p class="join-hint">
-        Everyone on this page is in the same room. The system will assign you Player A, B, or C automatically.
-    </p>
 </div>
 
-<!-- ============================================================
-     MAIN APP
-     ============================================================ -->
-<div class="app hidden" id="mainApp">
-
-    <div class="topbar">
-        <div class="room-chip">
-            <i class="fas fa-users"></i>
-            <span>Room</span>
-            <b id="roomCodeDisplay">—</b>
-        </div>
-        <div class="me-chip A" id="meChip">
-            <span class="me-dot" id="meInitial">?</span>
-            <b id="meName">—</b>
-            <span id="meRole">Player A</span>
-        </div>
-        <button type="button" class="reset-answers-btn hidden" id="resetAnswersBtn">
-            <i class="fas fa-eraser"></i> Reset answers
-        </button>
-        <button class="leave-btn" id="leaveBtn">
-            <i class="fas fa-right-from-bracket"></i> Leave
-        </button>
-    </div>
-
-    <div class="location-banner">
-        <div class="loc-info">
-            <i class="fas fa-location-dot"></i>
-            <span class="loc-step-num" id="locStepNum">1 / 6</span>
-            <span class="loc-step-title" id="locStepTitle">—</span>
-        </div>
-        <div class="loc-team-score">
-            <i class="fas fa-trophy"></i>
-            <span>Team</span>
-            <b id="teamScoreVal">0</b>
-            <span>pts</span>
-        </div>
-        <button type="button" class="loc-guide-btn hidden" id="guideBtn">
-            <i class="fas fa-paper-plane"></i> Send class here
-        </button>
-    </div>
-
-    <div id="sections"></div>
-
-    <nav class="step-nav">
-        <button class="step-nav-btn" id="prevStep">
-            <i class="fas fa-arrow-left"></i> Previous
-        </button>
-        <div class="step-dots" id="stepDots"></div>
-        <button class="step-nav-btn primary" id="nextStep">
-            Next <i class="fas fa-arrow-right"></i>
-        </button>
-    </nav>
-
-    <p class="footer-note">
-        The portraits are original drawings, not photographs. All situations here are imaginary
-        and are used only to practise discussion and argument in English.
-    </p>
-</div>
-
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script>
-(function () {
-    'use strict';
+(function(){
+  'use strict';
 
-    /* ================================================================
-       CONSTANTS
-       ================================================================ */
-    const FIREBASE_URL = 'https://english-meetings-f08e4-default-rtdb.firebaseio.com';
-    const FIXED_ROOM = 'TWOFUTURES';
-    const GHOST_NAMES = ['andre prof', 'prof andre', 'andre professor', 'professor andre', 'prof. andre', 'andre prof.'];
-    const CLIENT_ID = 'c_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-    const STORAGE_KEY = 'two-futures-debate-v3';
-    const ROLES = ['A', 'B', 'C'];
+  // ---- FIREBASE SETUP ----
+  firebase.initializeApp({
+    databaseURL: "https://english-meetings-f08e4-default-rtdb.firebaseio.com"
+  });
+  const db = firebase.database();
+  const ROOM_ID = 'speakingLab'; // Must match student.html
 
-  const OWNER_2P = { 1: 'A', 2: 'B', 3: 'A', 4: 'B', 5: 'A', 6: 'B' };
-const OWNER_3P = { 1: 'A', 2: 'B', 3: 'C', 4: 'A', 5: 'B', 6: 'C' };
-function getMode(presentRoles) {
-    if (presentRoles.length >= 3) return 'three';
-    if (presentRoles.length === 1) return 'one';
-    return 'two';
-}
-function ownerOfQ(n, mode) {
-    if (mode === 'three') return OWNER_3P[n];
-    if (mode === 'one') {
-        const present = presentRolesOf(state);
-        return present[0] || 'A';
+  // ---- DATA ----
+  const SECTIONS = [
+    {
+      badge: "Section 1 · Psychology",
+      image: "https://lindastade.com/wp-content/uploads/2020/10/shutterstock_200319638.jpg",
+      questions: [
+        "Describe the scene and steps to both avoid it from happening and to remediate if it's happening.",
+        "What are the psychological effects of social exclusion on teenagers?",
+        "Have you ever witnessed or experienced bullying? How did it affect the school environment?",
+        "How can teachers identify students who are being isolated?",
+        "What role do parents play in preventing school violence?",
+        "How does social media influence social hierarchies in schools?",
+        "Is there a difference between physical bullying and emotional exclusion? Which is worse?",
+        "How can schools create a culture of inclusion rather than competition?",
+        "If you were a school principal, what is the first rule you would implement to stop bullying?"
+      ]
+    },
+    {
+      badge: "Section 2 · Science & Tech",
+      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80",
+      questions: [
+        "Talk about the Future of work and how we can get ready for it.",
+        "What human skills will be most valuable when robots and AI take over repetitive tasks?",
+        "Do you think AI will create more jobs than it destroys? Why?",
+        "How can companies retrain their employees to work alongside AI?",
+        "What ethical concerns arise from replacing human workers with robots?",
+        "How do you feel about having an AI as a manager or colleague?",
+        "What is the most important technological skill to learn right now?",
+        "Could a machine ever truly replace the creativity of a human being?",
+        "How should education systems change to prepare the next generation for this future?"
+      ]
+    },
+    {
+      badge: "Section 3 · Professional",
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+      questions: [
+        "What are the necessary steps to be fully engaged, satisfied and happy at work, getting along well with the team and growing in your career?",
+        "What is the difference between a good manager and a bad manager?",
+        "How do you handle conflict with a coworker you don't like?",
+        "Is it possible to be happy at work if you don't love your job? How?",
+        "What are the key factors for a team to function well together?",
+        "How do you balance ambition and career growth with personal well-being?",
+        "Describe a time you felt extremely motivated at work or school. What caused it?",
+        "What does a healthy company culture look like to you?",
+        "How can you tell if a company is the right fit for you during an interview?"
+      ]
     }
-    return OWNER_2P[n];
-}
-function rolesForMode(mode) {
-    if (mode === 'three') return ['A', 'B', 'C'];
-    if (mode === 'one') {
-        const present = presentRolesOf(state);
-        return present.length ? [present[0]] : ['A'];
-    }
-    return ['A', 'B'];
-}
+  ];
 
-    /* ================================================================
-       PORTRAITS
-       ================================================================ */
-    const PORTRAITS = {
-        bolsonaro: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a candidate">
-            <circle cx="60" cy="60" r="60" fill="#eaf1ff"/>
-            <path d="M30 120 Q30 82 60 82 Q90 82 90 120 Z" fill="#1e3a8a"/>
-            <path d="M52 90 L60 110 L68 90 L64 86 L56 86 Z" fill="#f8fafc"/>
-            <ellipse cx="60" cy="52" rx="23" ry="26" fill="#f0c19c"/>
-            <path d="M37 52 Q37 22 60 22 Q83 22 83 52 Q78 32 60 34 Q45 35 37 52 Z" fill="#2b2118"/>
-            <circle cx="51" cy="54" r="2.5" fill="#2b2118"/>
-            <circle cx="69" cy="54" r="2.5" fill="#2b2118"/>
-            <path d="M54 66 Q60 70 66 66" stroke="#b06a4a" stroke-width="2" fill="none" stroke-linecap="round"/>
-        </svg>`,
-        lula: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a candidate">
-            <circle cx="60" cy="60" r="60" fill="#e3f5f2"/>
-            <path d="M30 120 Q30 82 60 82 Q90 82 90 120 Z" fill="#0f766e"/>
-            <path d="M52 90 L60 110 L68 90 L64 86 L56 86 Z" fill="#f8fafc"/>
-            <ellipse cx="60" cy="52" rx="23" ry="26" fill="#e0a97f"/>
-            <path d="M37 48 Q37 22 60 22 Q83 22 83 48 Q78 32 60 34 Q45 35 37 48 Z" fill="#c3c9d1"/>
-            <circle cx="51" cy="54" r="7" fill="none" stroke="#3b3229" stroke-width="1.8"/>
-            <circle cx="69" cy="54" r="7" fill="none" stroke="#3b3229" stroke-width="1.8"/>
-            <line x1="58" y1="54" x2="62" y2="54" stroke="#3b3229" stroke-width="1.8"/>
-            <circle cx="51" cy="54" r="2" fill="#2b2118"/>
-            <circle cx="69" cy="54" r="2" fill="#2b2118"/>
-            <path d="M54 68 Q60 72 66 68" stroke="#a85c3c" stroke-width="2" fill="none" stroke-linecap="round"/>
-        </svg>`
-    };
+  const TOTAL_SECONDS = 200; 
+  const THINK_SECONDS = 20;
+  const Q_PER_SECTION = 9;
 
-    /* ================================================================
-       DATA — themes
-       ================================================================ */
-    const THEMES = [
-        {
-            id: 'theme1',
-            title: 'Lula vs Bolsonaro',
-            question: 'If Brazil chooses this path, what changes for ordinary people?',
-            sideA: { label: 'Option A', name: 'Flávio Bolsonaro', desc: 'Hypothetical scenario: what could this path mean for Brazil?', color: '#1d4ed8', tint: '#eaf1ff', portrait: 'bolsonaro' },
-            sideB: { label: 'Option B', name: 'Lula', desc: 'Hypothetical scenario: what could this path mean for Brazil?', color: '#0f766e', tint: '#e3f5f2', portrait: 'lula' },
-            chips: ['economy', 'taxes', 'jobs', 'democracy', 'health', 'the future'],
-            prosPrompt: 'Possible good consequences — what could go well?',
-            consPrompt: 'Possible bad consequences — what could go wrong?'
-        },
-        {
-            id: 'theme2',
-            title: 'City life vs Country life',
-            question: 'Is it better to live in a big city or in the countryside?',
-            sideA: { label: 'Option A', name: 'Life in the city', desc: 'Fast, busy, full of jobs and options — but expensive.', color: '#1d4ed8', tint: '#eaf1ff', icon: 'fa-city' },
-            sideB: { label: 'Option B', name: 'Life in the country', desc: 'Quiet, cheaper, close to nature — but fewer opportunities.', color: '#0f766e', tint: '#e3f5f2', icon: 'fa-tree' },
-            chips: ['cost of living', 'transport', 'safety', 'quiet', 'jobs', 'community'],
-            prosPrompt: 'Why city life could be better — what are the good points?',
-            consPrompt: 'Why country life could be better — what are the good points?'
-        },
-        {
-            id: 'theme3',
-            title: 'Home office vs Office',
-            question: 'Should companies let everyone work from home every day?',
-            sideA: { label: 'Option A', name: 'Work from home', desc: 'No commute, more family time, but you need discipline.', color: '#1d4ed8', tint: '#eaf1ff', icon: 'fa-house-laptop' },
-            sideB: { label: 'Option B', name: 'Work in the office', desc: 'Teamwork, clear hours, but the traffic and the trip.', color: '#0f766e', tint: '#e3f5f2', icon: 'fa-building' },
-            chips: ['productivity', 'teamwork', 'commute', 'family', 'technology', 'trust'],
-            prosPrompt: 'Good points for working from home — what could go well?',
-            consPrompt: 'Good points for working in the office — what could go well?'
-        },
-        {
-            id: 'theme4',
-            title: 'More money vs More free time',
-            question: 'Would you prefer more money or more free time?',
-            sideA: { label: 'Option A', name: 'More money', desc: 'Better salary, more comfort — but longer hours.', color: '#1d4ed8', tint: '#eaf1ff', icon: 'fa-coins' },
-            sideB: { label: 'Option B', name: 'More free time', desc: 'Fewer hours, less stress — but a smaller salary.', color: '#0f766e', tint: '#e3f5f2', icon: 'fa-umbrella-beach' },
-            chips: ['salary', 'overtime', 'health', 'weekends', 'stress', 'happiness'],
-            prosPrompt: 'Why more money could be better — what are the good points?',
-            consPrompt: 'Why more free time could be better — what are the good points?'
-        }
-    ];
+  // ---- STATE ----
+  let currentSec = 0;
+  let currentQ = 0;
+  let timeLeft = TOTAL_SECONDS;
+  let isRunning = false;
+  let voiceOn = true;
+  let timerId = null;
+  let lastTick = null;
+  let isFinished = false;
+  let lastQText = '';
 
-    const LISTENINGS = [
-        {
-            id: 'listening1', variant: 'listen1',
-            title: 'Listening 1 · The company\'s plan',
-            audio: 'https://files.catbox.moe/0geg7a.mp3',
-            intro: 'Listen to Marina Costa, the HR manager at TransLog. Then choose the correct answer.',
-            questions: [
-                { id: 'l1q1', num: 1, text: 'What is the new plan at TransLog?',
-                  options: [
-                      { k: 'a', text: 'Office staff work four days a week, Monday to Thursday, for six months' },
-                      { k: 'b', text: 'All employees work from home three days a week' },
-                      { k: 'c', text: 'The company closes every Friday for one year' }
-                  ], correct: 'a', explain: 'four days a week, Monday to Thursday, and the test lasts six months' },
-                { id: 'l1q2', num: 2, text: 'How many employees does TransLog have?',
-                  options: [
-                      { k: 'a', text: 'Eighty' }, { k: 'b', text: 'One hundred and eighty' }, { k: 'c', text: 'One thousand eight hundred' }
-                  ], correct: 'b', explain: 'she says: “We have one hundred and eighty employees”' },
-                { id: 'l1q3', num: 3, text: 'How many hours a week will people work?',
-                  options: [
-                      { k: 'a', text: 'Forty hours — the salary goes up' },
-                      { k: 'b', text: 'Thirty hours — the salary goes down' },
-                      { k: 'c', text: 'Thirty-six hours — the salary stays the same' }
-                  ], correct: 'c', explain: 'nine hours a day, four days a week — thirty-six hours, and the salary stays the same' },
-                { id: 'l1q4', num: 4, text: 'Why is the company starting this test?',
-                  options: [
-                      { k: 'a', text: 'To save money on salaries' },
-                      { k: 'b', text: 'To have happier and healthier people' },
-                      { k: 'c', text: 'To close one office' }
-                  ], correct: 'b', explain: 'because they want happier and healthier people' },
-                { id: 'l1q5', num: 5, text: 'What three things will the company measure?',
-                  options: [
-                      { k: 'a', text: 'Sick days, speed of answering clients, and how many people leave' },
-                      { k: 'b', text: 'Sales, profit and number of new customers' },
-                      { k: 'c', text: 'Working hours, salary and lunch time' }
-                  ], correct: 'a', explain: 'sick days, how fast they answer clients, and how many people leave' },
-                { id: 'l1q6', num: 6, text: 'What happens if the numbers are good?',
-                  options: [
-                      { k: 'a', text: 'They go back to five days' },
-                      { k: 'b', text: 'The four-day week becomes permanent in January' },
-                      { k: 'c', text: 'They open a new office' }
-                  ], correct: 'b', explain: 'the four-day week becomes permanent in January' }
-            ]
-        },
-        {
-            id: 'listening2', variant: 'listen2',
-            title: 'Listening 2 · The employee\'s view',
-            audio: 'https://files.catbox.moe/bu6x2e.mp3',
-            intro: 'Listen to Rafael Lima, an employee at TransLog. Then choose the correct answer.',
-            questions: [
-                { id: 'l2q1', num: 1, text: 'What does Rafael do at TransLog?',
-                  options: [
-                      { k: 'a', text: 'He is the HR manager' }, { k: 'b', text: 'He works in customer service' }, { k: 'c', text: 'He is a driver' }
-                  ], correct: 'b', explain: 'he says: “I work in customer service at TransLog”' },
-                { id: 'l2q2', num: 2, text: 'What is the best change for Rafael?',
-                  options: [
-                      { k: 'a', text: 'He earns more money' }, { k: 'b', text: 'He has a free Friday every week' }, { k: 'c', text: 'He has a new office' }
-                  ], correct: 'b', explain: 'now he has a free Friday every week' },
-                { id: 'l2q3', num: 3, text: 'What time does Rafael start and finish, Monday to Thursday?',
-                  options: [
-                      { k: 'a', text: 'Eight in the morning to four in the afternoon' },
-                      { k: 'b', text: 'Seven in the morning to five in the afternoon' },
-                      { k: 'c', text: 'Nine in the morning to six in the evening' }
-                  ], correct: 'b', explain: 'from seven in the morning to five in the afternoon' },
-                { id: 'l2q4', num: 4, text: 'How does Rafael feel now?',
-                  options: [
-                      { k: 'a', text: 'Calmer, and he sleeps better' }, { k: 'b', text: 'More tired and stressed' }, { k: 'c', text: 'Worried about his job' }
-                  ], correct: 'a', explain: 'he says: “I feel calmer, and I sleep better”' },
-                { id: 'l2q5', num: 5, text: 'What does Rafael do on his free Friday?',
-                  options: [
-                      { k: 'a', text: 'He visits friends' },
-                      { k: 'b', text: 'He takes his mother to the doctor and studies English' },
-                      { k: 'c', text: 'He works a second job' }
-                  ], correct: 'b', explain: 'he takes his mother to the doctor, and he studies English' },
-                { id: 'l2q6', num: 6, text: 'What would Rafael prefer for the future?',
-                  options: [
-                      { k: 'a', text: 'Go back to five full days' },
-                      { k: 'b', text: 'Five shorter days, and more flexibility for parents' },
-                      { k: 'c', text: 'Work from home every day' }
-                  ], correct: 'b', explain: 'he prefers five shorter days, and more flexibility for parents' }
-            ]
-        }
-    ];
+  const stateRef = db.ref('rooms/' + ROOM_ID + '/state');
 
-    const ITEMS = [
-        { type: 'theme', data: THEMES[0] },
-        { type: 'listening', data: LISTENINGS[0] },
-        { type: 'theme', data: THEMES[1] },
-        { type: 'listening', data: LISTENINGS[1] },
-        { type: 'theme', data: THEMES[2] },
-        { type: 'theme', data: THEMES[3] }
-    ];
+  // ---- DOM ----
+  const $ = id => document.getElementById(id);
+  const els = {
+    statSec: $('statSection'),
+    statQ: $('statQuestion'),
+    statStatus: $('statStatus'),
+    image: $('teacherImage'),
+    badge: $('teacherBadge'),
+    qText: $('teacherQuestion'),
+    phase: $('teacherPhase'),
+    time: $('teacherTime'),
+    fill: $('teacherFill'),
+    play: $('playBtn'),
+    prev: $('prevBtn'),
+    next: $('nextBtn'),
+    reset: $('resetBtn'),
+    voice: $('voiceBtn')
+  };
 
-    const ALL_QUESTIONS = {};
-    LISTENINGS.forEach(l => l.questions.forEach(q => { ALL_QUESTIONS[q.id] = q; }));
+  // ---- UTILS ----
+  function fmt(s) {
+    s = Math.max(0, Math.ceil(s));
+    return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+  }
 
-    function stepLabel(item) {
-        if (item.type === 'theme') return 'Debate · ' + item.data.title;
-        return item.data.title;
+  // ---- UPDATE UI (Teacher sees exactly what student sees) ----
+  function updateUI(flash = false) {
+    const sec = SECTIONS[currentSec];
+    const qText = sec.questions[currentQ];
+
+    // Update Top Bar Status
+    els.statSec.textContent = currentSec + 1;
+    els.statQ.textContent = currentQ + 1;
+    els.statStatus.textContent = isFinished ? 'Finished' : (isRunning ? 'Running' : 'Paused');
+    els.statStatus.style.color = isFinished ? 'var(--red)' : (isRunning ? 'var(--green)' : 'var(--yellow)');
+
+    // Update Image
+    els.badge.textContent = sec.badge;
+    if (els.image.dataset.src !== sec.image) {
+      els.image.style.opacity = '0';
+      setTimeout(() => {
+        els.image.src = sec.image;
+        els.image.dataset.src = sec.image;
+        els.image.onload = () => { els.image.style.opacity = '1'; };
+      }, 200);
     }
 
-    /* ================================================================
-       STATE
-       ================================================================ */
-    let me = { role: null, name: '', room: FIXED_ROOM, isGhost: false };
-    let state = { players: {}, answers: {}, auth: {}, lastGuide: null };
-    let currentStep = 0;
-    let sectionsEls = [];
-    let lastRolesStr = '';
-    let lastKnownSolved = {};
-    let lastSeenGuidePushId = null;
-    let lastAuthSnapshot = {};
-    let db = null;
-    let firebaseOk = false;
-    let roomRef = null;
-
-    /* ================================================================
-       HELPERS
-       ================================================================ */
-    function $(sel, root) { return (root || document).querySelector(sel); }
-    function $$(sel, root) { return Array.from((root || document).querySelectorAll(sel)); }
-    function escapeHtml(str) {
-        return String(str).replace(/[&<>"']/g, ch => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[ch]));
-    }
-    function initials(name) {
-        if (!name) return '?';
-        return name.trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
-    }
-    function toast(msg, kind) {
-        const el = document.createElement('div');
-        el.className = 'toast' + (kind ? ' ' + kind : '');
-        el.textContent = msg;
-        document.body.appendChild(el);
-        requestAnimationFrame(() => el.classList.add('show'));
-        setTimeout(() => {
-            el.classList.remove('show');
-            setTimeout(() => el.remove(), 300);
-        }, 3000);
-    }
-    function presentRolesOf(s) { return ROLES.filter(r => s.players && s.players[r]); }
-    function isGhostName(name) {
-        const n = String(name || '').toLowerCase()
-            .normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-        return GHOST_NAMES.indexOf(n) !== -1;
-    }
-    function pointsForAttempt(attempts) {
-        if (attempts === 1) return 3;
-        if (attempts === 2) return 2;
-        return 1;
+    // Update Question Text
+    if (qText !== lastQText) {
+      els.qText.classList.remove('unlocked');
+      els.qText.classList.add('locked');
+      setTimeout(() => {
+        els.qText.textContent = qText;
+        els.qText.classList.remove('locked');
+        els.qText.classList.add('unlocked');
+        lastQText = qText;
+      }, flash ? 500 : 0);
     }
 
-    /* ================================================================
-       FIREBASE
-       ================================================================ */
-    function initFirebase() {
-        if (typeof firebase === 'undefined' || !firebase.initializeApp) return;
-        try {
-            firebase.initializeApp({ databaseURL: FIREBASE_URL });
-            db = firebase.database();
-            firebaseOk = true;
-        } catch (e) { console.warn('Firebase init failed:', e); }
+    // Update Timer
+    const t = Math.max(0, timeLeft);
+    let phase = 'Wait';
+    let cls = '';
+
+    if (isFinished) {
+      phase = 'Done'; cls = 'done';
+    } else if (isRunning && t > 0) {
+      if (t > TOTAL_SECONDS - THINK_SECONDS) {
+        phase = 'Think'; cls = 'think';
+        els.time.textContent = Math.ceil(t - (TOTAL_SECONDS - THINK_SECONDS)) + 's';
+      } else {
+        phase = 'Talk'; cls = 'talk';
+        els.time.textContent = fmt(t);
+      }
+    } else if (t <= 0) {
+      phase = 'Done'; cls = 'done';
+      els.time.textContent = '0:00';
+    } else {
+      phase = 'Paused'; cls = '';
+      els.time.textContent = fmt(t);
     }
 
-    /* ================================================================
-       JOIN SCREEN
-       ================================================================ */
-    const joinScreen = document.getElementById('joinScreen');
-    const mainApp = document.getElementById('mainApp');
-    const nameInput = document.getElementById('nameInput');
-    const joinBtn = document.getElementById('joinBtn');
-    const joinError = document.getElementById('joinError');
-    const joinErrorText = document.getElementById('joinErrorText');
+    els.phase.textContent = phase;
+    els.phase.className = 'timer-phase phase-' + cls;
+    els.time.className = 'timer-time phase-' + cls;
+    els.fill.style.width = ((t / TOTAL_SECONDS) * 100) + '%';
 
-    document.getElementById('roomNameDisplay').textContent = FIXED_ROOM;
+    let fillCls = 'fill-talk';
+    if (t <= 10) fillCls = 'fill-danger';
+    else if (t <= 30) fillCls = 'fill-warn';
+    else if (t > TOTAL_SECONDS - THINK_SECONDS) fillCls = 'fill-think';
+    els.fill.className = 'timer-fill ' + fillCls;
+  }
 
-    (function prefill() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            try {
-                const s = JSON.parse(saved);
-                if (s.name) nameInput.value = s.name;
-            } catch (e) {}
-        }
-    })();
-
-    function showJoinError(msg) { joinErrorText.textContent = msg; joinError.classList.remove('hidden'); }
-    function hideJoinError() { joinError.classList.add('hidden'); }
-
-    joinBtn.addEventListener('click', async () => {
-        const name = (nameInput.value || '').trim();
-        hideJoinError();
-        if (!name) { showJoinError('Please write your name.'); return; }
-
-        me.name = name;
-        me.room = FIXED_ROOM;
-        me.isGhost = isGhostName(name);
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ name })); } catch (e) {}
-
-        joinBtn.disabled = true;
-        joinBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining…';
-
-        try {
-            if (me.isGhost) {
-                me.role = 'ghost';
-                finalizeJoin();
-            } else {
-                await claimSlot();
-                finalizeJoin();
-            }
-        } catch (err) {
-            console.warn(err);
-            showJoinError(err.message || 'Could not join. Try again.');
-            joinBtn.disabled = false;
-            joinBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Join the room';
-        }
+  // ---- PUBLISH TO FIREBASE ----
+  function publish() {
+    stateRef.set({
+      currentSection: currentSec,
+      currentQuestion: currentQ,
+      timeLeft: timeLeft,
+      isRunning: isRunning,
+      voiceOn: voiceOn
     });
+  }
 
-    function claimSlot() {
-        return new Promise((resolve, reject) => {
-            if (!firebaseOk) {
-                me.role = 'A';
-                state.players = { A: { name: me.name } };
-                resolve();
-                return;
-            }
-            const playersRef = db.ref('rooms/' + me.room + '/players');
-            playersRef.transaction(current => {
-                current = current || {};
-                for (const role of ROLES) {
-                    if (current[role] && current[role].clientId === CLIENT_ID) return current;
-                }
-                for (const role of ROLES) {
-                    if (!current[role]) {
-                        current[role] = { name: me.name, clientId: CLIENT_ID, ts: Date.now() };
-                        return current;
-                    }
-                }
-                return;
-            }, (err, committed, snapshot) => {
-                if (err) { reject(new Error('Connection error. Please try again.')); return; }
-                if (!committed) { reject(new Error('Room is full (3 players max).')); return; }
-                const finalPlayers = snapshot.val() || {};
-                let myRole = null;
-                for (const role of ROLES) {
-                    if (finalPlayers[role] && finalPlayers[role].clientId === CLIENT_ID) {
-                        myRole = role;
-                        break;
-                    }
-                }
-                if (!myRole) { reject(new Error('Could not claim a slot. Try again.')); return; }
-                me.role = myRole;
-                try {
-                    db.ref('rooms/' + me.room + '/players/' + myRole).onDisconnect().remove();
-                } catch (e) {}
-                resolve();
-            });
-        });
+  // ---- LOCAL TIMER LOGIC ----
+  function tick() {
+    if (!isRunning) return;
+    const now = Date.now();
+    if (lastTick === null) { lastTick = now; return; }
+    const delta = (now - lastTick) / 1000;
+    lastTick = now;
+
+    timeLeft -= delta;
+
+    if (timeLeft <= 0) {
+      timeLeft = 0;
+      stopTimer();
+      publish();
+      setTimeout(() => advance(true), 600);
+      return;
+    }
+    
+    updateUI(false);
+    if (Math.floor(timeLeft * 10) % 10 === 0) { // Publish roughly every 1s
+      publish();
+    }
+  }
+
+  function startTimer() {
+    if (isRunning || isFinished) return;
+    isRunning = true;
+    lastTick = null;
+    timerId = setInterval(tick, 100);
+    els.play.textContent = '⏸ Pause';
+    updateUI();
+    publish();
+  }
+
+  function stopTimer() {
+    isRunning = false;
+    if (timerId) { clearInterval(timerId); timerId = null; }
+    els.play.textContent = '▶ Resume';
+    updateUI();
+    publish();
+  }
+
+  // ---- FLOW ----
+  function advance(auto = false) {
+    if (isFinished) return;
+    stopTimer();
+
+    if (currentQ >= Q_PER_SECTION - 1) {
+      if (currentSec >= SECTIONS.length - 1) {
+        finishAll();
+        return;
+      }
+      currentSec++;
+      currentQ = 0;
+    } else {
+      currentQ++;
     }
 
-    function finalizeJoin() {
-        joinScreen.classList.add('hidden');
-        mainApp.classList.remove('hidden');
+    timeLeft = TOTAL_SECONDS;
+    isRunning = true;
+    
+    updateUI(true);
+    startTimer();
+  }
 
-        document.getElementById('roomCodeDisplay').textContent = me.room;
-        document.getElementById('meName').textContent = me.name;
-        document.getElementById('meInitial').textContent = me.isGhost ? '👻' : initials(me.name);
-        document.getElementById('meRole').textContent = me.isGhost ? 'Ghost mode' : 'Player ' + me.role;
-        document.getElementById('meChip').className = 'me-chip ' + (me.isGhost ? 'ghost' : me.role);
+  function goBack() {
+    if (isFinished) return;
+    stopTimer();
 
-        if (me.isGhost) {
-            document.getElementById('guideBtn').classList.remove('hidden');
-            document.getElementById('resetAnswersBtn').classList.remove('hidden');
-        }
-
-        renderSections();
-        updateStepNav();
-        updateLocationBanner();
-        connectRealtime();
+    if (currentQ === 0) {
+      if (currentSec > 0) {
+        currentSec--;
+        currentQ = Q_PER_SECTION - 1;
+      }
+    } else {
+      currentQ--;
     }
 
-    /* ================================================================
-       REALTIME
-       ================================================================ */
-    function connectRealtime() {
-        if (!firebaseOk) {
-            applyState(state, { skipToast: true });
-            return;
-        }
-        try {
-            roomRef = db.ref('rooms/' + me.room);
-            roomRef.on('value', snap => {
-                const val = snap.val() || {};
-                state.players = val.players || {};
-                state.answers = val.answers || {};
-                state.auth = val.auth || {};
-                state.lastGuide = val.lastGuide || null;
-                applyState(state);
-            }, err => {
-                console.warn('Room read failed:', err);
-                firebaseOk = false;
-                applyState(state, { skipToast: true });
-            });
-        } catch (e) {
-            console.warn('Room subscribe failed:', e);
-            firebaseOk = false;
-            applyState(state, { skipToast: true });
-        }
+    timeLeft = TOTAL_SECONDS;
+    isRunning = true;
+    
+    updateUI(true);
+    startTimer();
+  }
+
+  function finishAll() {
+    stopTimer();
+    isFinished = true;
+    els.play.disabled = true;
+    els.next.disabled = true;
+    updateUI();
+    publish();
+  }
+
+  function resetAll() {
+    stopTimer();
+    isFinished = false;
+    currentSec = 0;
+    currentQ = 0;
+    timeLeft = TOTAL_SECONDS;
+    isRunning = false;
+    els.play.disabled = false;
+    els.next.disabled = false;
+    els.play.textContent = '▶ Start';
+    updateUI(true);
+    publish();
+  }
+
+  // ---- EVENTS ----
+  els.play.onclick = () => { isRunning ? stopTimer() : startTimer(); };
+  els.next.onclick = () => advance(false);
+  els.prev.onclick = () => goBack();
+  els.reset.onclick = () => resetAll();
+  els.voice.onclick = () => {
+    voiceOn = !voiceOn;
+    els.voice.textContent = voiceOn ? '🔊 Voice ON' : '🔇 Voice OFF';
+    publish();
+  };
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.code === 'Space') { e.preventDefault(); els.play.click(); }
+    if (e.code === 'ArrowRight') { e.preventDefault(); els.next.click(); }
+    if (e.code === 'ArrowLeft') { e.preventDefault(); els.prev.click(); }
+  });
+
+  // ---- INIT ----
+  // Load from Firebase if it exists
+  stateRef.once('value').then(snap => {
+    const val = snap.val();
+    if (val) {
+      currentSec = val.currentSection ?? 0;
+      currentQ = val.currentQuestion ?? 0;
+      timeLeft = val.timeLeft ?? TOTAL_SECONDS;
+      isRunning = val.isRunning ?? false;
+      voiceOn = val.voiceOn !== false;
+      els.voice.textContent = voiceOn ? '🔊 Voice ON' : '🔇 Voice OFF';
+    } else {
+      publish(); // create initial state
     }
+    updateUI(false);
+    if (isRunning) startTimer();
+  });
 
-    /* ================================================================
-       RENDER SECTIONS
-       ================================================================ */
-    function renderSections() {
-        const holder = document.getElementById('sections');
-        holder.innerHTML = '';
-        sectionsEls = [];
-        ITEMS.forEach((item, i) => {
-            const el = item.type === 'theme'
-                ? renderTheme(item.data, i + 1, ITEMS.length)
-                : renderListening(item.data, i + 1, ITEMS.length);
-            el.dataset.step = i;
-            if (i === 0) el.classList.add('active-step');
-            holder.appendChild(el);
-            sectionsEls.push(el);
-        });
-    }
-
-    function renderTheme(theme, num, total) {
-        const sec = document.createElement('section');
-        sec.className = 'section theme-section';
-        sec.dataset.themeId = theme.id;
-
-        const aVisual = theme.sideA.portrait
-            ? `<div class="side-portrait">${PORTRAITS[theme.sideA.portrait]}</div>`
-            : `<div class="side-icon-circle"><i class="fas ${theme.sideA.icon}"></i></div>`;
-        const bVisual = theme.sideB.portrait
-            ? `<div class="side-portrait">${PORTRAITS[theme.sideB.portrait]}</div>`
-            : `<div class="side-icon-circle"><i class="fas ${theme.sideB.icon}"></i></div>`;
-
-        sec.innerHTML = `
-            <div class="section-head">
-                <span class="sec-badge"><i class="fas fa-comments"></i> Debate</span>
-                <span class="sec-title">${escapeHtml(theme.title)}</span>
-                <span class="sec-num">${num} / ${total}</span>
-            </div>
-            <div class="section-body">
-                <div class="arena">
-                    <div class="side" style="--accent:${theme.sideA.color}; --tint:${theme.sideA.tint};">
-                        ${aVisual}
-                        <div>
-                            <span class="side-label">${escapeHtml(theme.sideA.label)}</span>
-                            <h3 class="side-name">${escapeHtml(theme.sideA.name)}</h3>
-                            <p class="side-desc">${escapeHtml(theme.sideA.desc)}</p>
-                        </div>
-                    </div>
-                    <div class="vs-circle">VS</div>
-                    <div class="side" style="--accent:${theme.sideB.color}; --tint:${theme.sideB.tint};">
-                        ${bVisual}
-                        <div>
-                            <span class="side-label">${escapeHtml(theme.sideB.label)}</span>
-                            <h3 class="side-name">${escapeHtml(theme.sideB.name)}</h3>
-                            <p class="side-desc">${escapeHtml(theme.sideB.desc)}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="theme-q">
-                    <i class="fas fa-question"></i>
-                    <p>${escapeHtml(theme.question)}</p>
-                </div>
-
-                <p class="chips-label">Words you can use</p>
-                <div class="chips">
-                    ${theme.chips.map(w => `<span class="chip">${escapeHtml(w)}</span>`).join('')}
-                </div>
-
-                <div class="proscons">
-                    <div class="pc-box pros">
-                        <i class="fas fa-thumbs-up"></i>
-                        <span>${escapeHtml(theme.prosPrompt)}</span>
-                    </div>
-                    <div class="pc-box cons">
-                        <i class="fas fa-thumbs-down"></i>
-                        <span>${escapeHtml(theme.consPrompt)}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        return sec;
-    }
-
-    function renderListening(listen, num, total) {
-        const sec = document.createElement('section');
-        sec.className = 'section listening-section ' + listen.variant;
-        sec.dataset.listeningId = listen.id;
-        sec.innerHTML = `
-            <div class="section-head">
-                <span class="sec-badge listen"><i class="fas fa-headphones"></i> Listening</span>
-                <span class="sec-title">${escapeHtml(listen.title)}</span>
-                <span class="sec-num">${num} / ${total}</span>
-            </div>
-            <div class="section-body">
-                <div data-auth-panel></div>
-                <div data-audio-row></div>
-                <p class="listen-intro">${escapeHtml(listen.intro)}</p>
-                <div class="progress-bar" data-progress></div>
-                <div class="q-columns" data-cols></div>
-                <div class="teamwork-banner" data-teamwork>
-                    <i class="fas fa-champagne-glasses"></i>
-                    <div>
-                        <strong>Great teamwork! 🎉</strong>
-                        <span>All the questions are answered.</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        return sec;
-    }
-
-    /* ================================================================
-       AUTH PANEL
-       ================================================================ */
-    function renderAuthPanel(listen, authorized) {
-        if (me.isGhost) {
-            if (authorized) {
-                return `
-                    <div class="auth-panel ghost">
-                        <i class="fas fa-unlock icon"></i>
-                        <div>
-                            <strong>Answers are open</strong>
-                            <p>Students can answer now — but only their own questions. Lock again if you need to.</p>
-                        </div>
-                        <button type="button" class="auth-btn revoke" data-revoke-auth="${listen.id}">
-                            <i class="fas fa-lock"></i> Lock again
-                        </button>
-                    </div>
-                `;
-            }
-            return `
-                <div class="auth-panel ghost">
-                    <i class="fas fa-shield-halved icon"></i>
-                    <div>
-                        <strong>Answers are locked</strong>
-                        <p>Play the audio first, then authorize students to answer.</p>
-                    </div>
-                    <button type="button" class="auth-btn authorize" data-authorize="${listen.id}">
-                        <i class="fas fa-unlock"></i> Authorize answers
-                    </button>
-                </div>
-            `;
-        }
-        if (authorized) {
-            return `
-                <div class="auth-panel go">
-                    <div class="go-icon">🎮</div>
-                    <div>
-                        <strong>GO! Answer the questions now!</strong>
-                        <p>You can only answer <b>your own</b> questions. First try = 3 pts · Second try = 2 pts · Third try = 1 pt.</p>
-                    </div>
-                </div>
-            `;
-        }
-        return `
-            <div class="auth-panel locked">
-                <i class="fas fa-lock icon"></i>
-                <div>
-                    <strong>Wait for your teacher</strong>
-                    <p>The questions will open after the audio finishes on the Zoom screen.</p>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderAudioRow(listen) {
-        if (me.isGhost) {
-            return `
-                <div class="audio-row">
-                    <i class="fas fa-headphones"></i>
-                    <audio controls preload="none" src="${listen.audio}"></audio>
-                </div>
-            `;
-        }
-        return `
-            <div class="audio-teacher-only">
-                <i class="fas fa-tv"></i>
-                <div>
-                    <strong>Listen on the Zoom screen.</strong>
-                    <span style="display:block;font-weight:500;opacity:0.85;margin-top:2px;">Your teacher is playing the audio. Concentrate and take notes.</span>
-                </div>
-            </div>
-        `;
-    }
-
-    /* ================================================================
-       LISTENING COLUMNS
-       ================================================================ */
-    function refreshListeningColumns(listen, mode) {
-        const sec = document.querySelector(`[data-listening-id="${listen.id}"]`);
-        if (!sec) return;
-        const cols = sec.querySelector('[data-cols]');
-        if (!cols) return;
-        const list = rolesForMode(mode);
-        cols.dataset.count = list.length;
-        cols.innerHTML = list.map(role => {
-            const qs = listen.questions.filter(q => ownerOfQ(q.num, mode) === role);
-            return `
-                <div class="q-col ${role}">
-                    <div class="q-col-head ${role}">
-                        <span class="player-tag ${role}"><i class="fas fa-user"></i> Player ${role}</span>
-                        <span>${qs.length} question${qs.length !== 1 ? 's' : ''}</span>
-                        <span class="you-badge" data-you-badge="${role}" style="display:none;">You</span>
-                    </div>
-                    ${qs.map(q => renderQuestion(q)).join('')}
-                </div>
-            `;
-        }).join('');
-    }
-
-    function renderQuestion(q) {
-        return `
-            <div class="q-card" data-qid="${q.id}">
-                <div class="q-head">
-                    <span class="q-num-badge">${q.num}</span>
-                    <p class="q-text">${escapeHtml(q.text)}</p>
-                    <span class="owner-label" data-owner-label></span>
-                </div>
-                <div class="options">
-                    ${q.options.map(o => `
-                        <button class="opt" type="button" data-choice="${o.k}" disabled>
-                            <span class="opt-letter">${o.k}</span>
-                            <span class="opt-body">${escapeHtml(o.text)}</span>
-                        </button>
-                    `).join('')}
-                </div>
-                <div class="feedback" data-feedback></div>
-                <div data-points></div>
-            </div>
-        `;
-    }
-
-    /* ================================================================
-       APPLY STATE
-       ================================================================ */
-    function applyState(s, opts) {
-        opts = opts || {};
-        const presentRoles = presentRolesOf(s);
-        const mode = getMode(presentRoles);
-        const rolesStr = presentRoles.join(',') + '|' + mode;
-
-        // If answers were wiped (e.g. teacher reset), clear local tracking
-        if (Object.keys(s.answers || {}).length === 0) {
-            lastKnownSolved = {};
-        }
-
-        if (rolesStr !== lastRolesStr) {
-            LISTENINGS.forEach(l => refreshListeningColumns(l, mode));
-            lastRolesStr = rolesStr;
-        }
-
-        $$('[data-you-badge]').forEach(el => {
-            el.style.display = (!me.isGhost && el.dataset.youBadge === me.role) ? 'inline-flex' : 'none';
-        });
-
-        updateTeamScore(s);
-
-        // Guide push
-        if (s.lastGuide && s.lastGuide.pushId && s.lastGuide.pushId !== lastSeenGuidePushId) {
-            if (!me.isGhost) {
-                const stepIdx = Number(s.lastGuide.step);
-                if (!isNaN(stepIdx) && stepIdx >= 0 && stepIdx < ITEMS.length) {
-                    navigateTo(stepIdx, { fromGuide: true });
-                    toast('📍 Teacher: "Go to ' + stepLabel(ITEMS[stepIdx]) + '"', 'gold');
-                }
-            }
-            lastSeenGuidePushId = s.lastGuide.pushId;
-        }
-
-        // Always update listening state (panel, audio, questions, progress)
-        LISTENINGS.forEach(listen => {
-            const sec = document.querySelector(`[data-listening-id="${listen.id}"]`);
-            if (!sec) return;
-            const auth = !!s.auth[listen.id];
-            updateListeningState(sec, listen, mode, s, auth);
-
-            if (!me.isGhost && auth && !lastAuthSnapshot[listen.id]) {
-                if (!sec.classList.contains('active-step')) {
-                    toast('🎮 ' + listen.title + ' is now open!', 'success');
-                }
-            }
-            lastAuthSnapshot[listen.id] = auth;
-        });
-
-        // Toasts for other players' correct answers
-        if (!opts.skipToast && !me.isGhost) {
-            Object.keys(s.answers || {}).forEach(qid => {
-                const ans = s.answers[qid];
-                if (!ans || !ans.correct) return;
-                if (lastKnownSolved[qid]) return;
-                lastKnownSolved[qid] = true;
-                if (ans.who === me.role) return;
-                const player = s.players[ans.who];
-                if (!player) return;
-                const q = ALL_QUESTIONS[qid];
-                if (!q) return;
-                toast('✅ ' + player.name + ' got Question ' + q.num + ' right (+' + (ans.points || 0) + ' pts)', 'success');
-            });
-        }
-    }
-
-    function updateListeningState(sec, listen, mode, s, auth) {
-        // Auth panel
-        const panel = sec.querySelector('[data-auth-panel]');
-        if (panel) {
-            const newHtml = renderAuthPanel(listen, auth);
-            if (panel.innerHTML.trim() !== newHtml.trim()) {
-                panel.innerHTML = newHtml;
-            }
-        }
-        // Audio row
-        const audioRow = sec.querySelector('[data-audio-row]');
-        if (audioRow) {
-            const newHtml = renderAudioRow(listen);
-            if (audioRow.innerHTML.trim() !== newHtml.trim()) {
-                audioRow.innerHTML = newHtml;
-            }
-        }
-
-        listen.questions.forEach(q => {
-            const card = sec.querySelector(`[data-qid="${q.id}"]`);
-            if (!card) return;
-            const ans = s.answers[q.id];
-            const solved = !!(ans && ans.correct);
-            const isWrongAttempt = !!(ans && !ans.correct);
-            const owner = ownerOfQ(q.num, mode);
-            const isMine = owner === me.role && !me.isGhost;
-            const iCanClick = isMine && !solved && auth;
-
-            card.classList.toggle('solved', solved);
-
-            // Owner label + not-yours styling
-            const ownerLabel = card.querySelector('[data-owner-label]');
-            if (ownerLabel) {
-                if (isMine) {
-                    ownerLabel.style.display = 'none';
-                } else {
-                    ownerLabel.textContent = 'Player ' + owner + "'s";
-                    ownerLabel.style.display = 'inline-flex';
-                }
-            }
-            card.classList.toggle('not-yours', !isMine && !me.isGhost);
-
-            card.querySelectorAll('.opt').forEach(opt => {
-                const isChosen = ans && opt.dataset.choice === ans.choice;
-                opt.classList.toggle('correct', solved && isChosen);
-                opt.classList.toggle('wrong', isWrongAttempt && isChosen);
-                opt.disabled = !iCanClick;
-            });
-
-            const fb = card.querySelector('[data-feedback]');
-            const whoName = (s.players[ans && ans.who] && s.players[ans.who].name) || (ans ? ('Player ' + ans.who) : '');
-
-            if (solved) {
-                fb.className = 'feedback success';
-                fb.textContent = '✅ ' + whoName + ' got it right · ' + q.explain;
-            } else if (isWrongAttempt) {
-                fb.className = 'feedback live';
-                fb.textContent = '👀 ' + whoName + ' tried (' + ans.choice + ') — still thinking';
-            } else {
-                fb.className = 'feedback';
-                fb.textContent = '';
-            }
-
-            const pointsEl = card.querySelector('[data-points]');
-            if (pointsEl) {
-                if (solved && ans.points) {
-                    pointsEl.innerHTML = `<span class="points-badge">🏆 +${ans.points} pts</span>`;
-                } else if (isWrongAttempt && ans.attempts) {
-                    const nextPoints = pointsForAttempt(ans.attempts + 1);
-                    pointsEl.innerHTML = `<span class="points-badge">Next try worth ${nextPoints} pt${nextPoints !== 1 ? 's' : ''}</span>`;
-                } else {
-                    pointsEl.innerHTML = '';
-                }
-            }
-        });
-
-        updateProgressBar(sec, listen, mode, s);
-        updateTeamwork(sec, listen, s);
-    }
-
-    function updateProgressBar(sec, listen, mode, s) {
-        const el = sec.querySelector('[data-progress]');
-        if (!el) return;
-        const visible = rolesForMode(mode);
-        const items = visible.map(role => {
-            const roleQs = listen.questions.filter(q => ownerOfQ(q.num, mode) === role);
-            let done = 0;
-            let pts = 0;
-            roleQs.forEach(q => {
-                const ans = s.answers[q.id];
-                if (ans && ans.correct) {
-                    done++;
-                    pts += (typeof ans.points === 'number') ? ans.points : 0;
-                }
-            });
-            const isPresent = !!(s.players[role]);
-            const name = (s.players[role] && s.players[role].name) || ('Player ' + role);
-            return `
-                <span class="prog-item" ${isPresent ? '' : 'style="opacity:.55;"'}>
-                    <span class="prog-avatar ${role}">${escapeHtml(initials(isPresent ? name : role))}</span>
-                    <span class="prog-name">${isPresent ? escapeHtml(name) : 'Waiting for Player ' + role}</span>
-                    <span class="prog-count ${done === roleQs.length ? 'done' : ''}">${done}/${roleQs.length}</span>
-                    ${pts > 0 ? `<span class="prog-pts">${pts} pts</span>` : ''}
-                </span>
-            `;
-        }).join('<span class="prog-divider">·</span>');
-        el.innerHTML = items;
-    }
-
-    function updateTeamScore(s) {
-        let total = 0;
-        LISTENINGS.forEach(l => l.questions.forEach(q => {
-            const ans = s.answers[q.id];
-            if (ans && ans.correct) {
-                total += (typeof ans.points === 'number') ? ans.points : 0;
-            }
-        }));
-        const el = document.getElementById('teamScoreVal');
-        if (el) el.textContent = total;
-    }
-
-    function updateTeamwork(sec, listen, s) {
-        const banner = sec.querySelector('[data-teamwork]');
-        if (!banner) return;
-        const allDone = listen.questions.every(q => s.answers[q.id] && s.answers[q.id].correct);
-        banner.classList.toggle('show', allDone);
-    }
-
-    /* ================================================================
-       CLICKS — auth, revoke, answers
-       ================================================================ */
-    document.getElementById('sections').addEventListener('click', (e) => {
-        const authBtn = e.target.closest('[data-authorize]');
-        if (authBtn) {
-            const listenId = authBtn.dataset.authorize;
-            if (firebaseOk) {
-                db.ref('rooms/' + me.room + '/auth/' + listenId).set(true)
-                    .then(() => toast('🔓 Answers are now open for students', 'success'))
-                    .catch(err => console.warn('Auth write failed:', err));
-            } else {
-                state.auth[listenId] = true;
-                applyState(state, { skipToast: true });
-            }
-            return;
-        }
-
-        const revokeBtn = e.target.closest('[data-revoke-auth]');
-        if (revokeBtn) {
-            if (!confirm('Lock the answers again? Students will not be able to answer until you open them again.')) return;
-            const listenId = revokeBtn.dataset.revokeAuth;
-            if (firebaseOk) {
-                db.ref('rooms/' + me.room + '/auth/' + listenId).set(false)
-                    .catch(err => console.warn('Revoke write failed:', err));
-            } else {
-                state.auth[listenId] = false;
-                applyState(state, { skipToast: true });
-            }
-            return;
-        }
-
-        const opt = e.target.closest('.opt');
-        if (opt && !opt.disabled) {
-            handleAnswer(opt);
-        }
-    });
-
-    /* ================================================================
-       ANSWER — with ownership + auth + scoring
-       ================================================================ */
-    function handleAnswer(opt) {
-        const card = opt.closest('.q-card');
-        if (!card) return;
-        const qid = card.dataset.qid;
-        const q = ALL_QUESTIONS[qid];
-        if (!q) return;
-
-        // Ghost cannot answer
-        if (me.isGhost) return;
-
-        // Owner check — only your questions
-        const presentRoles = presentRolesOf(state);
-        const mode = getMode(presentRoles);
-        const owner = ownerOfQ(q.num, mode);
-        if (owner !== me.role) {
-            toast('This is Player ' + owner + "'s question — you can only answer your own.", 'gold');
-            return;
-        }
-
-        // Already solved
-        if (state.answers[qid] && state.answers[qid].correct) return;
-
-        // Auth check
-        const listen = LISTENINGS.find(l => l.questions.some(x => x.id === qid));
-        if (!listen) return;
-        if (!state.auth || !state.auth[listen.id]) {
-            toast('⏳ Wait for your teacher to open the questions.', 'gold');
-            return;
-        }
-
-        const choice = opt.dataset.choice;
-        const isCorrect = choice === q.correct;
-        const prevAns = state.answers[qid];
-        const prevAttempts = (prevAns && typeof prevAns.attempts === 'number') ? prevAns.attempts : 0;
-        const newAttempts = prevAttempts + 1;
-        let points = 0;
-        if (isCorrect) points = pointsForAttempt(newAttempts);
-
-        const answerData = {
-            choice, correct: isCorrect, who: me.role,
-            attempts: newAttempts, points,
-            ts: firebase.database.ServerValue.TIMESTAMP
-        };
-
-        state.answers[qid] = { choice, correct: isCorrect, who: me.role, attempts: newAttempts, points };
-        applyState(state, { skipToast: true });
-
-        if (firebaseOk) {
-            db.ref('rooms/' + me.room + '/answers/' + qid).set(answerData)
-                .catch(err => console.warn('Answer write failed:', err));
-        }
-
-        if (isCorrect) {
-            toast('🏆 +' + points + ' pts! ' + (newAttempts === 1 ? 'Perfect first try!' : 'Nice recovery!'), 'success');
-        }
-    }
-
-    /* ================================================================
-       GUIDE BUTTON (ghost)
-       ================================================================ */
-    document.getElementById('guideBtn').addEventListener('click', () => {
-        if (!me.isGhost) return;
-        const pushId = CLIENT_ID + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
-        if (firebaseOk) {
-            db.ref('rooms/' + me.room + '/lastGuide').set({
-                step: currentStep, pushId,
-                ts: firebase.database.ServerValue.TIMESTAMP
-            }).then(() => toast('📤 Class guided to: ' + stepLabel(ITEMS[currentStep]), 'gold'))
-              .catch(err => console.warn('Guide write failed:', err));
-        } else {
-            toast('📤 (local mode) Guided to: ' + stepLabel(ITEMS[currentStep]), 'gold');
-        }
-    });
-
-    /* ================================================================
-       RESET ANSWERS (ghost only)
-       ================================================================ */
-    document.getElementById('resetAnswersBtn').addEventListener('click', () => {
-        if (!me.isGhost) return;
-        if (!confirm('Reset all answers and lock the questions again?\n\nThis clears all points, attempts and correct answers. You will need to authorize students again for the next class.')) return;
-
-        if (firebaseOk) {
-            const updates = {};
-            updates['rooms/' + me.room + '/answers'] = null;
-            updates['rooms/' + me.room + '/auth/listening1'] = null;
-            updates['rooms/' + me.room + '/auth/listening2'] = null;
-            updates['rooms/' + me.room + '/lastGuide'] = null;
-            db.ref().update(updates)
-                .then(() => {
-                    lastKnownSolved = {};
-                    lastAuthSnapshot = {};
-                    lastSeenGuidePushId = null;
-                    state.answers = {};
-                    state.auth = {};
-                    state.lastGuide = null;
-                    applyState(state, { skipToast: true });
-                    toast('🧹 Answers cleared, questions locked', 'success');
-                })
-                .catch(err => {
-                    console.warn('Reset failed:', err);
-                    toast('Could not reset. Try again.', 'gold');
-                });
-        } else {
-            state.answers = {};
-            state.auth = {};
-            state.lastGuide = null;
-            lastKnownSolved = {};
-            lastAuthSnapshot = {};
-            lastSeenGuidePushId = null;
-            applyState(state, { skipToast: true });
-            toast('🧹 Answers cleared (local mode)', 'success');
-        }
-    });
-
-    /* ================================================================
-       STEP NAV
-       ================================================================ */
-    function navigateTo(step, opts) {
-        opts = opts || {};
-        if (step < 0 || step >= ITEMS.length) return;
-        $$('audio').forEach(a => { try { a.pause(); } catch (e) {} });
-        currentStep = step;
-        sectionsEls.forEach((el, i) => el.classList.toggle('active-step', i === step));
-        updateStepNav();
-        updateLocationBanner();
-        if (!opts.fromGuide) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
-
-    function updateStepNav() {
-        const dots = document.getElementById('stepDots');
-        dots.innerHTML = ITEMS.map((_, i) => {
-            const cls = i === currentStep ? 'step-dot active' : 'step-dot';
-            return `<button class="${cls}" data-step="${i}" type="button" aria-label="Step ${i + 1}">${i + 1}</button>`;
-        }).join('');
-        document.getElementById('prevStep').disabled = currentStep === 0;
-        document.getElementById('nextStep').disabled = currentStep === ITEMS.length - 1;
-    }
-
-    function updateLocationBanner() {
-        const item = ITEMS[currentStep];
-        const icon = item.type === 'listening' ? '🎧' : '💬';
-        document.getElementById('locStepNum').textContent = (currentStep + 1) + ' / ' + ITEMS.length;
-        document.getElementById('locStepTitle').textContent = icon + ' ' + stepLabel(item);
-    }
-
-    document.getElementById('prevStep').addEventListener('click', () => navigateTo(currentStep - 1));
-    document.getElementById('nextStep').addEventListener('click', () => navigateTo(currentStep + 1));
-    document.getElementById('stepDots').addEventListener('click', (e) => {
-        const dot = e.target.closest('.step-dot');
-        if (!dot) return;
-        navigateTo(parseInt(dot.dataset.step, 10));
-    });
-
-    /* ================================================================
-       LEAVE
-       ================================================================ */
-    document.getElementById('leaveBtn').addEventListener('click', () => {
-        if (!confirm('Are you sure you want to leave the room? Your player data and answers will be removed from the shared room.')) return;
-
-        if (firebaseOk && me.role && me.role !== 'ghost') {
-            try { removeMyData(); } catch (e) { console.warn(e); }
-        }
-        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-        if (roomRef) { try { roomRef.off(); } catch (e) {} }
-        setTimeout(() => location.reload(), 250);
-    });
-
-    function removeMyData() {
-        const root = 'rooms/' + me.room;
-        const role = me.role;
-        db.ref(root + '/players/' + role).remove();
-        db.ref(root + '/answers').once('value', snap => {
-            const answers = snap.val() || {};
-            Object.keys(answers).forEach(qid => {
-                if (answers[qid] && answers[qid].who === role) {
-                    db.ref(root + '/answers/' + qid).remove();
-                }
-            });
-        });
-    }
-
-    /* ================================================================
-       BOOT
-       ================================================================ */
-    initFirebase();
 })();
 </script>
-
 </body>
 </html>
