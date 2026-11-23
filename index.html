@@ -1,118 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Speaking Lab · Student</title>
+<title>Reading Club · Debate</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   :root{
-    --bg:#07090f; --panel:#121620; --panel2:#1a202e; --border:#2a3149;
-    --text:#eef1f8; --muted:#8b93ad;
-    --accent:#7c5cff; --accent2:#22d3ee;
-    --green:#22c55e; --yellow:#eab308; --red:#ef4444;
+    --bg:#0a0807; --card:#171310; --card2:#221c18; --border:#3a2e26;
+    --text:#f5f0eb; --muted:#a89a8e; 
+    --accent:#f59e0b; --accent2:#ea580c; 
+    --green:#22c55e; --success:#10b981;
   }
-  html,body{height:100%;overflow:hidden}
   body{
-    font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    background:var(--bg); color:var(--text);
-    display:flex; justify-content:center; align-items:center;
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:radial-gradient(circle at 20% 0%, #2a1a0f 0%, #0a0807 55%) fixed;
+    color:var(--text); min-height:100vh; padding:20px; line-height:1.5;
   }
-  .app-container{
-    width:100%; max-width:900px; height:100vh;
-    display:flex; flex-direction:column; padding:24px; gap:20px;
+  .container{max-width:900px;margin:0 auto}
+
+  /* HERO */
+  .hero{
+    position:relative;height:240px;border-radius:20px;overflow:hidden;margin-bottom:24px;
+    background:linear-gradient(135deg,#b45309,#7c2d12);
+    box-shadow:0 20px 60px -20px rgba(234,88,12,.4);
   }
-  .image-container{
-    position:relative; width:100%; flex:1;
-    border-radius:20px; overflow:hidden;
-    background:var(--panel); border:1px solid var(--border);
-    min-height:250px;
-    box-shadow:0 20px 50px -20px rgba(0,0,0,0.8);
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.6}
+  .hero::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(10,8,7,.1) 0%,rgba(10,8,7,.6) 45%,rgba(10,8,7,.98) 100%);
   }
-  .image-container img{
-    width:100%; height:100%; object-fit:cover; display:block;
-    transition:opacity 0.8s ease;
+  .hero-text{position:absolute;bottom:20px;left:24px;right:24px;z-index:2}
+  .hero .tag{
+    display:inline-block;font-size:11px;letter-spacing:2px;font-weight:700;color:#fcd34d;
+    border:1px solid rgba(245,158,11,.4);padding:4px 10px;border-radius:100px;
+    margin-bottom:8px;background:rgba(245,158,11,.1);
   }
-  .image-overlay{
-    position:absolute; inset:0;
-    background:linear-gradient(180deg, transparent 40%, rgba(7,9,15,0.95) 100%);
+  .hero h1{font-size:clamp(22px,4vw,34px);line-height:1.15;text-shadow:0 2px 20px rgba(0,0,0,.8)}
+  .hero p{color:#d6c8bc;font-size:14px;margin-top:4px;text-shadow:0 1px 10px #000}
+
+  /* CARD */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px}
+  .hidden{display:none!important}
+
+  /* INPUTS */
+  input{
+    width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);
+    padding:12px 14px;border-radius:12px;font-size:15px;font-family:inherit;outline:none;
+    transition:border-color .15s, box-shadow .15s;
   }
-  .section-badge{
-    position:absolute; top:20px; left:20px;
-    background:rgba(7,9,15,.8); backdrop-filter:blur(8px);
-    border:1px solid var(--border); padding:6px 16px; border-radius:100px;
-    font-size:12px; font-weight:800; letter-spacing:2px; text-transform:uppercase;
-    color:var(--accent2);
+  input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(245,158,11,.15)}
+  label{display:block;font-size:13px;color:var(--muted);margin:16px 0 6px;font-weight:600}
+
+  /* BUTTONS */
+  button{
+    font-family:inherit;font-size:15px;font-weight:600;border-radius:12px;border:none;
+    cursor:pointer;padding:12px 18px;transition:transform .1s, filter .15s, background .15s;
   }
-  .question-container{
-    background:var(--panel); border:1px solid var(--border);
-    border-radius:20px; padding:30px;
-    position:relative; min-height:140px;
-    display:flex; align-items:center;
+  button:active{transform:scale(.98)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .primary{
+    width:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));color:#fff;
+    box-shadow:0 8px 24px -8px rgba(234,88,12,.6);
   }
-  .question-text{
-    font-size:clamp(20px, 3vw, 26px); font-weight:600; line-height:1.4;
-    transition: opacity 0.5s, transform 0.5s, filter 0.5s;
+  .primary:hover:not(:disabled){filter:brightness(1.1)}
+  .ghost{background:var(--card2);color:var(--text);border:1px solid var(--border)}
+  .ghost:hover{background:#2e2620}
+
+  /* PLAYERS BAR */
+  .players-bar{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+  .player-chip{
+    display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);
+    padding:8px 14px;border-radius:100px;font-size:14px;font-weight:600;
   }
-  .question-text.locked {
-    opacity: 0; transform: translateY(20px); filter: blur(8px);
+  .player-chip.me{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.08)}
+  .player-chip small{color:var(--muted);font-weight:400;font-size:12px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+  .ampersand{font-size:16px;font-weight:800;color:var(--muted)}
+
+  /* GRID LAYOUT FOR PLAYERS */
+  .boards-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
   }
-  .question-text.unlocked {
-    opacity: 1; transform: translateY(0); filter: blur(0);
+  .player-board{
+    background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column;
   }
-  .timer-container{
-    background:var(--panel); border:1px solid var(--border);
-    border-radius:20px; padding:20px 30px;
-    display:flex; align-items:center; gap:20px;
+  .player-board.me{border-color:rgba(245,158,11,.4); box-shadow: 0 0 0 1px rgba(245,158,11,.2);}
+  
+  .board-header{
+    display:flex; align-items:center; gap:10px; margin-bottom:16px;
+    padding-bottom:12px; border-bottom:1px solid var(--border);
   }
-  .timer-phase{
-    font-size:12px; font-weight:800; letter-spacing:2px; text-transform:uppercase;
-    color:var(--muted); width:80px;
+  .board-header h3{font-size:18px; margin:0;}
+  .board-header .pill{
+    font-size:10px; font-weight:800; letter-spacing:1px; text-transform:uppercase;
+    color:#fff; background:linear-gradient(90deg,var(--accent2),var(--accent));
+    padding:4px 10px; border-radius:100px;
   }
-  .timer-time{
-    font-size:36px; font-weight:800; font-variant-numeric:tabular-nums;
-    width:100px; text-align:right;
+
+  /* QUESTION CARDS */
+  .q-grid{display:flex;flex-direction:column;gap:12px;}
+  .q-card{
+    display:flex; align-items:flex-start; gap:12px; width:100%;
+    background:var(--card2);border:1px solid var(--border);border-radius:14px;
+    padding:14px 16px; text-align:left; color:var(--text); font-weight:500;
+    font-size:14.5px; line-height:1.4; transition: all .3s ease;
+    position: relative; overflow: hidden;
   }
-  .timer-bar{
-    flex:1; height:12px; background:var(--panel2);
-    border-radius:100px; overflow:hidden; position:relative;
+  .q-card.completed {
+    border-color: rgba(16, 185, 129, 0.4);
+    background: rgba(16, 185, 129, 0.05);
   }
-  .timer-fill{
-    position:absolute; top:0; left:0; bottom:0;
-    transition: width 0.1s linear, background 0.3s;
-    border-radius:100px;
-    background:var(--green);
+  .q-card.completed .q-text {
+    text-decoration: line-through;
+    color: var(--muted);
   }
-  .phase-think { color:var(--yellow) !important; }
-  .phase-talk { color:var(--green) !important; }
-  .phase-done { color:var(--red) !important; }
-  .fill-think { background:linear-gradient(90deg,var(--yellow),#facc15); }
-  .fill-talk { background:linear-gradient(90deg,var(--green),#4ade80); }
-  .fill-warn { background:linear-gradient(90deg,#f59e0b,var(--red)); }
-  .fill-danger { background:linear-gradient(90deg,var(--red),#dc2626); }
+  
+  .q-content { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .q-tag{font-size:10px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:var(--accent)}
+  .q-text{display:block;}
+  
+  /* CHECKBOX */
+  .check-btn {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 2px solid var(--border); background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s ease; flex-shrink: 0;
+  }
+  .check-btn:hover { border-color: var(--accent); background: rgba(245,158,11,0.1); }
+  .check-btn svg { width: 16px; height: 16px; fill: none; stroke: var(--muted); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; transition: all 0.2s;}
+  .q-card.completed .check-btn { border-color: var(--success); background: var(--success); }
+  .q-card.completed .check-btn svg { stroke: #fff; }
+
+  /* CELEBRATION OVERLAY */
+  #celebrationOverlay {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  #celebrationOverlay.show { opacity: 1; }
+  .celebration-msg {
+    background: rgba(16, 185, 129, 0.95);
+    color: white; font-size: 24px; font-weight: 800;
+    padding: 20px 40px; border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    transform: scale(0.5); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  #celebrationOverlay.show .celebration-msg { transform: scale(1); }
+  .confetti {
+    position: absolute; width: 10px; height: 10px;
+    background-color: #f59e0b; border-radius: 2px;
+    animation: fall 1.5s linear forwards;
+  }
+  @keyframes fall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* MISC */
+  .err{color:#ff5c7a;font-size:13px;margin-top:10px;min-height:18px}
+
   @media(max-width:600px){
-    .timer-container{flex-wrap:wrap; justify-content:center;}
-    .timer-bar{width:100%; order:3;}
-    .question-container{padding:20px; min-height:100px;}
+    body{padding:12px}
+    .hero{height:190px}
+    .hero h1{font-size:21px}
+    .card{padding:18px}
+    .player-board{padding:16px;}
   }
 </style>
 </head>
 <body>
-<div class="app-container" id="studentApp">
-  <div class="image-container">
-    <img id="studentImage" src="" alt="Section Image" style="opacity:0;">
-    <div class="image-overlay"></div>
-    <div class="section-badge" id="studentBadge">Waiting…</div>
-  </div>
-  <div class="question-container">
-    <div class="question-text locked" id="studentQuestion">Loading…</div>
-  </div>
-  <div class="timer-container">
-    <div class="timer-phase" id="studentPhase">Wait</div>
-    <div class="timer-time" id="studentTime">3:20</div>
-    <div class="timer-bar">
-      <div class="timer-fill" id="studentFill" style="width:100%"></div>
+<div class="container">
+
+  <header class="hero">
+    <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1600&q=80"
+         alt="Books and Reading" onerror="this.style.display='none'">
+    <div class="hero-text">
+      <div class="tag">ORAL DEBATE · READING</div>
+      <h1>Books & Reading Habits</h1>
+      <p>Ask questions, share your thoughts, and get to know each other.</p>
     </div>
+  </header>
+
+  <!-- SCREEN 1: JOIN -->
+  <section id="joinCard" class="card">
+    <h2 style="margin-bottom:6px">Join the Reading Club</h2>
+    <p class="muted">Enter your name to start. The room is ready.</p>
+
+    <label for="nameInput">Your Name</label>
+    <input id="nameInput" maxlength="20" placeholder="e.g. John" autocomplete="off">
+
+    <div style="margin-top:20px">
+      <button id="joinBtn" class="primary">Enter Room</button>
+    </div>
+    <div class="err" id="joinErr"></div>
+  </section>
+
+  <!-- SCREEN 2: GAME -->
+  <section id="game" class="hidden">
+    <div class="players-bar" id="playersBar"></div>
+    <div class="boards-grid" id="boardsGrid"></div>
+  </section>
+
+</div>
+
+<!-- CELEBRATION OVERLAY -->
+<div id="celebrationOverlay">
+  <div class="celebration-msg" id="celebrationMsg">
+    <span>Awesome! 🎉</span>
   </div>
 </div>
 
@@ -122,184 +224,265 @@
 (function(){
   'use strict';
 
-  // ---- FIREBASE SETUP ----
+  /* ---------------- FIREBASE ---------------- */
   firebase.initializeApp({
     databaseURL: "https://english-meetings-f08e4-default-rtdb.firebaseio.com"
   });
   const db = firebase.database();
-  const ROOM_ID = 'speakingLab'; // must match teacher.html
 
-  // ---- DATA (must match teacher.html) ----
-  const SECTIONS = [
-    {
-      badge: "Section 1 · Psychology",
-      image: "https://lindastade.com/wp-content/uploads/2020/10/shutterstock_200319638.jpg",
-      questions: [
-        "Describe the scene and steps to both avoid it from happening and to remediate if it's happening.",
-        "What are the psychological effects of social exclusion on teenagers?",
-        "Have you ever witnessed or experienced bullying? How did it affect the school environment?",
-        "How can teachers identify students who are being isolated?",
-        "What role do parents play in preventing school violence?",
-        "How does social media influence social hierarchies in schools?",
-        "Is there a difference between physical bullying and emotional exclusion? Which is worse?",
-        "How can schools create a culture of inclusion rather than competition?",
-        "If you were a school principal, what is the first rule you would implement to stop bullying?"
-      ]
-    },
-    {
-      badge: "Section 2 · Science & Tech",
-      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80",
-      questions: [
-        "Talk about the Future of work and how we can get ready for it.",
-        "What human skills will be most valuable when robots and AI take over repetitive tasks?",
-        "Do you think AI will create more jobs than it destroys? Why?",
-        "How can companies retrain their employees to work alongside AI?",
-        "What ethical concerns arise from replacing human workers with robots?",
-        "How do you feel about having an AI as a manager or colleague?",
-        "What is the most important technological skill to learn right now?",
-        "Could a machine ever truly replace the creativity of a human being?",
-        "How should education systems change to prepare the next generation for this future?"
-      ]
-    },
-    {
-      badge: "Section 3 · Professional",
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
-      questions: [
-        "What are the necessary steps to be fully engaged, satisfied and happy at work, getting along well with the team and growing in your career?",
-        "What is the difference between a good manager and a bad manager?",
-        "How do you handle conflict with a coworker you don't like?",
-        "Is it possible to be happy at work if you don't love your job? How?",
-        "What are the key factors for a team to function well together?",
-        "How do you balance ambition and career growth with personal well-being?",
-        "Describe a time you felt extremely motivated at work or school. What caused it?",
-        "What does a healthy company culture look like to you?",
-        "How can you tell if a company is the right fit for you during an interview?"
-      ]
-    }
-  ];
-
-  const TOTAL_SECONDS = 200; // 3:20
-  const THINK_SECONDS = 20;
-
-  // ---- DOM ----
+  /* ---------------- HELPERS ---------------- */
   const $ = id => document.getElementById(id);
-  const els = {
-    image: $('studentImage'),
-    badge: $('studentBadge'),
-    qText: $('studentQuestion'),
-    phase: $('studentPhase'),
-    time: $('studentTime'),
-    fill: $('studentFill')
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => (
+    {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]
+  ));
+  const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36);
+
+  let clientId = localStorage.getItem('reading_client');
+  if (!clientId) { clientId = uid(); localStorage.setItem('reading_client', clientId); }
+
+  /* ---------------- PERGUNTAS (4 DIFERENTES CONJUNTOS) ---------------- */
+  const QUESTION_SETS = {
+    p1: [
+      "What is your favorite book of all time, and why?",
+      "Do you prefer physical books, e-books, or audiobooks? Why?",
+      "If you could live inside any book, which one would you choose and why?"
+    ],
+    p2: [
+      "Who is your favorite author and what makes their writing special?",
+      "Do you have any reading rituals or a favorite place to read?",
+      "What is the last book you read that you couldn't put down?"
+    ],
+    p3: [
+      "Do you prefer fiction or non-fiction? Why?",
+      "Have you ever read a book that changed your opinion about something?",
+      "What book would you recommend to someone who doesn't like reading?"
+    ],
+    p4: [
+      "What was your favorite book as a child?",
+      "Do you prefer reading alone or discussing books with friends?",
+      "If you could meet any character from a book, who would it be and why?"
+    ]
   };
 
-  let voiceOn = true;
-  let lastQText = '';
-  let lastSection = -1;
-  let lastQ = -1;
+  /* ---------------- ESTADO ---------------- */
+  const roomCode = 'reading_club'; // Fixed room
+  let roomRef = null, mySlot = null, creatingGame = false;
 
-  // ---- UTILS ----
-  function fmt(s) {
-    s = Math.max(0, Math.ceil(s));
-    return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
-  }
+  /* ---------------- LOGIN ---------------- */
+  $('nameInput').value = localStorage.getItem('reading_name') || '';
+  $('joinBtn').onclick = doJoin;
+  $('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') doJoin(); });
 
-  // ---- VOICE ----
-  function speak(text) {
-    if (!voiceOn || !('speechSynthesis' in window)) return;
+  function showErr(m){ $('joinErr').textContent = m; }
+
+  async function doJoin(){
+    const name = $('nameInput').value.trim();
+    if (!name) return showErr('Please enter your name.');
+    showErr('');
+    $('joinBtn').disabled = true;
+    $('joinBtn').textContent = 'Connecting...';
+    localStorage.setItem('reading_name', name);
     try {
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'en-US';
-      u.rate = 0.95;
-      const voices = window.speechSynthesis.getVoices();
-      const preferred = voices.find(v => /en[-_]US/i.test(v.lang) && /google|samantha|aria/i.test(v.name))
-        || voices.find(v => /en[-_]US/i.test(v.lang))
-        || voices.find(v => /en/i.test(v.lang));
-      if (preferred) u.voice = preferred;
-      window.speechSynthesis.speak(u);
-    } catch(e) {}
-  }
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+      await joinRoom(name);
+    } catch(e){
+      console.error(e);
+      showErr('Error connecting: ' + (e.message || e));
+      $('joinBtn').disabled = false;
+      $('joinBtn').textContent = 'Enter Room';
+    }
   }
 
-  // ---- RENDER ----
-  function render(state) {
-    if (!state) return;
-    const { currentSection, currentQuestion, timeLeft, isRunning, voiceOn: v } = state;
-    voiceOn = v !== false;
+  async function joinRoom(name){
+    roomRef = db.ref('rooms/' + roomCode);
 
-    const sec = SECTIONS[currentSection];
-    if (!sec) return;
-
-    // Image & badge
-    els.badge.textContent = sec.badge;
-    if (els.image.dataset.src !== sec.image) {
-      els.image.style.opacity = '0';
-      setTimeout(() => {
-        els.image.src = sec.image;
-        els.image.dataset.src = sec.image;
-        els.image.onload = () => { els.image.style.opacity = '1'; };
-      }, 200);
-    }
-
-    // Question text with locker effect
-    const qText = sec.questions[currentQuestion];
-    if (qText !== lastQText) {
-      els.qText.classList.remove('unlocked');
-      els.qText.classList.add('locked');
-      setTimeout(() => {
-        els.qText.textContent = qText;
-        els.qText.classList.remove('locked');
-        els.qText.classList.add('unlocked');
-        speak(qText);
-        lastQText = qText;
-      }, 500);
-    }
-
-    // Timer
-    const t = Math.max(0, timeLeft || 0);
-    let phase = 'Wait';
-    let cls = '';
-    let timeStr = fmt(TOTAL_SECONDS);
-
-    if (isRunning && t > 0) {
-      if (t > TOTAL_SECONDS - THINK_SECONDS) {
-        phase = 'Think'; cls = 'think';
-        timeStr = Math.ceil(t - (TOTAL_SECONDS - THINK_SECONDS)) + 's';
-      } else {
-        phase = 'Talk'; cls = 'talk';
-        timeStr = fmt(t);
+    const res = await roomRef.child('players').transaction(players => {
+      players = players || {};
+      const keys = Object.keys(players).filter(k => players[k]);
+      
+      // Já estou na sala? (refresh)
+      for (const k of keys){
+        if (players[k].clientId === clientId){
+          players[k].name = name;
+          return players;
+        }
       }
-    } else if (t <= 0) {
-      phase = 'Done'; cls = 'done'; timeStr = '0:00';
-    } else {
-      phase = 'Paused'; cls = ''; timeStr = fmt(t);
+      
+      // Limpar jogo antigo se a sala estiver vazia
+      if (keys.length === 0) {
+        roomRef.child('game').remove();
+      }
+
+      // Adicionar até 4 jogadores
+      if (keys.length < 4){
+        const newSlot = 'p' + (keys.length + 1);
+        players[newSlot] = { name, clientId, joinedAt: Date.now() };
+        return players;
+      }
+      
+      return; // Sala cheia
+    });
+
+    if (!res.committed){
+      showErr('This room is full (max 4 players).');
+      $('joinBtn').disabled = false;
+      $('joinBtn').textContent = 'Enter Room';
+      return;
     }
 
-    els.phase.textContent = phase;
-    els.phase.className = 'timer-phase phase-' + cls;
-    els.time.textContent = timeStr;
-    els.time.className = 'timer-time phase-' + cls;
-    els.fill.style.width = ((t / TOTAL_SECONDS) * 100) + '%';
+    const players = res.snapshot.val();
+    for (const k in players) {
+      if (players[k] && players[k].clientId === clientId) {
+        mySlot = k;
+        break;
+      }
+    }
 
-    let fillCls = 'fill-talk';
-    if (t <= 10) fillCls = 'fill-danger';
-    else if (t <= 30) fillCls = 'fill-warn';
-    else if (t > TOTAL_SECONDS - THINK_SECONDS) fillCls = 'fill-think';
-    els.fill.className = 'timer-fill ' + fillCls;
+    $('joinCard').classList.add('hidden');
+    $('game').classList.remove('hidden');
 
-    lastSection = currentSection;
-    lastQ = currentQuestion;
+    roomRef.on('value', snap => {
+      const room = snap.val();
+      if (!room) return;
+      const p = room.players || {};
+      const keys = Object.keys(p).filter(k => p[k]);
+      
+      // Cria a estrutura de checkmarks assim que a primeira pessoa entra
+      if (keys.length >= 1 && !room.game && !creatingGame){
+        creatingGame = true;
+        createGame().finally(() => { creatingGame = false; });
+      }
+      render(room);
+    });
   }
 
-  // ---- FIREBASE LISTENER ----
-  const stateRef = db.ref('rooms/' + ROOM_ID + '/state');
-  stateRef.on('value', snap => {
-    const state = snap.val();
-    render(state);
-  });
+  async function createGame(){
+    const snap = await roomRef.child('players').once('value');
+    const p = snap.val() || {};
+    if (Object.keys(p).length < 1) return;
+    
+    await roomRef.child('game').transaction(g => {
+      if (g) return g;
+      return {
+        checkmarks: {} // Inicializa os checkmarks
+      };
+    });
+  }
+
+  /* ---------------- RENDER ---------------- */
+  function render(room){
+    if (!room || !room.players) return;
+    const players = room.players;
+    const keys = Object.keys(players).filter(k => players[k]);
+    
+    // Atualiza a barra de jogadores (p1 & p2 & p3 ...)
+    let barHtml = '';
+    keys.forEach((k, index) => {
+      const p = players[k];
+      const isMe = k === mySlot;
+      if (index > 0) barHtml += `<span class="ampersand">&</span>`;
+      barHtml += `<div class="player-chip ${isMe ? 'me' : ''}"><span class="dot"></span>${esc(p.name)} ${isMe ? '<small>(you)</small>' : ''}</div>`;
+    });
+    $('playersBar').innerHTML = barHtml;
+
+    // Renderiza o quadro de cada jogador (não precisa mais esperar por 2 jogadores)
+    const checkmarks = (room.game && room.game.checkmarks) || {};
+    let gridHtml = '';
+
+    keys.forEach(k => {
+      const p = players[k];
+      const isMe = k === mySlot;
+      const myChecks = checkmarks[k] || {};
+      const qSet = QUESTION_SETS[k] || [];
+
+      let cardsHtml = '';
+      qSet.forEach((q, i) => {
+        const qId = 'q' + i;
+        const isChecked = myChecks[qId];
+        cardsHtml += `
+          <div class="q-card ${isChecked ? 'completed' : ''}" id="card_${k}_${qId}">
+            <div class="q-content">
+              <span class="q-tag">Question ${i+1}</span>
+              <span class="q-text">${esc(q)}</span>
+            </div>
+            ${isMe ? `
+            <button class="check-btn" onclick="toggleCheck('${qId}')" title="Mark as done">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </button>` : ''}
+          </div>`;
+      });
+
+      // 3 Blank slots (perguntas próprias)
+      for(let i=1; i<=3; i++){
+        const qId = 'custom' + i;
+        const isChecked = myChecks[qId];
+        cardsHtml += `
+          <div class="q-card ${isChecked ? 'completed' : ''}" id="card_${k}_${qId}">
+            <div class="q-content">
+              <span class="q-tag">Your own question ${i}</span>
+              <span class="q-text">(Ask this question out loud)</span>
+            </div>
+            ${isMe ? `
+            <button class="check-btn" onclick="toggleCheck('${qId}')" title="Mark as done">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </button>` : ''}
+          </div>`;
+      }
+
+      gridHtml += `
+        <div class="player-board ${isMe ? 'me' : ''}">
+          <div class="board-header">
+            <h3>${esc(p.name)}</h3>
+            ${isMe ? '<span class="pill">Your Turn</span>' : '<span class="pill" style="background:var(--card2); color:var(--muted);">Listening</span>'}
+          </div>
+          <div class="q-grid">${cardsHtml}</div>
+        </div>`;
+    });
+
+    $('boardsGrid').innerHTML = gridHtml;
+  }
+
+  /* ---------------- CHECKMARKS & CELEBRATION ---------------- */
+  window.toggleCheck = async function(qId) {
+    if (!roomRef || !mySlot) return;
+    
+    const ref = roomRef.child(`game/checkmarks/${mySlot}/${qId}`);
+    const snap = await ref.once('value');
+    const newValue = !snap.val();
+    
+    await ref.set(newValue);
+
+    if (newValue) {
+      triggerCelebration();
+    }
+  };
+
+  function triggerCelebration() {
+    const overlay = $('celebrationOverlay');
+    const msg = $('celebrationMsg');
+    
+    // Mensagens aleatórias
+    const msgs = ["Awesome! 🎉", "Great job! 🌟", "Mission Complete! 🚀", "Well done! 👏", "Keep going! 🔥"];
+    msg.innerHTML = `<span>${msgs[Math.floor(Math.random() * msgs.length)]}</span>`;
+    
+    // Remove confetes antigos
+    overlay.querySelectorAll('.confetti').forEach(el => el.remove());
+
+    // Cria confetes
+    for (let i = 0; i < 30; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.backgroundColor = ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6'][Math.floor(Math.random() * 5)];
+      confetti.style.animationDelay = Math.random() * 0.5 + 's';
+      confetti.style.animationDuration = (Math.random() * 1 + 1) + 's';
+      overlay.appendChild(confetti);
+    }
+
+    overlay.classList.add('show');
+    setTimeout(() => {
+      overlay.classList.remove('show');
+    }, 1500);
+  }
 
 })();
 </script>
